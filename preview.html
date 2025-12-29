@@ -110,12 +110,29 @@
         </div>
     </div>
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
-        // Instructions: 
-        // 1. Open this file in browser
-        // 2. Take a screenshot at 1200x630px
-        // 3. Save as preview.jpg
-        // Or use a tool like html2canvas to generate the image
+        // Auto-generate preview on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const element = document.querySelector('.preview-card');
+                html2canvas(element, {
+                    width: 1200,
+                    height: 630,
+                    scale: 1,
+                    backgroundColor: '#667eea'
+                }).then(canvas => {
+                    canvas.toBlob(blob => {
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.download = 'preview.jpg';
+                        link.href = url;
+                        link.click();
+                        console.log('Preview image generated!');
+                    }, 'image/jpeg', 0.9);
+                });
+            }, 1000);
+        });
     </script>
 </body>
 </html>

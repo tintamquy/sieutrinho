@@ -570,13 +570,19 @@ function startGame(game) {
     }
 }
 
+// Game results tracking
+let gameResults = {
+    correct: [],
+    wrong: [],
+    questions: []
+};
+
 // Stop game
 function stopGame() {
     if (gameTimer) {
         clearInterval(gameTimer);
         gameTimer = null;
     }
-    currentGame = null;
     
     // Save scores
     if (gameScore > highScore) {
@@ -584,6 +590,97 @@ function stopGame() {
     }
     totalScore += gameScore;
     saveScores();
+    
+    // Show results if game was played
+    if (currentGame && (correctCount > 0 || wrongCount > 0)) {
+        showGameResults();
+    }
+    
+    currentGame = null;
+}
+
+// Show game results
+function showGameResults() {
+    const container = document.getElementById('game-container');
+    const accuracy = correctCount + wrongCount > 0 
+        ? Math.round((correctCount / (correctCount + wrongCount)) * 100) 
+        : 0;
+    
+    container.innerHTML = `
+        <div class="game-results">
+            <h2 style="text-align: center; font-size: 3rem; color: #ffffff; margin-bottom: 2rem; text-shadow: 3px 3px 8px rgba(0,0,0,0.8);">
+                🎉 Kết Quả Game
+            </h2>
+            
+            <div class="results-stats">
+                <div class="result-stat">
+                    <div class="result-icon">⭐</div>
+                    <div class="result-label">Điểm số</div>
+                    <div class="result-value">${gameScore}</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-icon">✓</div>
+                    <div class="result-label">Đúng</div>
+                    <div class="result-value" style="color: #10b981;">${correctCount}</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-icon">✗</div>
+                    <div class="result-label">Sai</div>
+                    <div class="result-value" style="color: #ef4444;">${wrongCount}</div>
+                </div>
+                <div class="result-stat">
+                    <div class="result-icon">📊</div>
+                    <div class="result-label">Độ chính xác</div>
+                    <div class="result-value">${accuracy}%</div>
+                </div>
+            </div>
+            
+            ${wrongCount > 0 ? `
+                <div class="wrong-answers-section">
+                    <h3 style="text-align: center; font-size: 2rem; color: #ffffff; margin: 2rem 0 1rem; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">
+                        📝 Ôn Lại Những Câu Sai
+                    </h3>
+                    <div class="wrong-answers-list">
+                        ${gameResults.wrong.map(item => `
+                            <div class="wrong-answer-item">
+                                <div class="wrong-question">
+                                    ${item.question || 'Câu hỏi'}
+                                </div>
+                                <div class="wrong-answer">
+                                    <span style="color: #ef4444;">❌ Bạn chọn: ${item.userAnswer || 'N/A'}</span>
+                                    <span style="color: #10b981; margin-left: 1rem;">✅ Đáp án đúng: ${item.correctAnswer || 'N/A'}</span>
+                                </div>
+                                ${item.image ? `<img src="${item.image}" alt="${item.correctAnswer}" class="wrong-answer-image">` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            ` : `
+                <div style="text-align: center; font-size: 2rem; color: #10b981; margin: 2rem 0; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">
+                    🎉 Hoàn hảo! Bạn không sai câu nào!
+                </div>
+            `}
+            
+            <div style="text-align: center; margin-top: 2rem;">
+                <button class="btn-back" onclick="showHomepage()" style="background: var(--primary); font-size: 1.2rem; padding: 1rem 2rem;">
+                    🏠 Về Trang Chủ
+                </button>
+            </div>
+        </div>
+    `;
+    
+    // Reset results
+    gameResults = { correct: [], wrong: [], questions: [] };
+}
+
+// Track wrong answer
+function trackWrongAnswer(question, userAnswer, correctAnswer, image = null) {
+    gameResults.wrong.push({
+        question,
+        userAnswer,
+        correctAnswer,
+        image
+    });
 }
 
 // Update game stats
@@ -710,22 +807,44 @@ function handleCorrect(points = 10) {
 }
 
 // Handle wrong answer
-function handleWrong() {
+function handleWrong(question = null, userAnswer = null, correctAnswer = null, image = null) {
     wrongCount++;
     updateGameStats();
     playSound('wrong');
     showEncouragement(false);
+    
+    if (question && userAnswer && correctAnswer) {
+        trackWrongAnswer(question, userAnswer, correctAnswer, image);
+    }
 }
 
-// Get random answer options
+// Get random answer options - ensure no duplicates
 function getRandomOptions(correctNum, count = 4) {
     const options = [correctNum];
+    const used = new Set([correctNum]);
     const available = imageFiles
         .map(item => item.num)
         .filter(num => num !== correctNum);
     
     const shuffled = available.sort(() => Math.random() - 0.5);
-    options.push(...shuffled.slice(0, count - 1));
+    
+    for (const num of shuffled) {
+        if (!used.has(num) && options.length < count) {
+            options.push(num);
+            used.add(num);
+        }
+    }
+    
+    // If we still need more options (for special codes), add them
+    if (options.length < count) {
+        const specialCodes = ['Jb', 'Jc', 'Jr', 'Jt', 'Kb', 'Kc', 'Kr', 'Kt', 'Qb', 'Qc', 'Qr', 'Qt'];
+        for (const code of specialCodes) {
+            if (!used.has(code) && options.length < count) {
+                options.push(code);
+                used.add(code);
+            }
+        }
+    }
     
     return options.sort(() => Math.random() - 0.5);
 }

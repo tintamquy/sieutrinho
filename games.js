@@ -5,10 +5,9 @@ let gameInterval = null;
 
 // Game 1: Image to Number
 function startImageToNumberGame() {
+    gameResults = { correct: [], wrong: [], questions: [] };
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextImageToNumberQuestion();
 }
@@ -43,7 +42,8 @@ function nextImageToNumberQuestion() {
                 setTimeout(() => nextImageToNumberQuestion(), 1500);
             } else {
                 this.classList.add('wrong');
-                handleWrong();
+                const imagePath = getImagePath(correctNum);
+                handleWrong(`Hình ảnh này là số nào?`, this.dataset.answer, correctNum, imagePath);
                 setTimeout(() => nextImageToNumberQuestion(), 1500);
             }
         });
@@ -53,9 +53,7 @@ function nextImageToNumberQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -118,9 +116,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -185,9 +181,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -230,9 +224,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -282,9 +274,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -351,9 +341,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -398,9 +386,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -463,9 +449,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -530,9 +514,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -575,9 +557,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -627,9 +607,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -696,9 +674,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -748,9 +724,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -813,9 +787,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -880,9 +852,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -925,9 +895,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -977,9 +945,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -1046,9 +1012,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -1103,9 +1067,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -1168,9 +1130,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -1235,9 +1195,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -1280,9 +1238,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -1332,9 +1288,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -1401,9 +1355,7 @@ function nextDoubleChallengeQuestion() {
 // Game 13: Special Codes Only
 function startSpecialCodesGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextSpecialCodesQuestion();
 }
@@ -1453,9 +1405,7 @@ function nextSpecialCodesQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -1518,9 +1468,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -1585,9 +1533,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -1630,9 +1576,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -1682,9 +1626,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -1751,9 +1693,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -1798,9 +1738,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -1863,9 +1801,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -1930,9 +1866,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -1975,9 +1909,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -2027,9 +1959,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -2096,9 +2026,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -2148,9 +2076,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -2213,9 +2139,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -2280,9 +2204,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -2325,9 +2247,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -2377,9 +2297,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -2446,9 +2364,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -2503,9 +2419,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -2568,9 +2482,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -2635,9 +2547,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -2680,9 +2590,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -2732,9 +2640,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -2801,9 +2707,7 @@ function nextDoubleChallengeQuestion() {
 // Game 14: All Codes Master
 function startAllCodesMasterGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextAllCodesQuestion();
 }
@@ -2853,9 +2757,7 @@ function nextAllCodesQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -2918,9 +2820,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -2985,9 +2885,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -3030,9 +2928,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -3082,9 +2978,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -3151,9 +3045,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -3198,9 +3090,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -3263,9 +3153,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -3330,9 +3218,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -3375,9 +3261,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -3427,9 +3311,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -3496,9 +3378,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -3548,9 +3428,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -3613,9 +3491,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -3680,9 +3556,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -3725,9 +3599,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -3777,9 +3649,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -3846,9 +3716,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -3903,9 +3771,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -3968,9 +3834,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -4035,9 +3899,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -4080,9 +3942,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -4132,9 +3992,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -4201,9 +4059,7 @@ function nextDoubleChallengeQuestion() {
 // Game 15: Memory Palace Advanced
 function startMemoryPalaceAdvancedGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
@@ -4259,9 +4115,7 @@ function startMemoryPalaceAdvancedGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -4324,9 +4178,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -4391,9 +4243,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -4436,9 +4286,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -4488,9 +4336,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -4557,9 +4403,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -4604,9 +4448,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -4669,9 +4511,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -4736,9 +4576,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -4781,9 +4619,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -4833,9 +4669,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -4902,9 +4736,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -4954,9 +4786,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -5019,9 +4849,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -5086,9 +4914,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -5131,9 +4957,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -5183,9 +5007,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -5252,9 +5074,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -5309,9 +5129,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -5374,9 +5192,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -5441,9 +5257,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -5486,9 +5300,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -5538,9 +5350,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -5606,10 +5416,9 @@ function nextDoubleChallengeQuestion() {
 
 // Game 2: Number to Image
 function startNumberToImageGame() {
+    gameResults = { correct: [], wrong: [], questions: [] };
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextNumberToImageQuestion();
 }
@@ -5660,9 +5469,7 @@ function nextNumberToImageQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -5725,9 +5532,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -5792,9 +5597,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -5837,9 +5640,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -5889,9 +5690,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -5958,9 +5757,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -6005,9 +5802,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -6070,9 +5865,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -6137,9 +5930,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -6182,9 +5973,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -6234,9 +6023,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -6303,9 +6090,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -6355,9 +6140,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -6420,9 +6203,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -6487,9 +6268,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -6532,9 +6311,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -6584,9 +6361,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -6653,9 +6428,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -6710,9 +6483,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -6775,9 +6546,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -6842,9 +6611,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -6887,9 +6654,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -6939,9 +6704,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -7008,9 +6771,7 @@ function nextDoubleChallengeQuestion() {
 // Game 13: Special Codes Only
 function startSpecialCodesGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextSpecialCodesQuestion();
 }
@@ -7060,9 +6821,7 @@ function nextSpecialCodesQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -7125,9 +6884,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -7192,9 +6949,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -7237,9 +6992,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -7289,9 +7042,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -7358,9 +7109,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -7405,9 +7154,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -7470,9 +7217,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -7537,9 +7282,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -7582,9 +7325,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -7634,9 +7375,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -7703,9 +7442,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -7755,9 +7492,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -7820,9 +7555,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -7887,9 +7620,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -7932,9 +7663,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -7984,9 +7713,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -8053,9 +7780,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -8110,9 +7835,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -8175,9 +7898,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -8242,9 +7963,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -8287,9 +8006,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -8339,9 +8056,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -8408,9 +8123,7 @@ function nextDoubleChallengeQuestion() {
 // Game 14: All Codes Master
 function startAllCodesMasterGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextAllCodesQuestion();
 }
@@ -8460,9 +8173,7 @@ function nextAllCodesQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -8525,9 +8236,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -8592,9 +8301,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -8637,9 +8344,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -8689,9 +8394,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -8758,9 +8461,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -8805,9 +8506,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -8870,9 +8569,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -8937,9 +8634,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -8982,9 +8677,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -9034,9 +8727,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -9103,9 +8794,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -9155,9 +8844,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -9220,9 +8907,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -9287,9 +8972,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -9332,9 +9015,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -9384,9 +9065,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -9453,9 +9132,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -9510,9 +9187,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -9575,9 +9250,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -9642,9 +9315,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -9687,9 +9358,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -9739,9 +9408,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -9808,9 +9475,7 @@ function nextDoubleChallengeQuestion() {
 // Game 15: Memory Palace Advanced
 function startMemoryPalaceAdvancedGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
@@ -9866,9 +9531,7 @@ function startMemoryPalaceAdvancedGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -9931,9 +9594,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -9998,9 +9659,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -10043,9 +9702,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -10095,9 +9752,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -10164,9 +9819,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -10211,9 +9864,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -10276,9 +9927,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -10343,9 +9992,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -10388,9 +10035,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -10440,9 +10085,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -10509,9 +10152,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -10561,9 +10202,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -10626,9 +10265,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -10693,9 +10330,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -10738,9 +10373,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -10790,9 +10423,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -10859,9 +10490,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -10916,9 +10545,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -10981,9 +10608,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -11048,9 +10673,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -11093,9 +10716,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -11145,9 +10766,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -11213,10 +10832,9 @@ function nextDoubleChallengeQuestion() {
 
 // Game 3: Flashcard
 function startFlashcardGame() {
+    gameResults = { correct: [], wrong: [], questions: [] };
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextFlashcard();
 }
@@ -11265,11 +10883,10 @@ window.nextFlashcard = nextFlashcard;
 
 // Game 4: Speed Challenge
 function startSpeedChallengeGame() {
+    gameResults = { correct: [], wrong: [], questions: [] };
     let timeLeft = 60;
     startTimer(timeLeft, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextSpeedQuestion();
 }
@@ -11314,9 +10931,7 @@ function nextSpeedQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -11379,9 +10994,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -11446,9 +11059,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -11491,9 +11102,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -11543,9 +11152,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -11612,9 +11219,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -11659,9 +11264,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -11724,9 +11327,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -11791,9 +11392,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -11836,9 +11435,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -11888,9 +11485,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -11957,9 +11552,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -12009,9 +11602,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -12074,9 +11665,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -12141,9 +11730,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -12186,9 +11773,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -12238,9 +11823,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -12307,9 +11890,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -12364,9 +11945,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -12429,9 +12008,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -12496,9 +12073,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -12541,9 +12116,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -12593,9 +12166,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -12662,9 +12233,7 @@ function nextDoubleChallengeQuestion() {
 // Game 13: Special Codes Only
 function startSpecialCodesGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextSpecialCodesQuestion();
 }
@@ -12714,9 +12283,7 @@ function nextSpecialCodesQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -12779,9 +12346,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -12846,9 +12411,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -12891,9 +12454,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -12943,9 +12504,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -13012,9 +12571,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -13059,9 +12616,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -13124,9 +12679,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -13191,9 +12744,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -13236,9 +12787,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -13288,9 +12837,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -13357,9 +12904,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -13409,9 +12954,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -13474,9 +13017,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -13541,9 +13082,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -13586,9 +13125,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -13638,9 +13175,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -13707,9 +13242,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -13764,9 +13297,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -13829,9 +13360,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -13896,9 +13425,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -13941,9 +13468,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -13993,9 +13518,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -14062,9 +13585,7 @@ function nextDoubleChallengeQuestion() {
 // Game 14: All Codes Master
 function startAllCodesMasterGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextAllCodesQuestion();
 }
@@ -14114,9 +13635,7 @@ function nextAllCodesQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -14179,9 +13698,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -14246,9 +13763,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -14291,9 +13806,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -14343,9 +13856,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -14412,9 +13923,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -14459,9 +13968,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -14524,9 +14031,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -14591,9 +14096,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -14636,9 +14139,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -14688,9 +14189,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -14757,9 +14256,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -14809,9 +14306,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -14874,9 +14369,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -14941,9 +14434,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -14986,9 +14477,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -15038,9 +14527,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -15107,9 +14594,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -15164,9 +14649,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -15229,9 +14712,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -15296,9 +14777,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -15341,9 +14820,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -15393,9 +14870,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -15462,9 +14937,7 @@ function nextDoubleChallengeQuestion() {
 // Game 15: Memory Palace Advanced
 function startMemoryPalaceAdvancedGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
@@ -15520,9 +14993,7 @@ function startMemoryPalaceAdvancedGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -15585,9 +15056,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -15652,9 +15121,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -15697,9 +15164,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -15749,9 +15214,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -15818,9 +15281,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -15865,9 +15326,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -15930,9 +15389,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -15997,9 +15454,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -16042,9 +15497,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -16094,9 +15547,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -16163,9 +15614,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -16215,9 +15664,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -16280,9 +15727,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -16347,9 +15792,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -16392,9 +15835,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -16444,9 +15885,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -16513,9 +15952,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -16570,9 +16007,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -16635,9 +16070,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -16702,9 +16135,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -16747,9 +16178,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -16799,9 +16228,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -16868,9 +16295,7 @@ function nextDoubleChallengeQuestion() {
 // Game 5: Memory Palace
 function startMemoryPalaceGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
@@ -16924,9 +16349,7 @@ function startMemoryPalaceGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -16989,9 +16412,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -17056,9 +16477,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -17101,9 +16520,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -17153,9 +16570,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -17222,9 +16637,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -17269,9 +16682,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -17334,9 +16745,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -17401,9 +16810,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -17446,9 +16853,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -17498,9 +16903,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -17567,9 +16970,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -17619,9 +17020,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -17684,9 +17083,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -17751,9 +17148,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -17796,9 +17191,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -17848,9 +17241,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -17917,9 +17308,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -17974,9 +17363,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -18039,9 +17426,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -18106,9 +17491,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -18151,9 +17534,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -18203,9 +17584,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -18272,9 +17651,7 @@ function nextDoubleChallengeQuestion() {
 // Game 13: Special Codes Only
 function startSpecialCodesGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextSpecialCodesQuestion();
 }
@@ -18324,9 +17701,7 @@ function nextSpecialCodesQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -18389,9 +17764,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -18456,9 +17829,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -18501,9 +17872,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -18553,9 +17922,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -18622,9 +17989,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -18669,9 +18034,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -18734,9 +18097,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -18801,9 +18162,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -18846,9 +18205,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -18898,9 +18255,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -18967,9 +18322,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -19019,9 +18372,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -19084,9 +18435,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -19151,9 +18500,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -19196,9 +18543,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -19248,9 +18593,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -19317,9 +18660,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -19374,9 +18715,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -19439,9 +18778,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -19506,9 +18843,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -19551,9 +18886,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -19603,9 +18936,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -19672,9 +19003,7 @@ function nextDoubleChallengeQuestion() {
 // Game 14: All Codes Master
 function startAllCodesMasterGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextAllCodesQuestion();
 }
@@ -19724,9 +19053,7 @@ function nextAllCodesQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -19789,9 +19116,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -19856,9 +19181,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -19901,9 +19224,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -19953,9 +19274,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -20022,9 +19341,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -20069,9 +19386,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -20134,9 +19449,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -20201,9 +19514,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -20246,9 +19557,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -20298,9 +19607,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -20367,9 +19674,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -20419,9 +19724,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -20484,9 +19787,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -20551,9 +19852,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -20596,9 +19895,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -20648,9 +19945,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -20717,9 +20012,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -20774,9 +20067,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -20839,9 +20130,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -20906,9 +20195,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -20951,9 +20238,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -21003,9 +20288,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -21072,9 +20355,7 @@ function nextDoubleChallengeQuestion() {
 // Game 15: Memory Palace Advanced
 function startMemoryPalaceAdvancedGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
@@ -21130,9 +20411,7 @@ function startMemoryPalaceAdvancedGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -21195,9 +20474,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -21262,9 +20539,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -21307,9 +20582,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -21359,9 +20632,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -21428,9 +20699,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -21475,9 +20744,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -21540,9 +20807,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -21607,9 +20872,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -21652,9 +20915,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -21704,9 +20965,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -21773,9 +21032,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -21825,9 +21082,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -21890,9 +21145,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -21957,9 +21210,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -22002,9 +21253,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -22054,9 +21303,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -22123,9 +21370,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -22180,9 +21425,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -22245,9 +21488,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -22312,9 +21553,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -22357,9 +21596,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -22409,9 +21646,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -22478,9 +21713,7 @@ function nextDoubleChallengeQuestion() {
 // Game 6: Story Builder
 function startStoryBuilderGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextStoryQuestion();
 }
@@ -22530,9 +21763,7 @@ window.nextStoryQuestion = nextStoryQuestion;
 // Game 7: Sequence Memory
 function startSequenceMemoryGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const sequenceLength = 5;
@@ -22638,18 +21869,22 @@ function startSequenceMemoryGame() {
 // Game 8: Match Pairs
 function startMatchPairsGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const pairs = [];
     const numbers = [];
-    for (let i = 0; i < 6; i++) {
+    const usedNumbers = new Set();
+    
+    // Ensure no duplicate numbers
+    while (numbers.length < 6) {
         const num = getRandomNumber();
-        numbers.push(num);
-        pairs.push({ type: 'number', value: num });
-        pairs.push({ type: 'image', value: num, path: getImagePath(num) });
+        if (!usedNumbers.has(num)) {
+            usedNumbers.add(num);
+            numbers.push(num);
+            pairs.push({ type: 'number', value: num });
+            pairs.push({ type: 'image', value: num, path: getImagePath(num) });
+        }
     }
     
     const shuffled = pairs.sort(() => Math.random() - 0.5);
@@ -22663,10 +21898,10 @@ function startMatchPairsGame() {
         </div>
         <div class="answers-grid" style="grid-template-columns: repeat(4, 1fr);">
             ${shuffled.map((pair, idx) => `
-                <div class="answer-option match-card" data-index="${idx}" data-type="${pair.type}" data-value="${pair.value}" style="height: 150px; display: flex; align-items: center; justify-content: center;">
+                <div class="answer-option match-card" data-index="${idx}" data-type="${pair.type}" data-value="${pair.value}" style="height: 200px; display: flex; align-items: center; justify-content: center; padding: 10px;">
                     ${pair.type === 'number' ? 
                         `<div class="answer-number">${pair.value}</div>` :
-                        `<img src="${pair.path}" alt="${getName(pair.value)}" class="answer-image" style="width: 100%; height: 100%; object-fit: cover;">`
+                        `<img src="${pair.path}" alt="${getName(pair.value)}" class="answer-image" style="width: 100%; height: 100%; object-fit: contain; background: rgba(255, 255, 255, 0.1); padding: 5px; border-radius: 8px;">`
                     }
                 </div>
             `).join('')}
@@ -22715,9 +21950,7 @@ function startMatchPairsGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -22780,9 +22013,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -22847,9 +22078,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -22892,9 +22121,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -22944,9 +22171,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -23013,9 +22238,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -23060,9 +22283,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -23125,9 +22346,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -23192,9 +22411,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -23237,9 +22454,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -23289,9 +22504,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -23358,9 +22571,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -23410,9 +22621,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -23475,9 +22684,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -23542,9 +22749,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -23587,9 +22792,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -23639,9 +22842,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -23708,9 +22909,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -23765,9 +22964,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -23830,9 +23027,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -23897,9 +23092,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -23942,9 +23135,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -23994,9 +23185,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -24063,9 +23252,7 @@ function nextDoubleChallengeQuestion() {
 // Game 13: Special Codes Only
 function startSpecialCodesGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextSpecialCodesQuestion();
 }
@@ -24115,9 +23302,7 @@ function nextSpecialCodesQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -24180,9 +23365,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -24247,9 +23430,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -24292,9 +23473,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -24344,9 +23523,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -24413,9 +23590,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -24460,9 +23635,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -24525,9 +23698,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -24592,9 +23763,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -24637,9 +23806,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -24689,9 +23856,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -24758,9 +23923,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -24810,9 +23973,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -24875,9 +24036,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -24942,9 +24101,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -24987,9 +24144,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -25039,9 +24194,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -25108,9 +24261,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -25165,9 +24316,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -25230,9 +24379,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -25297,9 +24444,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -25342,9 +24487,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -25394,9 +24537,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -25463,9 +24604,7 @@ function nextDoubleChallengeQuestion() {
 // Game 14: All Codes Master
 function startAllCodesMasterGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextAllCodesQuestion();
 }
@@ -25515,9 +24654,7 @@ function nextAllCodesQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -25580,9 +24717,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -25647,9 +24782,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -25692,9 +24825,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -25744,9 +24875,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -25813,9 +24942,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -25860,9 +24987,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -25925,9 +25050,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -25992,9 +25115,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -26037,9 +25158,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -26089,9 +25208,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -26158,9 +25275,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -26210,9 +25325,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -26275,9 +25388,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -26342,9 +25453,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -26387,9 +25496,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -26439,9 +25546,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -26508,9 +25613,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -26565,9 +25668,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -26630,9 +25731,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -26697,9 +25796,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -26742,9 +25839,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -26794,9 +25889,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -26863,9 +25956,7 @@ function nextDoubleChallengeQuestion() {
 // Game 15: Memory Palace Advanced
 function startMemoryPalaceAdvancedGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
@@ -26921,9 +26012,7 @@ function startMemoryPalaceAdvancedGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -26986,9 +26075,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -27053,9 +26140,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -27098,9 +26183,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -27150,9 +26233,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -27219,9 +26300,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -27266,9 +26345,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -27331,9 +26408,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -27398,9 +26473,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -27443,9 +26516,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -27495,9 +26566,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -27564,9 +26633,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -27616,9 +26683,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -27681,9 +26746,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -27748,9 +26811,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -27793,9 +26854,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -27845,9 +26904,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -27914,9 +26971,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -27971,9 +27026,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -28036,9 +27089,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -28103,9 +27154,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -28148,9 +27197,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -28200,9 +27247,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -28269,9 +27314,7 @@ function nextDoubleChallengeQuestion() {
 // Game 9: Room Explorer
 function startRoomExplorerGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRoomQuestion();
 }
@@ -28320,9 +27363,7 @@ function nextRoomQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -28385,9 +27426,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -28452,9 +27491,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -28497,9 +27534,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -28549,9 +27584,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -28618,9 +27651,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -28665,9 +27696,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -28730,9 +27759,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -28797,9 +27824,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -28842,9 +27867,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -28894,9 +27917,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -28963,9 +27984,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -29015,9 +28034,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -29080,9 +28097,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -29147,9 +28162,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -29192,9 +28205,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -29244,9 +28255,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -29313,9 +28322,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -29370,9 +28377,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -29435,9 +28440,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -29502,9 +28505,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -29547,9 +28548,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -29599,9 +28598,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -29668,9 +28665,7 @@ function nextDoubleChallengeQuestion() {
 // Game 13: Special Codes Only
 function startSpecialCodesGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextSpecialCodesQuestion();
 }
@@ -29720,9 +28715,7 @@ function nextSpecialCodesQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -29785,9 +28778,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -29852,9 +28843,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -29897,9 +28886,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -29949,9 +28936,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -30018,9 +29003,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -30065,9 +29048,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -30130,9 +29111,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -30197,9 +29176,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -30242,9 +29219,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -30294,9 +29269,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -30363,9 +29336,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -30415,9 +29386,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -30480,9 +29449,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -30547,9 +29514,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -30592,9 +29557,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -30644,9 +29607,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -30713,9 +29674,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -30770,9 +29729,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -30835,9 +29792,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -30902,9 +29857,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -30947,9 +29900,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -30999,9 +29950,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -31068,9 +30017,7 @@ function nextDoubleChallengeQuestion() {
 // Game 14: All Codes Master
 function startAllCodesMasterGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextAllCodesQuestion();
 }
@@ -31120,9 +30067,7 @@ function nextAllCodesQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -31185,9 +30130,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -31252,9 +30195,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -31297,9 +30238,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -31349,9 +30288,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -31418,9 +30355,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -31465,9 +30400,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -31530,9 +30463,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -31597,9 +30528,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -31642,9 +30571,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -31694,9 +30621,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -31763,9 +30688,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -31815,9 +30738,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -31880,9 +30801,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -31947,9 +30866,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -31992,9 +30909,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -32044,9 +30959,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -32113,9 +31026,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -32170,9 +31081,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -32235,9 +31144,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -32302,9 +31209,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -32347,9 +31252,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -32399,9 +31302,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -32468,9 +31369,7 @@ function nextDoubleChallengeQuestion() {
 // Game 15: Memory Palace Advanced
 function startMemoryPalaceAdvancedGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
@@ -32526,9 +31425,7 @@ function startMemoryPalaceAdvancedGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -32591,9 +31488,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -32658,9 +31553,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -32703,9 +31596,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -32755,9 +31646,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -32824,9 +31713,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -32871,9 +31758,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -32936,9 +31821,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -33003,9 +31886,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -33048,9 +31929,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -33100,9 +31979,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -33169,9 +32046,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -33221,9 +32096,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -33286,9 +32159,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -33353,9 +32224,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -33398,9 +32267,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -33450,9 +32317,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -33519,9 +32384,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -33576,9 +32439,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -33641,9 +32502,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -33708,9 +32567,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -33753,9 +32610,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -33805,9 +32660,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -33874,9 +32727,7 @@ function nextDoubleChallengeQuestion() {
 // Game 10: Time Attack
 function startTimeAttackGame() {
     startTimer(60, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTimeAttackQuestion();
 }
@@ -33919,9 +32770,7 @@ function nextTimeAttackQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -33984,9 +32833,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -34051,9 +32898,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -34096,9 +32941,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -34148,9 +32991,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -34217,9 +33058,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -34264,9 +33103,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -34329,9 +33166,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -34396,9 +33231,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -34441,9 +33274,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -34493,9 +33324,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -34562,9 +33391,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -34614,9 +33441,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -34679,9 +33504,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -34746,9 +33569,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -34791,9 +33612,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -34843,9 +33662,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -34912,9 +33729,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -34969,9 +33784,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -35034,9 +33847,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -35101,9 +33912,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -35146,9 +33955,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -35198,9 +34005,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -35267,9 +34072,7 @@ function nextDoubleChallengeQuestion() {
 // Game 13: Special Codes Only
 function startSpecialCodesGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextSpecialCodesQuestion();
 }
@@ -35319,9 +34122,7 @@ function nextSpecialCodesQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -35384,9 +34185,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -35451,9 +34250,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -35496,9 +34293,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -35548,9 +34343,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -35617,9 +34410,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -35664,9 +34455,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -35729,9 +34518,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -35796,9 +34583,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -35841,9 +34626,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -35893,9 +34676,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -35962,9 +34743,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -36014,9 +34793,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -36079,9 +34856,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -36146,9 +34921,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -36191,9 +34964,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -36243,9 +35014,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -36312,9 +35081,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -36369,9 +35136,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -36434,9 +35199,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -36501,9 +35264,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -36546,9 +35307,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -36598,9 +35357,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -36667,9 +35424,7 @@ function nextDoubleChallengeQuestion() {
 // Game 14: All Codes Master
 function startAllCodesMasterGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextAllCodesQuestion();
 }
@@ -36719,9 +35474,7 @@ function nextAllCodesQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -36784,9 +35537,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -36851,9 +35602,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -36896,9 +35645,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -36948,9 +35695,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -37017,9 +35762,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -37064,9 +35807,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -37129,9 +35870,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -37196,9 +35935,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -37241,9 +35978,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -37293,9 +36028,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -37362,9 +36095,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -37414,9 +36145,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -37479,9 +36208,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -37546,9 +36273,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -37591,9 +36316,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -37643,9 +36366,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -37712,9 +36433,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -37769,9 +36488,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -37834,9 +36551,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -37901,9 +36616,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -37946,9 +36659,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -37998,9 +36709,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -38067,9 +36776,7 @@ function nextDoubleChallengeQuestion() {
 // Game 15: Memory Palace Advanced
 function startMemoryPalaceAdvancedGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
@@ -38125,9 +36832,7 @@ function startMemoryPalaceAdvancedGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -38190,9 +36895,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -38257,9 +36960,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -38302,9 +37003,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -38354,9 +37053,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -38423,9 +37120,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -38470,9 +37165,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -38535,9 +37228,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -38602,9 +37293,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -38647,9 +37336,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -38699,9 +37386,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -38768,9 +37453,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -38820,9 +37503,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -38885,9 +37566,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -38952,9 +37631,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -38997,9 +37674,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -39049,9 +37724,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -39118,9 +37791,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -39175,9 +37846,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -39240,9 +37909,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -39307,9 +37974,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -39352,9 +38017,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -39404,9 +38067,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -39473,9 +38134,7 @@ function nextDoubleChallengeQuestion() {
 // Game 11: Reverse Challenge
 function startReverseChallengeGame() {
     startTimer(150, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextReverseQuestion();
 }
@@ -39528,9 +38187,7 @@ function nextReverseQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -39593,9 +38250,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -39660,9 +38315,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -39705,9 +38358,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -39757,9 +38408,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -39826,9 +38475,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -39873,9 +38520,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -39938,9 +38583,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -40005,9 +38648,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -40050,9 +38691,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -40102,9 +38741,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -40171,9 +38808,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -40223,9 +38858,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -40288,9 +38921,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -40355,9 +38986,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -40400,9 +39029,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -40452,9 +39079,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -40521,9 +39146,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -40578,9 +39201,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -40643,9 +39264,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -40710,9 +39329,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -40755,9 +39372,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -40807,9 +39422,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -40876,9 +39489,7 @@ function nextDoubleChallengeQuestion() {
 // Game 13: Special Codes Only
 function startSpecialCodesGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextSpecialCodesQuestion();
 }
@@ -40928,9 +39539,7 @@ function nextSpecialCodesQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -40993,9 +39602,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -41060,9 +39667,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -41105,9 +39710,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -41157,9 +39760,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -41226,9 +39827,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -41273,9 +39872,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -41338,9 +39935,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -41405,9 +40000,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -41450,9 +40043,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -41502,9 +40093,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -41571,9 +40160,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -41623,9 +40210,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -41688,9 +40273,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -41755,9 +40338,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -41800,9 +40381,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -41852,9 +40431,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -41921,9 +40498,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -41978,9 +40553,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -42043,9 +40616,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -42110,9 +40681,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -42155,9 +40724,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -42207,9 +40774,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -42276,9 +40841,7 @@ function nextDoubleChallengeQuestion() {
 // Game 14: All Codes Master
 function startAllCodesMasterGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextAllCodesQuestion();
 }
@@ -42328,9 +40891,7 @@ function nextAllCodesQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -42393,9 +40954,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -42460,9 +41019,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -42505,9 +41062,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -42557,9 +41112,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -42626,9 +41179,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -42673,9 +41224,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -42738,9 +41287,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -42805,9 +41352,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -42850,9 +41395,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -42902,9 +41445,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -42971,9 +41512,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -43023,9 +41562,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -43088,9 +41625,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -43155,9 +41690,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -43200,9 +41733,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -43252,9 +41783,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -43321,9 +41850,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -43378,9 +41905,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -43443,9 +41968,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -43510,9 +42033,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -43555,9 +42076,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -43607,9 +42126,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -43676,9 +42193,7 @@ function nextDoubleChallengeQuestion() {
 // Game 15: Memory Palace Advanced
 function startMemoryPalaceAdvancedGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
@@ -43734,9 +42249,7 @@ function startMemoryPalaceAdvancedGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -43799,9 +42312,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -43866,9 +42377,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -43911,9 +42420,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -43963,9 +42470,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -44032,9 +42537,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -44079,9 +42582,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -44144,9 +42645,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -44211,9 +42710,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -44256,9 +42753,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -44308,9 +42803,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -44377,9 +42870,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -44429,9 +42920,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -44494,9 +42983,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -44561,9 +43048,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -44606,9 +43091,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -44658,9 +43141,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -44727,9 +43208,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -44784,9 +43263,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -44849,9 +43326,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -44916,9 +43391,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -44961,9 +43434,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -45013,9 +43484,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -45082,9 +43551,7 @@ function nextDoubleChallengeQuestion() {
 // Game 12: Pattern Recognition
 function startPatternRecognitionGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextPatternQuestion();
 }
@@ -45165,9 +43632,7 @@ function nextPatternQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -45230,9 +43695,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -45297,9 +43760,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -45342,9 +43803,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -45394,9 +43853,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -45463,9 +43920,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -45510,9 +43965,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -45575,9 +44028,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -45642,9 +44093,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -45687,9 +44136,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -45739,9 +44186,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -45808,9 +44253,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -45860,9 +44303,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -45925,9 +44366,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -45992,9 +44431,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -46037,9 +44474,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -46089,9 +44524,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -46158,9 +44591,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -46215,9 +44646,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -46280,9 +44709,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -46347,9 +44774,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -46392,9 +44817,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -46444,9 +44867,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -46513,9 +44934,7 @@ function nextDoubleChallengeQuestion() {
 // Game 13: Special Codes Only
 function startSpecialCodesGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextSpecialCodesQuestion();
 }
@@ -46565,9 +44984,7 @@ function nextSpecialCodesQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -46630,9 +45047,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -46697,9 +45112,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -46742,9 +45155,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -46794,9 +45205,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -46863,9 +45272,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -46910,9 +45317,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -46975,9 +45380,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -47042,9 +45445,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -47087,9 +45488,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -47139,9 +45538,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -47208,9 +45605,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -47260,9 +45655,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -47325,9 +45718,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -47392,9 +45783,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -47437,9 +45826,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -47489,9 +45876,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -47558,9 +45943,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -47615,9 +45998,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -47680,9 +46061,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -47747,9 +46126,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -47792,9 +46169,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -47844,9 +46219,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -47913,9 +46286,7 @@ function nextDoubleChallengeQuestion() {
 // Game 14: All Codes Master
 function startAllCodesMasterGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextAllCodesQuestion();
 }
@@ -47965,9 +46336,7 @@ function nextAllCodesQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -48030,9 +46399,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -48097,9 +46464,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -48142,9 +46507,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -48194,9 +46557,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -48263,9 +46624,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -48310,9 +46669,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -48375,9 +46732,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -48442,9 +46797,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -48487,9 +46840,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -48539,9 +46890,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -48608,9 +46957,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -48660,9 +47007,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -48725,9 +47070,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -48792,9 +47135,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -48837,9 +47178,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -48889,9 +47228,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -48958,9 +47295,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -49015,9 +47350,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -49080,9 +47413,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -49147,9 +47478,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -49192,9 +47521,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -49244,9 +47571,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -49313,9 +47638,7 @@ function nextDoubleChallengeQuestion() {
 // Game 15: Memory Palace Advanced
 function startMemoryPalaceAdvancedGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
@@ -49371,9 +47694,7 @@ function startMemoryPalaceAdvancedGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -49436,9 +47757,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -49503,9 +47822,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -49548,9 +47865,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -49600,9 +47915,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -49669,9 +47982,7 @@ function nextDoubleChallengeQuestion() {
 // Game 16: Basic Review 00-99
 function startBasicReviewGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewQuestion();
 }
@@ -49716,9 +48027,7 @@ function nextBasicReviewQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -49781,9 +48090,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -49848,9 +48155,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -49893,9 +48198,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -49945,9 +48248,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -50014,9 +48315,7 @@ function nextDoubleChallengeQuestion() {
 // Game 17: Basic Review All Codes
 function startBasicReviewAllGame() {
     startTimer(360, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextBasicReviewAllQuestion();
 }
@@ -50066,9 +48365,7 @@ function nextBasicReviewAllQuestion() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -50131,9 +48428,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -50198,9 +48493,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -50243,9 +48536,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -50295,9 +48586,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }
@@ -50364,9 +48653,7 @@ function nextDoubleChallengeQuestion() {
 // Game 18: Memory Palace A-Z
 function startMemoryPalaceAZGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     
     const selectedLoci = getRandomLociRoom();
@@ -50421,9 +48708,7 @@ function startMemoryPalaceAZGame() {
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNumberQuestion();
 }
@@ -50486,9 +48771,7 @@ window.checkTypeNumber = function(correctNum) {
 // Game 20: Type Name from Number
 function startTypeNameGame() {
     startTimer(180, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextTypeNameQuestion();
 }
@@ -50553,9 +48836,7 @@ window.checkTypeName = function(correctName, correctNum) {
 // Game 21: Rapid Fire
 function startRapidFireGame() {
     startTimer(120, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextRapidFireQuestion();
 }
@@ -50598,9 +48879,7 @@ function nextRapidFireQuestion() {
 // Game 22: Memory Challenge
 function startMemoryChallengeGame() {
     startTimer(240, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextMemoryChallengeQuestion();
 }
@@ -50650,9 +48929,7 @@ function nextMemoryChallengeQuestion() {
 // Game 23: Double Challenge
 function startDoubleChallengeGame() {
     startTimer(300, () => {
-        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
         stopGame();
-        showHomepage();
     });
     nextDoubleChallengeQuestion();
 }

@@ -9,8 +9,8 @@ const memoryData = {
 const imageFiles = [
     { num: '00', name: 'Con Chó', file: '00 - Con Chó.jpg' },
     { num: '01', name: 'Con Trâu', file: '01 - Con Trâu.jpg' },
-    { num: '02', name: 'Con Mực', file: '02 - Con Mực.jpg' },
-    { num: '03', name: 'Con Nhím', file: '03 - Con Nhím.jpg' },
+    { num: '02', name: 'Con Nhím', file: '02 - Con Nhím.jpg' },
+    { num: '03', name: 'Con Mực', file: '03 - Con Mực.jpg' },
     { num: '04', name: 'Con Rắn', file: '04 - Con Rắn.jpg' },
     { num: '05', name: 'Cá Sấu', file: '05 - Cá Sấu.jpg' },
     { num: '06', name: 'Cái Búa', file: '06 - Cái Búa.jpg' },
@@ -187,14 +187,24 @@ function getRandomLociRoom() {
     return rooms[Math.floor(Math.random() * rooms.length)];
 }
 
-// Get random numbers (excluding some)
+// Get random numbers (excluding some) - ensure no duplicates
 function getRandomNumbers(count, exclude = []) {
     const available = imageFiles
         .map(item => item.num)
         .filter(num => !exclude.includes(num));
     
+    const used = new Set(exclude);
+    const result = [];
     const shuffled = available.sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, count);
+    
+    for (const num of shuffled) {
+        if (!used.has(num) && result.length < count) {
+            result.push(num);
+            used.add(num);
+        }
+    }
+    
+    return result;
 }
 
 // Get image path for number
