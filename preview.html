@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview Image Generator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .preview-card {
+            width: 1200px;
+            height: 630px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 60px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        .preview-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .preview-content {
+            position: relative;
+            z-index: 1;
+        }
+        .preview-icon {
+            font-size: 120px;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.5));
+        }
+        .preview-title {
+            font-size: 80px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+        }
+        .preview-subtitle {
+            font-size: 36px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+        .preview-features {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .feature-item {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 20px 30px;
+            border-radius: 15px;
+            font-size: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .preview-url {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-card">
+        <div class="preview-content">
+            <div class="preview-icon">🧠</div>
+            <h1 class="preview-title">SIÊU TRÍ NHỚ</h1>
+            <p class="preview-subtitle">Rèn luyện trí nhớ với bộ mã hóa 00-99</p>
+            <div class="preview-features">
+                <div class="feature-item">🖼️ 12 Game Mode</div>
+                <div class="feature-item">⚡ Phản xạ nhanh</div>
+                <div class="feature-item">🏰 Memory Palace</div>
+                <div class="feature-item">📖 Câu chuyện</div>
+            </div>
+            <div class="preview-url">sieutrinho.pages.dev</div>
+        </div>
+    </div>
+    
+    <script>
+        // Instructions: 
+        // 1. Open this file in browser
+        // 2. Take a screenshot at 1200x630px
+        // 3. Save as preview.jpg
+        // Or use a tool like html2canvas to generate the image
+    </script>
+</body>
+</html>
+

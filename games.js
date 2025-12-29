@@ -1,0 +1,7806 @@
+// All Game Implementations
+
+let currentQuestion = null;
+let gameInterval = null;
+
+// Game 1: Image to Number
+function startImageToNumberGame() {
+    startTimer(120, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextImageToNumberQuestion();
+}
+
+function nextImageToNumberQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    currentQuestion = { correct: correctNum, type: 'image-to-number' };
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Hình ảnh này tương ứng với số nào?</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}">
+                    <div class="answer-number">${num}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            if (this.dataset.answer === correctNum) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextImageToNumberQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextImageToNumberQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 13: Special Codes Only
+function startSpecialCodesGame() {
+    startTimer(180, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextSpecialCodesQuestion();
+}
+
+function nextSpecialCodesQuestion() {
+    const correctCode = getRandomSpecialCode();
+    const specialCodes = ['Jb', 'Jc', 'Jr', 'Jt', 'Kb', 'Kc', 'Kr', 'Kt', 'Qb', 'Qc', 'Qr', 'Qt'];
+    const options = [correctCode];
+    const available = specialCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Hình ảnh này tương ứng với mã nào?</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(15);
+                setTimeout(() => nextSpecialCodesQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextSpecialCodesQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 14: All Codes Master
+function startAllCodesMasterGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextAllCodesQuestion();
+}
+
+function nextAllCodesQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Hình ảnh này tương ứng với mã nào? (Tất cả mã 00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(20);
+                setTimeout(() => nextAllCodesQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextAllCodesQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 15: Memory Palace Advanced
+function startMemoryPalaceAdvancedGame() {
+    startTimer(240, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
+    const selectedLoci = lociImages[Math.floor(Math.random() * lociImages.length)];
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 8 random codes (can be numbers or special)
+    for (let i = 0; i < 8; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Gắn các mã vào căn phòng trong cung điện (Tất cả mã)</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 600px; height: 300px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 2: Number to Image
+function startNumberToImageGame() {
+    startTimer(120, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextNumberToImageQuestion();
+}
+
+function nextNumberToImageQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const correctPath = getImagePath(correctNum);
+    
+    currentQuestion = { correct: correctNum, type: 'number-to-image' };
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Số ${correctNum} tương ứng với hình ảnh nào?</div>
+            <div class="question-text">${correctNum}</div>
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => {
+                const path = getImagePath(num);
+                const isCorrect = num === correctNum;
+                return `
+                    <div class="answer-option" data-answer="${num}" data-correct="${isCorrect}">
+                        <img src="${path}" alt="${getName(num)}" class="answer-image">
+                        <div class="answer-number">${num}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextNumberToImageQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextNumberToImageQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 13: Special Codes Only
+function startSpecialCodesGame() {
+    startTimer(180, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextSpecialCodesQuestion();
+}
+
+function nextSpecialCodesQuestion() {
+    const correctCode = getRandomSpecialCode();
+    const specialCodes = ['Jb', 'Jc', 'Jr', 'Jt', 'Kb', 'Kc', 'Kr', 'Kt', 'Qb', 'Qc', 'Qr', 'Qt'];
+    const options = [correctCode];
+    const available = specialCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Hình ảnh này tương ứng với mã nào?</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(15);
+                setTimeout(() => nextSpecialCodesQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextSpecialCodesQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 14: All Codes Master
+function startAllCodesMasterGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextAllCodesQuestion();
+}
+
+function nextAllCodesQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Hình ảnh này tương ứng với mã nào? (Tất cả mã 00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(20);
+                setTimeout(() => nextAllCodesQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextAllCodesQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 15: Memory Palace Advanced
+function startMemoryPalaceAdvancedGame() {
+    startTimer(240, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
+    const selectedLoci = lociImages[Math.floor(Math.random() * lociImages.length)];
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 8 random codes (can be numbers or special)
+    for (let i = 0; i < 8; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Gắn các mã vào căn phòng trong cung điện (Tất cả mã)</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 600px; height: 300px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 3: Flashcard
+function startFlashcardGame() {
+    startTimer(180, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextFlashcard();
+}
+
+function nextFlashcard() {
+    const num = getRandomNumber();
+    const imagePath = getImagePath(num);
+    const name = getName(num);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="flashcard-container">
+            <div class="flashcard" id="flashcard">
+                <div class="flashcard-face flashcard-front">
+                    <div class="flashcard-text">${num}</div>
+                    <p style="margin-top: 1rem; color: var(--text-dim);">Click để lật thẻ</p>
+                </div>
+                <div class="flashcard-face flashcard-back">
+                    <img src="${imagePath}" alt="${name}" class="flashcard-image">
+                    <div class="flashcard-text" style="font-size: 1.5rem; margin-top: 1rem;">${name}</div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <button class="btn-back" id="next-flashcard-btn" style="background: var(--success);">
+                Thẻ tiếp theo →
+            </button>
+        </div>
+    `;
+    
+    const flashcard = document.getElementById('flashcard');
+    if (flashcard) {
+        flashcard.addEventListener('click', function() {
+            this.classList.toggle('flipped');
+        });
+    }
+    
+    const nextBtn = document.getElementById('next-flashcard-btn');
+    if (nextBtn) {
+        nextBtn.addEventListener('click', nextFlashcard);
+    }
+}
+
+// Make it globally accessible
+window.nextFlashcard = nextFlashcard;
+
+// Game 4: Speed Challenge
+function startSpeedChallengeGame() {
+    let timeLeft = 60;
+    startTimer(timeLeft, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextSpeedQuestion();
+}
+
+function nextSpeedQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    currentQuestion = { correct: correctNum, type: 'speed' };
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Trả lời nhanh nhất có thể!</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}">
+                    <div class="answer-number">${num}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            if (this.dataset.answer === correctNum) {
+                this.classList.add('correct');
+                handleCorrect(15);
+                setTimeout(() => nextSpeedQuestion(), 800);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextSpeedQuestion(), 800);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 13: Special Codes Only
+function startSpecialCodesGame() {
+    startTimer(180, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextSpecialCodesQuestion();
+}
+
+function nextSpecialCodesQuestion() {
+    const correctCode = getRandomSpecialCode();
+    const specialCodes = ['Jb', 'Jc', 'Jr', 'Jt', 'Kb', 'Kc', 'Kr', 'Kt', 'Qb', 'Qc', 'Qr', 'Qt'];
+    const options = [correctCode];
+    const available = specialCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Hình ảnh này tương ứng với mã nào?</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(15);
+                setTimeout(() => nextSpecialCodesQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextSpecialCodesQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 14: All Codes Master
+function startAllCodesMasterGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextAllCodesQuestion();
+}
+
+function nextAllCodesQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Hình ảnh này tương ứng với mã nào? (Tất cả mã 00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(20);
+                setTimeout(() => nextAllCodesQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextAllCodesQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 15: Memory Palace Advanced
+function startMemoryPalaceAdvancedGame() {
+    startTimer(240, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
+    const selectedLoci = lociImages[Math.floor(Math.random() * lociImages.length)];
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 8 random codes (can be numbers or special)
+    for (let i = 0; i < 8; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Gắn các mã vào căn phòng trong cung điện (Tất cả mã)</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 600px; height: 300px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 5: Memory Palace
+function startMemoryPalaceGame() {
+    startTimer(180, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
+    const selectedLoci = lociImages[Math.floor(Math.random() * lociImages.length)];
+    const numbers = [];
+    
+    // Generate 6 random numbers
+    for (let i = 0; i < 6; i++) {
+        numbers.push(getRandomNumber());
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Gắn các số vào căn phòng trong cung điện</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 600px;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((num, index) => {
+                const imagePath = getImagePath(num);
+                return `
+                    <div class="palace-room" data-number="${num}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(num)}" class="palace-image">
+                        <div class="palace-number">${num}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label">Nhấp vào từng phòng để xem số và ghi nhớ vị trí</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 13: Special Codes Only
+function startSpecialCodesGame() {
+    startTimer(180, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextSpecialCodesQuestion();
+}
+
+function nextSpecialCodesQuestion() {
+    const correctCode = getRandomSpecialCode();
+    const specialCodes = ['Jb', 'Jc', 'Jr', 'Jt', 'Kb', 'Kc', 'Kr', 'Kt', 'Qb', 'Qc', 'Qr', 'Qt'];
+    const options = [correctCode];
+    const available = specialCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Hình ảnh này tương ứng với mã nào?</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(15);
+                setTimeout(() => nextSpecialCodesQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextSpecialCodesQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 14: All Codes Master
+function startAllCodesMasterGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextAllCodesQuestion();
+}
+
+function nextAllCodesQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Hình ảnh này tương ứng với mã nào? (Tất cả mã 00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(20);
+                setTimeout(() => nextAllCodesQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextAllCodesQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 15: Memory Palace Advanced
+function startMemoryPalaceAdvancedGame() {
+    startTimer(240, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
+    const selectedLoci = lociImages[Math.floor(Math.random() * lociImages.length)];
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 8 random codes (can be numbers or special)
+    for (let i = 0; i < 8; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Gắn các mã vào căn phòng trong cung điện (Tất cả mã)</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 600px; height: 300px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 6: Story Builder
+function startStoryBuilderGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextStoryQuestion();
+}
+
+function nextStoryQuestion() {
+    const numbers = [];
+    for (let i = 0; i < 5; i++) {
+        numbers.push(getRandomNumber());
+    }
+    
+    const story = numbers.map(num => getName(num)).join(' → ');
+    const images = numbers.map(num => getImagePath(num));
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Tạo câu chuyện từ các số sau:</div>
+            <div class="story-container">
+                <div class="story-text">${numbers.join(' - ')}</div>
+                <div class="story-images">
+                    ${images.map((path, idx) => `
+                        <img src="${path}" alt="${getName(numbers[idx])}" class="story-image-item">
+                    `).join('')}
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label">Gợi ý câu chuyện:</div>
+            <div class="story-container">
+                <div class="story-text">${story}</div>
+            </div>
+            <button class="btn-back" id="next-story-btn" style="background: var(--success); margin-top: 1rem;">
+                Câu chuyện tiếp theo →
+            </button>
+        </div>
+    `;
+    
+    const nextBtn = document.getElementById('next-story-btn');
+    if (nextBtn) {
+        nextBtn.addEventListener('click', nextStoryQuestion);
+    }
+}
+
+// Make it globally accessible
+window.nextStoryQuestion = nextStoryQuestion;
+
+// Game 7: Sequence Memory
+function startSequenceMemoryGame() {
+    startTimer(180, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const sequenceLength = 5;
+    const sequence = [];
+    for (let i = 0; i < sequenceLength; i++) {
+        sequence.push(getRandomNumber());
+    }
+    
+    let currentIndex = 0;
+    let userSequence = [];
+    
+    const container = document.getElementById('game-container');
+    
+    function showSequence() {
+        container.innerHTML = `
+            <div class="question-container">
+                <div class="question-label">Ghi nhớ chuỗi số sau:</div>
+                <div class="sequence-container">
+                    ${sequence.map((num, idx) => `
+                        <div class="sequence-item ${idx === currentIndex ? 'active' : ''}" data-num="${num}">
+                            ${num}
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+        
+        let idx = 0;
+        const interval = setInterval(() => {
+            document.querySelectorAll('.sequence-item').forEach(item => item.classList.remove('active'));
+            if (idx < sequence.length) {
+                document.querySelector(`.sequence-item[data-num="${sequence[idx]}"]`).classList.add('active');
+                idx++;
+            } else {
+                clearInterval(interval);
+                setTimeout(() => {
+                    showAnswerOptions();
+                }, 1000);
+            }
+        }, 1000);
+    }
+    
+    function showAnswerOptions() {
+        const options = [...sequence];
+        // Add some wrong options
+        while (options.length < 8) {
+            const wrong = getRandomNumber();
+            if (!options.includes(wrong)) {
+                options.push(wrong);
+            }
+        }
+        const shuffled = options.sort(() => Math.random() - 0.5);
+        
+        container.innerHTML = `
+            <div class="question-container">
+                <div class="question-label">Chọn các số theo đúng thứ tự:</div>
+                <div class="sequence-container">
+                    ${shuffled.map(num => `
+                        <div class="answer-option sequence-item" data-num="${num}" style="cursor: pointer;">
+                            ${num}
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <div class="question-label">Bạn đã chọn: ${userSequence.join(' - ')}</div>
+                </div>
+            </div>
+        `;
+        
+        container.querySelectorAll('.answer-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const num = this.dataset.num;
+                if (userSequence.length < sequence.length) {
+                    userSequence.push(num);
+                    this.style.background = 'var(--primary)';
+                    this.style.pointerEvents = 'none';
+                    
+                    // Check if sequence is complete
+                    if (userSequence.length === sequence.length) {
+                        const isCorrect = JSON.stringify(userSequence) === JSON.stringify(sequence);
+                        if (isCorrect) {
+                            handleCorrect(20);
+                            setTimeout(() => startSequenceMemoryGame(), 2000);
+                        } else {
+                            handleWrong();
+                            setTimeout(() => startSequenceMemoryGame(), 2000);
+                        }
+                    }
+                    
+                    // Update display
+                    const display = container.querySelector('.question-label:last-of-type');
+                    if (display) {
+                        display.textContent = `Bạn đã chọn: ${userSequence.join(' - ')}`;
+                    }
+                }
+            });
+        });
+    }
+    
+    showSequence();
+}
+
+// Game 8: Match Pairs
+function startMatchPairsGame() {
+    startTimer(180, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const pairs = [];
+    const numbers = [];
+    for (let i = 0; i < 6; i++) {
+        const num = getRandomNumber();
+        numbers.push(num);
+        pairs.push({ type: 'number', value: num });
+        pairs.push({ type: 'image', value: num, path: getImagePath(num) });
+    }
+    
+    const shuffled = pairs.sort(() => Math.random() - 0.5);
+    let selected = [];
+    let matched = 0;
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ghép số với hình ảnh tương ứng</div>
+        </div>
+        <div class="answers-grid" style="grid-template-columns: repeat(4, 1fr);">
+            ${shuffled.map((pair, idx) => `
+                <div class="answer-option match-card" data-index="${idx}" data-type="${pair.type}" data-value="${pair.value}" style="height: 150px; display: flex; align-items: center; justify-content: center;">
+                    ${pair.type === 'number' ? 
+                        `<div class="answer-number">${pair.value}</div>` :
+                        `<img src="${pair.path}" alt="${getName(pair.value)}" class="answer-image" style="width: 100%; height: 100%; object-fit: cover;">`
+                    }
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.match-card').forEach(card => {
+        card.addEventListener('click', function() {
+            if (this.style.opacity === '0.5' || selected.length >= 2) return;
+            
+            this.style.border = '3px solid var(--accent)';
+            selected.push(this);
+            
+            if (selected.length === 2) {
+                const [card1, card2] = selected;
+                if (card1.dataset.value === card2.dataset.value && 
+                    card1.dataset.type !== card2.dataset.type) {
+                    // Match!
+                    card1.style.opacity = '0.5';
+                    card2.style.opacity = '0.5';
+                    card1.style.pointerEvents = 'none';
+                    card2.style.pointerEvents = 'none';
+                    matched++;
+                    handleCorrect(15);
+                    
+                    if (matched === 6) {
+                        setTimeout(() => {
+                            handleCorrect(50); // Bonus
+                            startMatchPairsGame();
+                        }, 1000);
+                    }
+                } else {
+                    // No match
+                    setTimeout(() => {
+                        card1.style.border = '';
+                        card2.style.border = '';
+                    }, 1000);
+                    handleWrong();
+                }
+                selected = [];
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 13: Special Codes Only
+function startSpecialCodesGame() {
+    startTimer(180, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextSpecialCodesQuestion();
+}
+
+function nextSpecialCodesQuestion() {
+    const correctCode = getRandomSpecialCode();
+    const specialCodes = ['Jb', 'Jc', 'Jr', 'Jt', 'Kb', 'Kc', 'Kr', 'Kt', 'Qb', 'Qc', 'Qr', 'Qt'];
+    const options = [correctCode];
+    const available = specialCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Hình ảnh này tương ứng với mã nào?</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(15);
+                setTimeout(() => nextSpecialCodesQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextSpecialCodesQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 14: All Codes Master
+function startAllCodesMasterGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextAllCodesQuestion();
+}
+
+function nextAllCodesQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Hình ảnh này tương ứng với mã nào? (Tất cả mã 00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(20);
+                setTimeout(() => nextAllCodesQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextAllCodesQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 15: Memory Palace Advanced
+function startMemoryPalaceAdvancedGame() {
+    startTimer(240, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
+    const selectedLoci = lociImages[Math.floor(Math.random() * lociImages.length)];
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 8 random codes (can be numbers or special)
+    for (let i = 0; i < 8; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Gắn các mã vào căn phòng trong cung điện (Tất cả mã)</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 600px; height: 300px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 9: Room Explorer
+function startRoomExplorerGame() {
+    startTimer(180, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextRoomQuestion();
+}
+
+function nextRoomQuestion() {
+    const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
+    const selectedLoci = lociImages[Math.floor(Math.random() * lociImages.length)];
+    const correctNum = getRandomNumber();
+    const wrongNums = getRandomOptions(correctNum, 3);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Số nào được đặt trong căn phòng này?</div>
+            <img src="loci/${selectedLoci}" alt="Room" class="question-image" style="max-width: 500px;">
+        </div>
+        <div class="answers-grid">
+            ${[correctNum, ...wrongNums].sort(() => Math.random() - 0.5).map(num => {
+                const path = getImagePath(num);
+                return `
+                    <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                        <img src="${path}" alt="${getName(num)}" class="answer-image">
+                        <div class="answer-number">${num}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextRoomQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextRoomQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 13: Special Codes Only
+function startSpecialCodesGame() {
+    startTimer(180, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextSpecialCodesQuestion();
+}
+
+function nextSpecialCodesQuestion() {
+    const correctCode = getRandomSpecialCode();
+    const specialCodes = ['Jb', 'Jc', 'Jr', 'Jt', 'Kb', 'Kc', 'Kr', 'Kt', 'Qb', 'Qc', 'Qr', 'Qt'];
+    const options = [correctCode];
+    const available = specialCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Hình ảnh này tương ứng với mã nào?</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(15);
+                setTimeout(() => nextSpecialCodesQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextSpecialCodesQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 14: All Codes Master
+function startAllCodesMasterGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextAllCodesQuestion();
+}
+
+function nextAllCodesQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Hình ảnh này tương ứng với mã nào? (Tất cả mã 00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(20);
+                setTimeout(() => nextAllCodesQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextAllCodesQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 15: Memory Palace Advanced
+function startMemoryPalaceAdvancedGame() {
+    startTimer(240, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
+    const selectedLoci = lociImages[Math.floor(Math.random() * lociImages.length)];
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 8 random codes (can be numbers or special)
+    for (let i = 0; i < 8; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Gắn các mã vào căn phòng trong cung điện (Tất cả mã)</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 600px; height: 300px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 10: Time Attack
+function startTimeAttackGame() {
+    startTimer(60, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextTimeAttackQuestion();
+}
+
+function nextTimeAttackQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Trả lời càng nhiều càng tốt!</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}">
+                    <div class="answer-number">${num}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            if (this.dataset.answer === correctNum) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextTimeAttackQuestion(), 500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextTimeAttackQuestion(), 500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 13: Special Codes Only
+function startSpecialCodesGame() {
+    startTimer(180, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextSpecialCodesQuestion();
+}
+
+function nextSpecialCodesQuestion() {
+    const correctCode = getRandomSpecialCode();
+    const specialCodes = ['Jb', 'Jc', 'Jr', 'Jt', 'Kb', 'Kc', 'Kr', 'Kt', 'Qb', 'Qc', 'Qr', 'Qt'];
+    const options = [correctCode];
+    const available = specialCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Hình ảnh này tương ứng với mã nào?</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(15);
+                setTimeout(() => nextSpecialCodesQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextSpecialCodesQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 14: All Codes Master
+function startAllCodesMasterGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextAllCodesQuestion();
+}
+
+function nextAllCodesQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Hình ảnh này tương ứng với mã nào? (Tất cả mã 00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(20);
+                setTimeout(() => nextAllCodesQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextAllCodesQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 15: Memory Palace Advanced
+function startMemoryPalaceAdvancedGame() {
+    startTimer(240, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
+    const selectedLoci = lociImages[Math.floor(Math.random() * lociImages.length)];
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 8 random codes (can be numbers or special)
+    for (let i = 0; i < 8; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Gắn các mã vào căn phòng trong cung điện (Tất cả mã)</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 600px; height: 300px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 11: Reverse Challenge
+function startReverseChallengeGame() {
+    startTimer(150, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextReverseQuestion();
+}
+
+function nextReverseQuestion() {
+    const correctNum = getRandomNumber();
+    const name = getName(correctNum);
+    const options = [name];
+    
+    // Get wrong names
+    const available = imageFiles
+        .map(item => item.name)
+        .filter(n => n !== name);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Số ${correctNum} tương ứng với tên nào?</div>
+            <div class="question-text">${correctNum}</div>
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(opt => `
+                <div class="answer-option" data-answer="${opt}" data-correct="${opt === name}">
+                    <div style="font-size: 1.5rem;">${opt}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextReverseQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextReverseQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 13: Special Codes Only
+function startSpecialCodesGame() {
+    startTimer(180, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextSpecialCodesQuestion();
+}
+
+function nextSpecialCodesQuestion() {
+    const correctCode = getRandomSpecialCode();
+    const specialCodes = ['Jb', 'Jc', 'Jr', 'Jt', 'Kb', 'Kc', 'Kr', 'Kt', 'Qb', 'Qc', 'Qr', 'Qt'];
+    const options = [correctCode];
+    const available = specialCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Hình ảnh này tương ứng với mã nào?</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(15);
+                setTimeout(() => nextSpecialCodesQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextSpecialCodesQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 14: All Codes Master
+function startAllCodesMasterGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextAllCodesQuestion();
+}
+
+function nextAllCodesQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Hình ảnh này tương ứng với mã nào? (Tất cả mã 00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(20);
+                setTimeout(() => nextAllCodesQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextAllCodesQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 15: Memory Palace Advanced
+function startMemoryPalaceAdvancedGame() {
+    startTimer(240, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
+    const selectedLoci = lociImages[Math.floor(Math.random() * lociImages.length)];
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 8 random codes (can be numbers or special)
+    for (let i = 0; i < 8; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Gắn các mã vào căn phòng trong cung điện (Tất cả mã)</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 600px; height: 300px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 12: Pattern Recognition
+function startPatternRecognitionGame() {
+    startTimer(180, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextPatternQuestion();
+}
+
+function nextPatternQuestion() {
+    // Create a simple pattern: consecutive numbers or same first digit
+    const patternType = Math.random() > 0.5 ? 'consecutive' : 'same-first';
+    let sequence = [];
+    let correctAnswer;
+    
+    if (patternType === 'consecutive') {
+        const start = Math.floor(Math.random() * 95);
+        sequence = [start, start + 1, start + 2, start + 3].map(n => String(n).padStart(2, '0'));
+        correctAnswer = String(start + 4).padStart(2, '0');
+    } else {
+        const firstDigit = Math.floor(Math.random() * 10);
+        sequence = [];
+        for (let i = 0; i < 4; i++) {
+            const secondDigit = Math.floor(Math.random() * 10);
+            sequence.push(`${firstDigit}${secondDigit}`);
+        }
+        const wrongSecond = Math.floor(Math.random() * 10);
+        correctAnswer = `${firstDigit}${wrongSecond}`;
+        while (sequence.includes(correctAnswer)) {
+            const newSecond = Math.floor(Math.random() * 10);
+            correctAnswer = `${firstDigit}${newSecond}`;
+        }
+    }
+    
+    const options = [correctAnswer];
+    const available = imageFiles
+        .map(item => item.num)
+        .filter(num => !sequence.includes(num) && num !== correctAnswer);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Tìm quy luật và chọn số tiếp theo:</div>
+            <div class="sequence-container">
+                ${sequence.map(num => `
+                    <div class="sequence-item">
+                        ${num}
+                    </div>
+                `).join('')}
+                <div class="sequence-item" style="background: rgba(255,255,255,0.2); border: 3px dashed var(--accent);">
+                    ?
+                </div>
+            </div>
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctAnswer}">
+                    <div class="answer-number">${num}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(20);
+                setTimeout(() => nextPatternQuestion(), 2000);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextPatternQuestion(), 2000);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 13: Special Codes Only
+function startSpecialCodesGame() {
+    startTimer(180, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextSpecialCodesQuestion();
+}
+
+function nextSpecialCodesQuestion() {
+    const correctCode = getRandomSpecialCode();
+    const specialCodes = ['Jb', 'Jc', 'Jr', 'Jt', 'Kb', 'Kc', 'Kr', 'Kt', 'Qb', 'Qc', 'Qr', 'Qt'];
+    const options = [correctCode];
+    const available = specialCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Hình ảnh này tương ứng với mã nào?</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(15);
+                setTimeout(() => nextSpecialCodesQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextSpecialCodesQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 14: All Codes Master
+function startAllCodesMasterGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextAllCodesQuestion();
+}
+
+function nextAllCodesQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Hình ảnh này tương ứng với mã nào? (Tất cả mã 00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(20);
+                setTimeout(() => nextAllCodesQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextAllCodesQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 15: Memory Palace Advanced
+function startMemoryPalaceAdvancedGame() {
+    startTimer(240, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
+    const selectedLoci = lociImages[Math.floor(Math.random() * lociImages.length)];
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 8 random codes (can be numbers or special)
+    for (let i = 0; i < 8; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Gắn các mã vào căn phòng trong cung điện (Tất cả mã)</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 600px; height: 300px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+
+// Game 16: Basic Review 00-99
+function startBasicReviewGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewQuestion();
+}
+
+function nextBasicReviewQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập cơ bản: Hình ảnh này là số nào? (00-99)</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.2rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 17: Basic Review All Codes
+function startBasicReviewAllGame() {
+    startTimer(360, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    nextBasicReviewAllQuestion();
+}
+
+function nextBasicReviewAllQuestion() {
+    const correctCode = getRandomCode();
+    const allCodes = getAllCodes();
+    const options = [correctCode];
+    const available = allCodes.filter(code => code !== correctCode);
+    const shuffled = available.sort(() => Math.random() - 0.5);
+    options.push(...shuffled.slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ôn tập toàn bộ: Hình ảnh này là mã nào? (00-99 + đặc biệt)</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-answer="${code}" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(12);
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextBasicReviewAllQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 18: Memory Palace A-Z
+function startMemoryPalaceAZGame() {
+    startTimer(300, () => {
+        alert(`Hết giờ! Điểm của bạn: ${gameScore}`);
+        stopGame();
+        showHomepage();
+    });
+    
+    const selectedLoci = getRandomLociRoom();
+    const allCodes = getAllCodes();
+    const numbers = [];
+    
+    // Generate 10 random codes
+    for (let i = 0; i < 10; i++) {
+        numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Gắn các mã vào căn phòng ${selectedLoci.replace('.jpg', '')}</div>
+            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain;">
+        </div>
+        <div class="palace-container">
+            ${numbers.map((code, index) => {
+                const imagePath = getImagePath(code);
+                return `
+                    <div class="palace-room" data-code="${code}" data-index="${index}">
+                        <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
+                        <div class="palace-number">${code}</div>
+                        <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
+        </div>
+    `;
+    
+    // Add click to show/hide number
+    container.querySelectorAll('.palace-room').forEach(room => {
+        room.addEventListener('click', function() {
+            const numberEl = this.querySelector('.palace-number');
+            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
+                numberEl.style.opacity = '1';
+                numberEl.style.transform = 'scale(1.2)';
+                setTimeout(() => {
+                    numberEl.style.transform = 'scale(1)';
+                }, 300);
+            } else {
+                numberEl.style.opacity = '0';
+            }
+        });
+    });
+}
+

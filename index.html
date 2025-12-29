@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🧠 Siêu Trí Nhớ - Rèn Luyện Trí Nhớ 00-99</title>
+    <meta name="description" content="Game rèn luyện trí nhớ với bộ mã hóa 00-99. 12 game mode thú vị giúp bạn ghi nhớ siêu tốc!">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sieutrinho.pages.dev/">
+    <meta property="og:title" content="🧠 Siêu Trí Nhớ - Game Rèn Luyện Trí Nhớ">
+    <meta property="og:description" content="Rèn luyện trí nhớ với bộ mã hóa 00-99. 12 game mode thú vị: Hình→Số, Số→Hình, Flashcard, Memory Palace và nhiều hơn nữa!">
+    <meta property="og:image" content="https://sieutrinho.pages.dev/preview.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://sieutrinho.pages.dev/">
+    <meta property="twitter:title" content="🧠 Siêu Trí Nhớ - Game Rèn Luyện Trí Nhớ">
+    <meta property="twitter:description" content="Rèn luyện trí nhớ với bộ mã hóa 00-99. 12 game mode thú vị giúp bạn ghi nhớ siêu tốc!">
+    <meta property="twitter:image" content="https://sieutrinho.pages.dev/preview.jpg">
+    
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <div id="background-3d"></div>
+    
+    <!-- Homepage -->
+    <div id="homepage" class="screen active">
+        <div class="container">
+            <h1 class="title-3d">🧠 SIÊU TRÍ NHỚ</h1>
+            <p class="subtitle">Rèn luyện trí nhớ với bộ mã hóa 00-99</p>
+            
+            <div class="score-display">
+                <div class="stat">
+                    <span class="stat-label">Điểm cao nhất:</span>
+                    <span id="high-score">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Tổng điểm:</span>
+                    <span id="total-score">0</span>
+                </div>
+            </div>
+            
+            <div class="games-grid" id="games-grid">
+                <!-- Games will be dynamically loaded -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- Game Screen -->
+    <div id="game-screen" class="screen">
+        <div class="game-header">
+            <button id="back-btn" class="btn-back">← Về trang chủ</button>
+            <div class="game-stats">
+                <div class="stat-item">
+                    <span class="stat-icon">⏱️</span>
+                    <span id="timer">60</span>s
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">⭐</span>
+                    <span id="score">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">✓</span>
+                    <span id="correct">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon">✗</span>
+                    <span id="wrong">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="game-container" id="game-container">
+            <!-- Game content will be dynamically loaded -->
+        </div>
+        
+        <div id="reward-overlay" class="reward-overlay hidden">
+            <div class="reward-content">
+                <div class="reward-icon">🎉</div>
+                <div class="reward-text">Tuyệt vời!</div>
+                <div class="reward-points">+10 điểm</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Audio elements -->
+    <audio id="sound-correct" preload="auto">
+        <source src="data:audio/wav;base64,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" type="audio/wav">
+    </audio>
+    <audio id="sound-wrong" preload="auto">
+        <source src="data:audio/wav;base64,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" type="audio/wav">
+    </audio>
+    
+    <script src="data.js"></script>
+    <script src="games.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
+
