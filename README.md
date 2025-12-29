@@ -11,20 +11,33 @@
 - **3D Background** với Three.js
 - **Responsive Design** - hoạt động trên mọi thiết bị
 
-## 🎯 Các Game Mode
+## 🎯 Các Game Mode (18 Games)
 
-1. **Hình → Số**: Xem hình ảnh, chọn số tương ứng
-2. **Số → Hình**: Xem số, chọn hình ảnh đúng
-3. **Flashcard**: Lật thẻ để học và ghi nhớ
-4. **Thử Thách Tốc Độ**: Trả lời nhanh nhất có thể
-5. **Cung Điện Trí Nhớ**: Gắn số vào các căn phòng
-6. **Xây Dựng Câu Chuyện**: Tạo câu chuyện từ các số
-7. **Nhớ Chuỗi**: Ghi nhớ và lặp lại chuỗi số
-8. **Ghép Đôi**: Tìm và ghép cặp số với hình ảnh
-9. **Khám Phá Phòng**: Khám phá phòng ngẫu nhiên
-10. **Tấn Công Thời Gian**: Trả lời càng nhiều càng tốt
-11. **Thử Thách Ngược**: Xem số, nhớ tên
+### 🎯 Bắt Đầu (4 games)
+1. **Ôn Tập Cơ Bản**: Ôn tập từ 00-99 một cách đơn giản
+2. **Hình → Số**: Xem hình ảnh, chọn số tương ứng
+3. **Số → Hình**: Xem số, chọn hình ảnh đúng
+4. **Flashcard**: Lật thẻ để học và ghi nhớ
+
+### ⚡ Trung Bình (6 games)
+5. **Thử Thách Tốc Độ**: Trả lời nhanh nhất có thể
+6. **Tấn Công Thời Gian**: Trả lời càng nhiều càng tốt
+7. **Thử Thách Ngược**: Xem số, nhớ tên và hình ảnh
+8. **Khám Phá Phòng**: Khám phá phòng ngẫu nhiên
+9. **Xây Dựng Câu Chuyện**: Tạo câu chuyện từ các số
+10. **Ghép Đôi**: Tìm và ghép cặp số với hình ảnh
+
+### 🔥 Nâng Cao (5 games)
+11. **Nhớ Chuỗi**: Ghi nhớ và lặp lại chuỗi số
 12. **Nhận Diện Mẫu**: Tìm quy luật trong dãy số
+13. **Mã Đặc Biệt**: Chơi với các mã đặc biệt (Jb, Kb, Qb...)
+14. **Tổng Hợp Tất Cả**: Game tổng hợp tất cả mã
+15. **Ôn Tập Toàn Bộ**: Ôn tập tất cả mã (00-99 + đặc biệt)
+
+### 🏰 Cung Điện (3 games)
+16. **Cung Điện Cơ Bản**: Gắn số vào các căn phòng (00-99)
+17. **Cung Điện Nâng Cao**: Memory Palace với tất cả mã
+18. **Cung Điện A-Z**: Cung điện với các phòng A-Z và tất cả mã
 
 ## 🚀 Cài đặt và Chạy
 
@@ -86,11 +99,25 @@ sieutrinho/
 
 ## 📝 Bộ mã hóa
 
+### Mã số 00-99
 Mỗi số từ 00-99 được mã hóa bằng hình ảnh với tên bắt đầu bằng chữ cái tương ứng:
 - 00 = CC = Con Chó
 - 01 = CT = Con Trâu
 - 10 = TC = Tổ Chim
 - ...
+
+### Mã đặc biệt
+- Jb = Jack Black
+- Jc = Jắc Cắm
+- Kb = Kho Báu
+- Kc = K Cộng
+- Qb = Quả Bơ
+- Qc = Quả Cầu
+- ... và nhiều hơn nữa
+
+### Cung Điện Trí Nhớ (Memory Palace)
+- Phòng số: 00-20, 21-40, 41-60
+- Phòng chữ: A-Z (Attic, Bedroom, Classroom, Dining room, Entrance hall, Vestibule, Wine cellar, Xerox room, Yoga room, Zen garden...)
 
 ## 🎯 Mục tiêu
 
