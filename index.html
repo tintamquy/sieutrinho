@@ -41,6 +41,25 @@
                     <span class="stat-label">Tổng điểm:</span>
                     <span id="total-score">0</span>
                 </div>
+                <div class="stat">
+                    <span class="stat-label">Rank:</span>
+                    <span id="user-rank">Mới bắt đầu</span>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin: 2rem 0;">
+                <button id="toggle-reference" class="btn-back" style="background: var(--primary); margin: 0 auto;">
+                    📖 Xem Bảng Tham Khảo Tất Cả Mã
+                </button>
+            </div>
+            
+            <div id="reference-section" class="reference-section hidden">
+                <h2 style="text-align: center; color: #ffffff; font-size: 2rem; margin-bottom: 1.5rem; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">
+                    📚 Bảng Tham Khảo Tất Cả Mã
+                </h2>
+                <div id="reference-grid" class="reference-grid">
+                    <!-- Will be populated by JavaScript -->
+                </div>
             </div>
             
             <div class="games-grid" id="games-grid">

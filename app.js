@@ -6,6 +6,102 @@ let correctCount = 0;
 let wrongCount = 0;
 let totalScore = 0;
 let highScore = 0;
+let userRank = 'beginner';
+
+// Encouragement messages
+const encouragementMessages = {
+    correct: [
+        { text: 'Tuyệt vời! 🎉', emoji: '🎉' },
+        { text: 'Xuất sắc! ⭐', emoji: '⭐' },
+        { text: 'Giỏi lắm! 👏', emoji: '👏' },
+        { text: 'Hoàn hảo! 💯', emoji: '💯' },
+        { text: 'Đúng rồi! ✅', emoji: '✅' },
+        { text: 'Tuyệt đỉnh! 🔥', emoji: '🔥' },
+        { text: 'Thần đồng! 🧠', emoji: '🧠' },
+        { text: 'Bất ngờ quá! 😲', emoji: '😲' },
+        { text: 'Siêu phàm! 🚀', emoji: '🚀' },
+        { text: 'Vô địch! 🏆', emoji: '🏆' }
+    ],
+    wrong: [
+        { text: 'Gần đúng rồi! 💪', emoji: '💪' },
+        { text: 'Cố gắng thêm! 🌟', emoji: '🌟' },
+        { text: 'Tiếp tục nào! 🎯', emoji: '🎯' },
+        { text: 'Đừng bỏ cuộc! 💎', emoji: '💎' },
+        { text: 'Học từ sai lầm! 📚', emoji: '📚' },
+        { text: 'Bạn sẽ làm được! ✨', emoji: '✨' },
+        { text: 'Thử lại nhé! 🔄', emoji: '🔄' },
+        { text: 'Kiên trì là chìa khóa! 🔑', emoji: '🔑' }
+    ]
+};
+
+// Rank system
+const ranks = [
+    { name: 'Mới bắt đầu', minScore: 0, class: 'rank-beginner', emoji: '🌱' },
+    { name: 'Học viên', minScore: 100, class: 'rank-beginner', emoji: '📖' },
+    { name: 'Thực tập sinh', minScore: 500, class: 'rank-intermediate', emoji: '🎓' },
+    { name: 'Chuyên gia', minScore: 1000, class: 'rank-intermediate', emoji: '⭐' },
+    { name: 'Bậc thầy', minScore: 2500, class: 'rank-advanced', emoji: '🔥' },
+    { name: 'Siêu sao', minScore: 5000, class: 'rank-advanced', emoji: '💫' },
+    { name: 'Huyền thoại', minScore: 10000, class: 'rank-master', emoji: '👑' },
+    { name: 'Bất tử', minScore: 20000, class: 'rank-legend', emoji: '🏆' }
+];
+
+function getRank(totalScore) {
+    for (let i = ranks.length - 1; i >= 0; i--) {
+        if (totalScore >= ranks[i].minScore) {
+            return ranks[i];
+        }
+    }
+    return ranks[0];
+}
+
+let previousRank = null;
+
+function updateRank() {
+    const rank = getRank(totalScore);
+    userRank = rank.class;
+    const rankEl = document.getElementById('user-rank');
+    if (rankEl) {
+        rankEl.textContent = `${rank.emoji} ${rank.name}`;
+        rankEl.className = `rank-badge ${rank.class}`;
+        
+        // Check for rank up
+        if (previousRank && rank.minScore > previousRank.minScore) {
+            playSound('levelup');
+            setTimeout(() => {
+                showEncouragement(true);
+                const overlay = document.createElement('div');
+                overlay.className = 'encouragement-message';
+                overlay.innerHTML = `
+                    <div class="encouragement-emoji">🎉</div>
+                    <div class="encouragement-text">Thăng hạng! ${rank.emoji} ${rank.name}</div>
+                `;
+                document.body.appendChild(overlay);
+                setTimeout(() => overlay.remove(), 3000);
+            }, 500);
+        }
+        previousRank = rank;
+    }
+}
+
+function showEncouragement(isCorrect) {
+    const messages = isCorrect ? encouragementMessages.correct : encouragementMessages.wrong;
+    const message = messages[Math.floor(Math.random() * messages.length)];
+    
+    const overlay = document.createElement('div');
+    overlay.className = 'encouragement-message';
+    overlay.innerHTML = `
+        <div class="encouragement-emoji">${message.emoji}</div>
+        <div class="encouragement-text">${message.text}</div>
+    `;
+    
+    document.body.appendChild(overlay);
+    
+    setTimeout(() => {
+        overlay.style.animation = 'encouragementPop 0.3s ease reverse';
+        setTimeout(() => overlay.remove(), 300);
+    }, 1500);
+}
 
 // Game definitions - Must be defined after games.js is loaded
 // Organized by categories
@@ -180,6 +276,47 @@ const games = [
         desc: 'Cung điện với các phòng A-Z và tất cả mã',
         category: 'palace',
         func: typeof startMemoryPalaceAZGame !== 'undefined' ? startMemoryPalaceAZGame : null
+    },
+    // TYPING GAMES
+    {
+        id: 'type-number',
+        title: 'Gõ Số',
+        icon: '⌨️',
+        desc: 'Gõ số tương ứng với hình ảnh',
+        category: 'intermediate',
+        func: typeof startTypeNumberGame !== 'undefined' ? startTypeNumberGame : null
+    },
+    {
+        id: 'type-name',
+        title: 'Gõ Tên',
+        icon: '✍️',
+        desc: 'Gõ tên tương ứng với số',
+        category: 'intermediate',
+        func: typeof startTypeNameGame !== 'undefined' ? startTypeNameGame : null
+    },
+    {
+        id: 'rapid-fire',
+        title: 'Bắn Nhanh',
+        icon: '💥',
+        desc: 'Trả lời cực nhanh với thời gian ngắn',
+        category: 'advanced',
+        func: typeof startRapidFireGame !== 'undefined' ? startRapidFireGame : null
+    },
+    {
+        id: 'memory-challenge',
+        title: 'Thử Thách Trí Nhớ',
+        icon: '🧩',
+        desc: 'Thử thách với tất cả mã',
+        category: 'advanced',
+        func: typeof startMemoryChallengeGame !== 'undefined' ? startMemoryChallengeGame : null
+    },
+    {
+        id: 'double-challenge',
+        title: 'Thử Thách Kép',
+        icon: '🎲',
+        desc: 'Cộng 2 số từ hình ảnh',
+        category: 'advanced',
+        func: typeof startDoubleChallengeGame !== 'undefined' ? startDoubleChallengeGame : null
     }
 ].filter(game => game.func !== null); // Filter out games with null functions
 
@@ -271,6 +408,8 @@ function loadScores() {
     totalScore = parseInt(localStorage.getItem('totalScore') || '0');
     highScore = parseInt(localStorage.getItem('highScore') || '0');
     updateScoreDisplay();
+    updateRank();
+    renderReferenceSection();
 }
 
 // Save scores to localStorage
@@ -283,6 +422,7 @@ function saveScores() {
 function updateScoreDisplay() {
     document.getElementById('high-score').textContent = highScore;
     document.getElementById('total-score').textContent = totalScore;
+    updateRank();
 }
 
 // Render games on homepage by categories
@@ -361,6 +501,38 @@ function setupEventListeners() {
         stopGame();
         showHomepage();
     });
+    
+    const toggleRef = document.getElementById('toggle-reference');
+    if (toggleRef) {
+        toggleRef.addEventListener('click', () => {
+            const refSection = document.getElementById('reference-section');
+            if (refSection) {
+                refSection.classList.toggle('hidden');
+                toggleRef.textContent = refSection.classList.contains('hidden') 
+                    ? '📖 Xem Bảng Tham Khảo Tất Cả Mã' 
+                    : '❌ Đóng Bảng Tham Khảo';
+            }
+        });
+    }
+}
+
+// Render reference section
+function renderReferenceSection() {
+    const grid = document.getElementById('reference-grid');
+    if (!grid) return;
+    
+    const allCodes = getAllCodes();
+    grid.innerHTML = allCodes.map(code => {
+        const imagePath = getImagePath(code);
+        const name = getName(code);
+        return `
+            <div class="reference-item">
+                <img src="${imagePath}" alt="${name}" class="reference-image">
+                <div class="reference-code">${code}</div>
+                <div class="reference-name">${name}</div>
+            </div>
+        `;
+    }).join('');
 }
 
 // Show homepage
@@ -456,30 +628,49 @@ function stopTimer() {
 function playSound(type) {
     try {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-        
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
         
         if (type === 'correct') {
-            // Success sound - ascending tones
-            oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
-            oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
-            oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
-            oscillator.type = 'sine';
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.3);
+            // Success sound - cheerful ascending tones
+            const frequencies = [523.25, 659.25, 783.99, 987.77]; // C5, E5, G5, B5
+            frequencies.forEach((freq, index) => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                oscillator.frequency.value = freq;
+                oscillator.type = 'sine';
+                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime + index * 0.1);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + index * 0.1 + 0.2);
+                oscillator.start(audioContext.currentTime + index * 0.1);
+                oscillator.stop(audioContext.currentTime + index * 0.1 + 0.2);
+            });
         } else if (type === 'wrong') {
-            // Error sound - low buzz
-            oscillator.frequency.value = 150;
-            oscillator.type = 'sawtooth';
-            gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+            // Gentle error sound - not too harsh
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            oscillator.frequency.value = 200;
+            oscillator.type = 'sine';
+            gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
             oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.2);
+            oscillator.stop(audioContext.currentTime + 0.15);
+        } else if (type === 'levelup') {
+            // Level up sound
+            const frequencies = [523.25, 659.25, 783.99, 1046.50];
+            frequencies.forEach((freq, index) => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                oscillator.frequency.value = freq;
+                oscillator.type = 'sine';
+                gainNode.gain.setValueAtTime(0.25, audioContext.currentTime + index * 0.08);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + index * 0.08 + 0.15);
+                oscillator.start(audioContext.currentTime + index * 0.08);
+                oscillator.stop(audioContext.currentTime + index * 0.08 + 0.15);
+            });
         }
     } catch (e) {
         console.log('Audio play failed:', e);
@@ -503,9 +694,19 @@ function showReward(points) {
 function handleCorrect(points = 10) {
     correctCount++;
     gameScore += points;
+    totalScore += points;
     updateGameStats();
+    updateScoreDisplay();
     playSound('correct');
     showReward(points);
+    showEncouragement(true);
+    
+    // Special encouragement for streaks
+    if (correctCount % 5 === 0) {
+        setTimeout(() => {
+            showEncouragement(true);
+        }, 2000);
+    }
 }
 
 // Handle wrong answer
@@ -513,6 +714,7 @@ function handleWrong() {
     wrongCount++;
     updateGameStats();
     playSound('wrong');
+    showEncouragement(false);
 }
 
 // Get random answer options
