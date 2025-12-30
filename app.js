@@ -537,6 +537,34 @@ function updateScoreDisplay() {
 }
 
 // Render games on homepage by categories
+// Render quick menu games
+function renderQuickMenu() {
+    const quickMenu = document.getElementById('game-quick-menu');
+    if (!quickMenu) return;
+    
+    // Get all available games (limit to 12 for quick menu)
+    const availableGames = games.filter(g => g.func && typeof g.func === 'function').slice(0, 12);
+    
+    quickMenu.innerHTML = availableGames.map(game => `
+        <div class="quick-game-card" data-game-id="${game.id}">
+            <div class="quick-game-icon">${game.icon}</div>
+            <div class="quick-game-title">${game.title}</div>
+            <div class="quick-game-desc">${game.desc}</div>
+        </div>
+    `).join('');
+    
+    // Add click listeners
+    quickMenu.querySelectorAll('.quick-game-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const gameId = card.dataset.gameId;
+            const game = games.find(g => g.id === gameId);
+            if (game && game.func && typeof game.func === 'function') {
+                startGame(game);
+            }
+        });
+    });
+}
+
 function renderGames() {
     const grid = document.getElementById('games-grid');
     if (!grid) {
@@ -549,6 +577,9 @@ function renderGames() {
         grid.innerHTML = '<div style="text-align: center; color: white;">Không tìm thấy game nào</div>';
         return;
     }
+    
+    // Render quick menu first
+    renderQuickMenu();
     
     // Group games by category
     const gamesByCategory = {};
@@ -906,11 +937,14 @@ function playSound(type) {
     }
 }
 
-// Show reward
+// Show reward - small corner display
 function showReward(points) {
     const overlay = document.getElementById('reward-overlay');
     const pointsEl = overlay.querySelector('.reward-points');
-    pointsEl.textContent = `+${points} điểm`;
+    const iconEl = overlay.querySelector('.reward-icon');
+    
+    pointsEl.textContent = `+${points}`;
+    iconEl.textContent = '⭐';
     
     overlay.classList.remove('hidden');
     
