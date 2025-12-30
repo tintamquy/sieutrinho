@@ -96,7 +96,7 @@ const imageFiles = [
     { num: '86', name: 'Hoàng Bào', file: '86 - Hoàng Bào.jpg' },
     { num: '87', name: 'Hoa Phượng', file: '87 - Hoa Phượng.jpg' },
     { num: '88', name: 'Hôi Hám', file: '88 - Hôi Hám.jpg' },
-    { num: '89', name: 'Hôi Hám', file: '89 - Hôi Hám.jpg' },
+    { num: '89', name: 'Hạt Gạo', file: '89 - Hạt Gạo.jpg' },
     { num: '90', name: 'Gà Chọi', file: '90 - Gà Chọi.jpg' },
     { num: '91', name: 'Găng Tay', file: '91 - Găng Tay.jpg' },
     { num: '92', name: 'Gậy Như Ý', file: '92 - Gậy Như (ý).jpg' },
@@ -216,6 +216,28 @@ function getLetterLociRooms() {
         const letterB = b.match(/^([A-Z]) - /)[1];
         return letterA.localeCompare(letterB);
     });
+}
+
+// Get all loci files (including numbered ones if they exist)
+function getAllLociFiles() {
+    // Check for numbered loci files (00.jpg, 01.jpg, etc.)
+    // These would be castle loci with numbers already assigned
+    const numberedLoci = [];
+    for (let i = 0; i < 100; i++) {
+        const num = String(i).padStart(2, '0');
+        numberedLoci.push({
+            file: `${num}.jpg`,
+            number: num,
+            type: 'numbered'
+        });
+    }
+    
+    // Return all loci: numbered + range + letter rooms
+    return {
+        numbered: numberedLoci, // 00-99.jpg (if exist)
+        ranges: ['00-20.jpg', '21-40.jpg', '41-60.jpg'],
+        letters: getAllLociRooms().filter(r => r.match(/^[A-Z] - /))
+    };
 }
 
 // Get random loci room

@@ -455,6 +455,14 @@ const games = [
         desc: 'Học bộ thủ theo từng ngày (1-8)',
         category: 'chinese',
         func: typeof startChineseRadicalsByDayGame !== 'undefined' ? startChineseRadicalsByDayGame : null
+    },
+    {
+        id: 'loci-castle',
+        title: 'Loci Lâu Đài',
+        icon: '🏯',
+        desc: 'Game loci với các ảnh đã gắn số sẵn',
+        category: 'palace',
+        func: typeof startLociCastleGame !== 'undefined' ? startLociCastleGame : null
     }
 ].filter(game => game.func !== null); // Filter out games with null functions
 
