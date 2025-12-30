@@ -168,17 +168,34 @@ function getRandomCode() {
     return allCodes[Math.floor(Math.random() * allCodes.length)];
 }
 
-// Get all loci rooms
+// Get all loci rooms - A-Z Memory Palace
 function getAllLociRooms() {
     return [
         '00-20.jpg',
         '21-40.jpg',
         '41-60.jpg',
+        // A-Z Rooms
         'A - Attic (Phòng gác mái).jpg',
         'B - Bed room.jpg',
         'C - Classroom (Phòng học).jpg',
         'D - Dining room (Phòng ăn).jpg',
         'E - Entrance hall (Sảnh vào).jpg',
+        'F - Family room.jpg', // TODO: Add image
+        'G - Gym.jpg', // TODO: Add image
+        'H - Home theater.jpg', // TODO: Add image
+        'I - Infirmary.jpg', // TODO: Add image
+        'J - Jacuzzi room.jpg', // TODO: Add image
+        'K - Kitchen.jpg', // TODO: Add image
+        'L - Library.jpg', // TODO: Add image
+        'M - Master bedroom.jpg', // TODO: Add image
+        'N - Nursery.jpg', // TODO: Add image
+        'O - Office.jpg', // TODO: Add image
+        'P - Pantry.jpg', // TODO: Add image
+        'Q - Quarters.jpg', // TODO: Add image
+        'R - Recreation room.jpg', // TODO: Add image
+        'S - Study.jpg', // TODO: Add image
+        'T - Toilet Bathroom.jpg', // TODO: Add image
+        'U - Utility room.jpg', // TODO: Add image
         'V - Vestibule (Tiền sảnh).jpg',
         'W - Wine cellar (Hầm rượu).jpg',
         'X- Xerox room (Phòng photocopy).jpg',

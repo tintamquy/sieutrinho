@@ -537,21 +537,51 @@ function updateScoreDisplay() {
 }
 
 // Render games on homepage by categories
-// Render quick menu games
+// Render quick menu games - Map/Roadmap style
 function renderQuickMenu() {
     const quickMenu = document.getElementById('game-quick-menu');
     if (!quickMenu) return;
     
-    // Get all available games (limit to 12 for quick menu)
-    const availableGames = games.filter(g => g.func && typeof g.func === 'function').slice(0, 12);
+    // Get all available games grouped by category
+    const gamesByCategory = {};
+    games.forEach(game => {
+        if (game.func && typeof game.func === 'function') {
+            const category = game.category || 'beginner';
+            if (!gamesByCategory[category]) {
+                gamesByCategory[category] = [];
+            }
+            gamesByCategory[category].push(game);
+        }
+    });
     
-    quickMenu.innerHTML = availableGames.map(game => `
-        <div class="quick-game-card" data-game-id="${game.id}">
-            <div class="quick-game-icon">${game.icon}</div>
-            <div class="quick-game-title">${game.title}</div>
-            <div class="quick-game-desc">${game.desc}</div>
-        </div>
-    `).join('');
+    // Create roadmap: show 1-2 games from each category
+    const roadmapGames = [];
+    Object.keys(gameCategories).forEach(categoryKey => {
+        const categoryGames = gamesByCategory[categoryKey] || [];
+        // Take first 2 games from each category for roadmap
+        roadmapGames.push(...categoryGames.slice(0, 2));
+    });
+    
+    // Fill up to 16 games total
+    const allGames = games.filter(g => g.func && typeof g.func === 'function');
+    while (roadmapGames.length < 16 && roadmapGames.length < allGames.length) {
+        const remaining = allGames.filter(g => !roadmapGames.includes(g));
+        if (remaining.length > 0) {
+            roadmapGames.push(remaining[0]);
+        } else {
+            break;
+        }
+    }
+    
+    quickMenu.innerHTML = roadmapGames.map(game => {
+        const category = gameCategories[game.category] || gameCategories.beginner;
+        return `
+            <div class="quick-game-card" data-game-id="${game.id}" style="border-top: 3px solid ${category.color};">
+                <div class="quick-game-icon">${game.icon}</div>
+                <div class="quick-game-title">${game.title}</div>
+            </div>
+        `;
+    }).join('');
     
     // Add click listeners
     quickMenu.querySelectorAll('.quick-game-card').forEach(card => {
