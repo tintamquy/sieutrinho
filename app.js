@@ -179,22 +179,32 @@ const gameCategories = {
     beginner: {
         name: '🎯 Bắt Đầu',
         desc: 'Các game cơ bản để làm quen',
-        color: '#10b981'
+        color: '#10b981',
+        order: 1
     },
     intermediate: {
         name: '⚡ Trung Bình',
         desc: 'Game có độ khó vừa phải',
-        color: '#f59e0b'
+        color: '#f59e0b',
+        order: 2
     },
     advanced: {
         name: '🔥 Nâng Cao',
         desc: 'Game thử thách kỹ năng',
-        color: '#ef4444'
+        color: '#ef4444',
+        order: 3
     },
     palace: {
         name: '🏰 Cung Điện',
         desc: 'Game Memory Palace với các phòng',
-        color: '#8b5cf6'
+        color: '#8b5cf6',
+        order: 4
+    },
+    chinese: {
+        name: '🇨🇳 Tiếng Trung',
+        desc: 'Game học bộ thủ tiếng Trung',
+        color: '#dc2626',
+        order: 5
     }
 };
 
@@ -428,6 +438,23 @@ const games = [
         desc: 'Nhớ thứ tự các từ ngẫu nhiên',
         category: 'advanced',
         func: typeof startRandomWordsGame !== 'undefined' ? startRandomWordsGame : null
+    },
+    // CHINESE RADICALS GAMES
+    {
+        id: 'chinese-radicals',
+        title: 'Bộ Thủ Tiếng Trung',
+        icon: '🇨🇳',
+        desc: 'Nhớ bộ thủ tiếng Trung qua thơ',
+        category: 'chinese',
+        func: typeof startChineseRadicalsGame !== 'undefined' ? startChineseRadicalsGame : null
+    },
+    {
+        id: 'chinese-radicals-by-day',
+        title: 'Bộ Thủ Theo Ngày',
+        icon: '📅',
+        desc: 'Học bộ thủ theo từng ngày (1-8)',
+        category: 'chinese',
+        func: typeof startChineseRadicalsByDayGame !== 'undefined' ? startChineseRadicalsByDayGame : null
     }
 ].filter(game => game.func !== null); // Filter out games with null functions
 
@@ -554,9 +581,13 @@ function renderQuickMenu() {
         }
     });
     
-    // Create roadmap: show 1-2 games from each category
+    // Create roadmap: show 1-2 games from each category in order
     const roadmapGames = [];
-    Object.keys(gameCategories).forEach(categoryKey => {
+    const sortedCategories = Object.keys(gameCategories).sort((a, b) => {
+        return (gameCategories[a].order || 999) - (gameCategories[b].order || 999);
+    });
+    
+    sortedCategories.forEach(categoryKey => {
         const categoryGames = gamesByCategory[categoryKey] || [];
         // Take first 2 games from each category for roadmap
         roadmapGames.push(...categoryGames.slice(0, 2));
@@ -623,9 +654,14 @@ function renderGames() {
         }
     });
     
-    // Render by categories
+    // Sort categories by order
+    const sortedCategories = Object.keys(gameCategories).sort((a, b) => {
+        return (gameCategories[a].order || 999) - (gameCategories[b].order || 999);
+    });
+    
+    // Render by categories in order
     let html = '';
-    Object.keys(gameCategories).forEach(categoryKey => {
+    sortedCategories.forEach(categoryKey => {
         const category = gameCategories[categoryKey];
         const categoryGames = gamesByCategory[categoryKey] || [];
         

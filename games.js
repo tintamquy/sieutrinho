@@ -49466,3 +49466,493 @@ window.checkRandomWordsAnswer = function() {
         setTimeout(() => nextRandomWordsQuestion(), 3000);
     }
 };
+// Game 29: Chinese Radicals Memory (Bộ Thủ Tiếng Trung)
+// Data structure for Chinese radicals with poems
+const chineseRadicalsData = {
+    day1: [
+        { radical: '木', name: 'MỘC', meaning: 'cây', pinyin: 'mù' },
+        { radical: '水', name: 'THỦY', meaning: 'nước', pinyin: 'shuǐ' },
+        { radical: '金', name: 'KIM', meaning: 'vàng', pinyin: 'jīn' },
+        { radical: '火', name: 'HỎA', meaning: 'lửa', pinyin: 'huǒ' },
+        { radical: '土', name: 'THỔ', meaning: 'đất', pinyin: 'tǔ' },
+        { radical: '月', name: 'NGUYỆT', meaning: 'trăng', pinyin: 'yuè' },
+        { radical: '日', name: 'NHẬT', meaning: 'trời', pinyin: 'rì' },
+        { radical: '川', name: 'XUYÊN', meaning: 'sông', pinyin: 'chuān' },
+        { radical: '山', name: 'SƠN', meaning: 'núi', pinyin: 'shān' },
+        { radical: '阜', name: 'PHỤ', meaning: 'đồi', pinyin: 'fù' },
+        { radical: '子', name: 'TỬ', meaning: 'con', pinyin: 'zǐ' },
+        { radical: '父', name: 'PHỤ', meaning: 'bố', pinyin: 'fù' },
+        { radical: '人', name: 'NHÂN', meaning: 'người', pinyin: 'rén' },
+        { radical: '士', name: 'SỸ', meaning: 'quan', pinyin: 'shì' },
+        { radical: '宀', name: 'MIÊN', meaning: 'mái nhà', pinyin: 'mián' },
+        { radical: '厂', name: 'HÁN', meaning: 'sườn non', pinyin: 'hàn' },
+        { radical: '广', name: 'NGHIỄM', meaning: 'hiên', pinyin: 'yǎn' },
+        { radical: '戶', name: 'HỘ', meaning: 'cửa', pinyin: 'hù' },
+        { radical: '門', name: 'MÔN', meaning: 'cổng', pinyin: 'mén' },
+        { radical: '里', name: 'LÝ', meaning: 'làng', pinyin: 'lǐ' },
+        { radical: '谷', name: 'CỐC', meaning: 'thung lũng', pinyin: 'gǔ' },
+        { radical: '穴', name: 'HUYỆT', meaning: 'cái hang', pinyin: 'xué' },
+        { radical: '夕', name: 'TỊCH', meaning: 'khuya', pinyin: 'xī' },
+        { radical: '辰', name: 'THẦN', meaning: 'sớm', pinyin: 'chén' },
+        { radical: '羊', name: 'DƯƠNG', meaning: 'dê', pinyin: 'yáng' },
+        { radical: '虍', name: 'HỔ', meaning: 'hùm', pinyin: 'hū' },
+        { radical: '瓦', name: 'NGÕA', meaning: 'ngói đất', pinyin: 'wǎ' },
+        { radical: '缶', name: 'PHẪU', meaning: 'sành nung', pinyin: 'fǒu' },
+        { radical: '田', name: 'ĐIỀN', meaning: 'ruộng', pinyin: 'tián' },
+        { radical: '邑', name: 'ẤP', meaning: 'thôn', pinyin: 'yì' },
+        { radical: '尢', name: 'UÔNG', meaning: 'què', pinyin: 'wāng' },
+        { radical: '老', name: 'LÃO', meaning: 'già', pinyin: 'lǎo' }
+    ],
+    day2: [
+        { radical: '廴', name: 'DẪN', meaning: 'đi gần', pinyin: 'yǐn' },
+        { radical: '辶', name: 'SƯỚC', meaning: 'đi xa', pinyin: 'chuò' },
+        { radical: '勹', name: 'BAO', meaning: 'ôm', pinyin: 'bāo' },
+        { radical: '比', name: 'TỶ', meaning: 'sánh', pinyin: 'bǐ' },
+        { radical: '廾', name: 'CỦNG', meaning: 'chắp tay', pinyin: 'gǒng' },
+        { radical: '鳥', name: 'ĐIỂU', meaning: 'chim', pinyin: 'niǎo' },
+        { radical: '爪', name: 'TRẢO', meaning: 'vuốt', pinyin: 'zhuǎ' },
+        { radical: '飛', name: 'PHI', meaning: 'bay', pinyin: 'fēi' },
+        { radical: '足', name: 'TÚC', meaning: 'chân', pinyin: 'zú' },
+        { radical: '面', name: 'DIỆN', meaning: 'mặt', pinyin: 'miàn' },
+        { radical: '手', name: 'THỦ', meaning: 'tay', pinyin: 'shǒu' },
+        { radical: '頁', name: 'HIỆT', meaning: 'đầu', pinyin: 'yè' },
+        { radical: '髟', name: 'TIÊU', meaning: 'tóc', pinyin: 'biāo' },
+        { radical: '而', name: 'NHI', meaning: 'râu', pinyin: 'ér' },
+        { radical: '牙', name: 'NHA', meaning: 'nanh', pinyin: 'yá' },
+        { radical: '犬', name: 'KHUYỂN', meaning: 'chó', pinyin: 'quǎn' },
+        { radical: '牛', name: 'NGƯU', meaning: 'trâu', pinyin: 'niú' },
+        { radical: '角', name: 'GIÁC', meaning: 'sừng', pinyin: 'jiǎo' },
+        { radical: '弋', name: 'DỰC', meaning: 'cọc trâu', pinyin: 'yì' },
+        { radical: '己', name: 'KỶ', meaning: 'dây thừng', pinyin: 'jǐ' },
+        { radical: '瓜', name: 'QUA', meaning: 'dưa', pinyin: 'guā' },
+        { radical: '韭', name: 'CỬU', meaning: 'hẹ', pinyin: 'jiǔ' },
+        { radical: '麻', name: 'MA', meaning: 'vừng', pinyin: 'má' },
+        { radical: '竹', name: 'TRÚC', meaning: 'tre', pinyin: 'zhú' },
+        { radical: '行', name: 'HÀNH', meaning: 'đi', pinyin: 'xíng' },
+        { radical: '走', name: 'TẨU', meaning: 'chạy', pinyin: 'zǒu' },
+        { radical: '車', name: 'XA', meaning: 'xe', pinyin: 'chē' },
+        { radical: '毛', name: 'MAO', meaning: 'lông', pinyin: 'máo' },
+        { radical: '肉', name: 'NHỤC', meaning: 'thịt', pinyin: 'ròu' },
+        { radical: '皮', name: 'BÌ', meaning: 'da', pinyin: 'pí' },
+        { radical: '骨', name: 'CỐT', meaning: 'xương', pinyin: 'gǔ' }
+    ],
+    day3: [
+        { radical: '口', name: 'KHẨU', meaning: 'miệng', pinyin: 'kǒu' },
+        { radical: '齒', name: 'XỈ', meaning: 'răng', pinyin: 'chǐ' },
+        { radical: '甘', name: 'CAM', meaning: 'ngọt', pinyin: 'gān' },
+        { radical: '鹵', name: 'LỖ', meaning: 'mặn', pinyin: 'lǔ' },
+        { radical: '長', name: 'TRƯỜNG', meaning: 'dài', pinyin: 'cháng' },
+        { radical: '高', name: 'CAO', meaning: 'kiêu', pinyin: 'gāo' },
+        { radical: '至', name: 'CHÍ', meaning: 'đến', pinyin: 'zhì' },
+        { radical: '入', name: 'NHẬP', meaning: 'vào', pinyin: 'rù' },
+        { radical: '匕', name: 'BỈ', meaning: 'môi', pinyin: 'bǐ' },
+        { radical: '臼', name: 'CỮU', meaning: 'cối', pinyin: 'jiù' },
+        { radical: '刀', name: 'ĐAO', meaning: 'dao', pinyin: 'dāo' },
+        { radical: '皿', name: 'MÃNH', meaning: 'bồn', pinyin: 'mǐn' },
+        { radical: '曰', name: 'VIẾT', meaning: 'rằng', pinyin: 'yuē' },
+        { radical: '立', name: 'LẬP', meaning: 'đứng', pinyin: 'lì' },
+        { radical: '言', name: 'NGÔN', meaning: 'lời', pinyin: 'yán' },
+        { radical: '龍', name: 'LONG', meaning: 'rồng', pinyin: 'lóng' },
+        { radical: '魚', name: 'NGƯ', meaning: 'cá', pinyin: 'yú' },
+        { radical: '龜', name: 'QUY', meaning: 'rùa', pinyin: 'guī' },
+        { radical: '耒', name: 'LỖI', meaning: 'cày ruộng', pinyin: 'lěi' },
+        { radical: '黹', name: 'TRỈ', meaning: 'thêu thùa', pinyin: 'zhǐ' },
+        { radical: '玄', name: 'HUYỀN', meaning: 'đen', pinyin: 'xuán' },
+        { radical: '幺', name: 'YÊU', meaning: 'nhỏ', pinyin: 'yāo' },
+        { radical: '糸', name: 'MỊCH', meaning: 'tơ', pinyin: 'mì' },
+        { radical: '黃', name: 'HOÀNG', meaning: 'vàng', pinyin: 'huáng' },
+        { radical: '斤', name: 'CÂN', meaning: 'rìu', pinyin: 'jīn' },
+        { radical: '石', name: 'THẠCH', meaning: 'đá', pinyin: 'shí' },
+        { radical: '寸', name: 'THỐN', meaning: 'gang', pinyin: 'cùn' },
+        { radical: '二', name: 'NHỊ', meaning: 'hai', pinyin: 'èr' },
+        { radical: '八', name: 'BÁT', meaning: 'tám', pinyin: 'bā' },
+        { radical: '方', name: 'PHƯƠNG', meaning: 'vuông', pinyin: 'fāng' },
+        { radical: '十', name: 'THẬP', meaning: 'mười', pinyin: 'shí' }
+    ],
+    day4: [
+        { radical: '女', name: 'NỮ', meaning: 'con gái', pinyin: 'nǚ' },
+        { radical: '儿', name: 'NHÂN', meaning: 'chân người', pinyin: 'ér' },
+        { radical: '見', name: 'KIẾN', meaning: 'nhìn', pinyin: 'jiàn' },
+        { radical: '目', name: 'MỤC', meaning: 'mắt', pinyin: 'mù' },
+        { radical: '彳', name: 'XÍCH', meaning: 'dời chân đi', pinyin: 'chì' },
+        { radical: '支', name: 'CHI', meaning: 'tay cầm que', pinyin: 'zhī' },
+        { radical: '癶', name: 'BÁT', meaning: 'dạng chân', pinyin: 'bō' },
+        { radical: '厶', name: 'TỪ', meaning: 'công', pinyin: 'sī' },
+        { radical: '殳', name: 'THÙ', meaning: 'tay cầm búa', pinyin: 'shū' },
+        { radical: '气', name: 'KHÍ', meaning: 'không', pinyin: 'qì' },
+        { radical: '風', name: 'PHONG', meaning: 'gió', pinyin: 'fēng' },
+        { radical: '雨', name: 'VŨ', meaning: 'mưa', pinyin: 'yǔ' },
+        { radical: '齊', name: 'TỀ', meaning: 'đều', pinyin: 'qí' },
+        { radical: '鹿', name: 'LỘC', meaning: 'hươu', pinyin: 'lù' },
+        { radical: '馬', name: 'MÃ', meaning: 'ngựa', pinyin: 'mǎ' },
+        { radical: '豕', name: 'THỈ', meaning: 'heo', pinyin: 'shǐ' },
+        { radical: '生', name: 'SINH', meaning: 'sống', pinyin: 'shēng' },
+        { radical: '力', name: 'LỰC', meaning: 'khoẻ', pinyin: 'lì' },
+        { radical: '隶', name: 'ĐÃI', meaning: 'theo bắt về', pinyin: 'dài' },
+        { radical: '网', name: 'VÕNG', meaning: 'lưới', pinyin: 'wǎng' },
+        { radical: '舟', name: 'CHU', meaning: 'thuyền bè', pinyin: 'zhōu' },
+        { radical: '黑', name: 'HẮC', meaning: 'đen', pinyin: 'hēi' },
+        { radical: '白', name: 'BẠCH', meaning: 'trắng', pinyin: 'bái' },
+        { radical: '赤', name: 'XÍCH', meaning: 'đỏ', pinyin: 'chì' }
+    ],
+    day5: [
+        { radical: '夂', name: 'TRỈ', meaning: 'bàn chân', pinyin: 'zhǐ' },
+        { radical: '夊', name: 'TUY', meaning: 'rễ cây', pinyin: 'suī' },
+        { radical: '自', name: 'TỰ', meaning: 'từ', pinyin: 'zì' },
+        { radical: '鼻', name: 'TỴ', meaning: 'mũi', pinyin: 'bí' },
+        { radical: '耳', name: 'NHĨ', meaning: 'tai', pinyin: 'ěr' },
+        { radical: '首', name: 'THỦ', meaning: 'đầu', pinyin: 'shǒu' },
+        { radical: '青', name: 'THANH', meaning: 'xanh', pinyin: 'qīng' },
+        { radical: '艹', name: 'THẢO', meaning: 'cỏ', pinyin: 'cǎo' },
+        { radical: '色', name: 'SẮC', meaning: 'màu', pinyin: 'sè' },
+        { radical: '豸', name: 'TRĨ', meaning: 'loài hổ báo', pinyin: 'zhì' },
+        { radical: '彑', name: 'KỆ', meaning: 'đầu con heo', pinyin: 'jì' },
+        { radical: '鼠', name: 'THỬ', meaning: 'chuột', pinyin: 'shǔ' },
+        { radical: '香', name: 'HƯƠNG', meaning: 'thơm', pinyin: 'xiāng' },
+        { radical: '米', name: 'MỄ', meaning: 'gạo', pinyin: 'mǐ' },
+        { radical: '屮', name: 'TRIỆT', meaning: 'rêu', pinyin: 'chè' },
+        { radical: '用', name: 'DỤNG', meaning: 'dùng', pinyin: 'yòng' },
+        { radical: '斗', name: 'ĐẤU', meaning: 'cái đấu để đong', pinyin: 'dǒu' },
+        { radical: '干', name: 'CAN', meaning: 'lá chắn', pinyin: 'gān' },
+        { radical: '工', name: 'CÔNG', meaning: 'thợ thuyền', pinyin: 'gōng' },
+        { radical: '示', name: 'THỊ', meaning: 'bàn thờ cúng tổ tiên', pinyin: 'shì' },
+        { radical: '玉', name: 'NGỌC', meaning: 'đá quý', pinyin: 'yù' },
+        { radical: '貝', name: 'BỐI', meaning: 'tiền ngày xưa', pinyin: 'bèi' }
+    ],
+    day6: [
+        { radical: '食', name: 'Thực', meaning: 'đồ ăn', pinyin: 'shí' },
+        { radical: '鬥', name: 'Đấu', meaning: 'đánh nhau', pinyin: 'dòu' },
+        { radical: '矢', name: 'Thỉ', meaning: 'tên', pinyin: 'shǐ' },
+        { radical: '弓', name: 'Cùng', meaning: 'nỏ', pinyin: 'gōng' },
+        { radical: '矛', name: 'Mẫu', meaning: 'mẫu', pinyin: 'máo' },
+        { radical: '戈', name: 'Quà', meaning: 'đồng', pinyin: 'gē' },
+        { radical: '歹', name: 'Đãi', meaning: 'xương', pinyin: 'dǎi' },
+        { radical: '血', name: 'Huyết', meaning: 'máu', pinyin: 'xuè' },
+        { radical: '心', name: 'Tâm', meaning: 'lòng', pinyin: 'xīn' },
+        { radical: '身', name: 'Thân', meaning: 'mình', pinyin: 'shēn' },
+        { radical: '尸', name: 'Thi', meaning: 'xác', pinyin: 'shī' },
+        { radical: '鼎', name: 'Đỉnh', meaning: 'chung', pinyin: 'dǐng' },
+        { radical: '鬲', name: 'Cách', meaning: 'nồi', pinyin: 'gé' },
+        { radical: '欠', name: 'Khiếm', meaning: 'thiếu thốn', pinyin: 'qiàn' },
+        { radical: '臣', name: 'Thần', meaning: 'bầy tôi', pinyin: 'chén' },
+        { radical: '毋', name: 'Vô', meaning: 'đừng', pinyin: 'wú' },
+        { radical: '非', name: 'Phi', meaning: 'chớ', pinyin: 'fēi' },
+        { radical: '黽', name: 'Mãnh', meaning: 'ba ba', pinyin: 'mǐn' },
+        { radical: '禸', name: 'Nhữu', meaning: 'chân', pinyin: 'róu' },
+        { radical: '舌', name: 'Thiệt', meaning: 'lưỡi', pinyin: 'shé' },
+        { radical: '革', name: 'Cách', meaning: 'da', pinyin: 'gé' },
+        { radical: '麥', name: 'Mạch', meaning: 'mỳ', pinyin: 'mài' },
+        { radical: '禾', name: 'HÒA', meaning: 'lúa', pinyin: 'hé' },
+        { radical: '黍', name: 'Thử', meaning: 'cây ngô', pinyin: 'shǔ' },
+        { radical: '小', name: 'Tiểu', meaning: 'nhỏ', pinyin: 'xiǎo' },
+        { radical: '大', name: 'Đại', meaning: 'to', pinyin: 'dà' },
+        { radical: '爿', name: 'Tường', meaning: 'giường', pinyin: 'qiáng' },
+        { radical: '舛', name: 'Suyễn', meaning: 'dẫm', pinyin: 'chuǎn' },
+        { radical: '片', name: 'Phiến', meaning: 'tờ', pinyin: 'piàn' },
+        { radical: '韋', name: 'Vi', meaning: 'vây', pinyin: 'wéi' }
+    ],
+    day7: [
+        { radical: '豆', name: 'ĐẬU', meaning: 'bát đựng đồ thờ', pinyin: 'dòu' },
+        { radical: '鬯', name: 'SƯỞNG', meaning: 'chung rượu nghệ', pinyin: 'chàng' },
+        { radical: '酉', name: 'DẬU', meaning: 'vò rượu tằm', pinyin: 'yǒu' },
+        { radical: '衣', name: 'Y', meaning: 'áo', pinyin: 'yī' },
+        { radical: '巾', name: 'CÂN', meaning: 'khăn', pinyin: 'jīn' },
+        { radical: '又', name: 'HỰU', meaning: 'bàn tay phải', pinyin: 'yòu' },
+        { radical: '止', name: 'CHỈ', meaning: 'chân tạm dừng', pinyin: 'zhǐ' },
+        { radical: '乙', name: 'ẤT', meaning: 'chim én', pinyin: 'yǐ' },
+        { radical: '虫', name: 'TRÙNG', meaning: 'côn trùng', pinyin: 'chóng' },
+        { radical: '隹', name: 'CHUY', meaning: 'chim đuôi ngắn', pinyin: 'zhuī' },
+        { radical: '羽', name: 'VŨ', meaning: 'lông chim trời', pinyin: 'yǔ' },
+        { radical: '冂', name: 'QUYNH', meaning: 'vây 3 phía bên ngoài', pinyin: 'jiōng' },
+        { radical: '囗', name: 'VI', meaning: 'vây bốn phía', pinyin: 'wéi' },
+        { radical: '凵', name: 'KHẢM', meaning: 'hố sâu', pinyin: 'kǎn' },
+        { radical: '攴', name: 'PHỐC', meaning: 'đánh nhẹ', pinyin: 'pū' },
+        { radical: '采', name: 'THÁI', meaning: 'hái rau', pinyin: 'cǎi' },
+        { radical: '几', name: 'KỶ', meaning: 'bàn', pinyin: 'jǐ' },
+        { radical: '聿', name: 'DUẬT', meaning: 'bút', pinyin: 'yù' },
+        { radical: '辛', name: 'TÂN', meaning: 'dao hành hình', pinyin: 'xīn' }
+    ],
+    day8: [
+        { radical: '文', name: 'VĂN', meaning: 'chữ viết, văn minh', pinyin: 'wén' },
+        { radical: '艮', name: 'CẤN', meaning: 'quẻ Cấn, giống hình bát cơm', pinyin: 'gèn' },
+        { radical: '鬼', name: 'QUỶ', meaning: 'ma', pinyin: 'guǐ' },
+        { radical: '音', name: 'M', meaning: 'tiếng', pinyin: 'yīn' },
+        { radical: '鼓', name: 'CỔ', meaning: 'đánh trống', pinyin: 'gǔ' },
+        { radical: '龠', name: 'DƯỢC', meaning: 'cầm sáo chơi', pinyin: 'yuè' },
+        { radical: '氏', name: 'THỊ', meaning: 'họ của con người', pinyin: 'shì' },
+        { radical: '卜', name: 'BỐC', meaning: 'xem bói', pinyin: 'bǔ' },
+        { radical: '疒', name: 'NGẠCH', meaning: 'ốm đau', pinyin: 'nè' },
+        { radical: '彡', name: 'SAM', meaning: 'bóng', pinyin: 'shān' },
+        { radical: '爻', name: 'HÀO', meaning: 'vạch', pinyin: 'yáo' },
+        { radical: '襾', name: 'Á', meaning: 'che', pinyin: 'yà' },
+        { radical: '冖', name: 'MỊCH', meaning: 'phủ', pinyin: 'mì' },
+        { radical: '疋', name: 'SƠ', meaning: 'nghĩa nan', pinyin: 'pǐ' },
+        { radical: '亠', name: 'ĐẦU', meaning: 'nghĩa nan', pinyin: 'tóu' },
+        { radical: '丨', name: 'SỔ', meaning: 'nét đơn', pinyin: 'gǔn' },
+        { radical: '丿', name: 'PHẾT', meaning: 'nét đơn', pinyin: 'piě' },
+        { radical: '亅', name: 'MÓC', meaning: 'nét đơn', pinyin: 'jué' },
+        { radical: '丶', name: 'CHỦ', meaning: 'nét đơn', pinyin: 'zhǔ' },
+        { radical: '匸', name: 'HỄ', meaning: 'nét đôi', pinyin: 'xì' },
+        { radical: '匚', name: 'PHƯƠNG', meaning: 'nét đôi', pinyin: 'fāng' },
+        { radical: '冫', name: 'BĂNG', meaning: 'nét đôi', pinyin: 'bīng' },
+        { radical: '卩', name: 'TIẾT', meaning: 'nét đôi', pinyin: 'jié' },
+        { radical: '无', name: 'VÔ', meaning: 'không', pinyin: 'wú' },
+        { radical: '一', name: 'NHẤT', meaning: 'một', pinyin: 'yī' }
+    ]
+};
+
+// Get all radicals
+function getAllChineseRadicals() {
+    const all = [];
+    Object.keys(chineseRadicalsData).forEach(day => {
+        all.push(...chineseRadicalsData[day]);
+    });
+    return all;
+}
+
+// Get radicals by day
+function getRadicalsByDay(day) {
+    return chineseRadicalsData[`day${day}`] || [];
+}
+
+// Game 29: Chinese Radicals Memory
+function startChineseRadicalsGame() {
+    gameResults = { correct: [], wrong: [], questions: [] };
+    startTimer(600, () => {
+        stopGame();
+    });
+    nextChineseRadicalsQuestion();
+}
+
+function nextChineseRadicalsQuestion() {
+    const allRadicals = getAllChineseRadicals();
+    const selectedRadicals = [];
+    const count = 4 + Math.floor(Math.random() * 3); // 4-6 radicals
+    
+    // Select random radicals
+    const shuffled = [...allRadicals].sort(() => Math.random() - 0.5);
+    for (let i = 0; i < count && i < shuffled.length; i++) {
+        selectedRadicals.push(shuffled[i]);
+    }
+    
+    currentQuestion = { 
+        correct: selectedRadicals.map(r => `${r.radical}(${r.name})`).join(', '),
+        radicals: selectedRadicals,
+        type: 'chineseradicals' 
+    };
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Nhớ thứ tự các bộ thủ (${count} bộ, 8 giây để xem)</div>
+            <div id="radicals-display" style="text-align: center; margin: 2rem 0;">
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    ${selectedRadicals.map((radical, idx) => `
+                        <div style="padding: 1rem 1.5rem; background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); border-radius: 15px; color: white; font-size: 1.8rem; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.3); min-width: 120px;">
+                            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">${radical.radical}</div>
+                            <div style="font-size: 0.9rem; opacity: 0.9;">${idx + 1}. ${radical.name}</div>
+                            <div style="font-size: 0.8rem; opacity: 0.8;">${radical.meaning}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="font-size: 1.2rem; margin-top: 1rem; color: rgba(255,255,255,0.7);">Thời gian: <span id="radicals-countdown">8</span> giây</div>
+            </div>
+            <div id="radicals-input-section" style="display: none;">
+                <div class="question-label" style="margin-top: 2rem;">Điền thứ tự các bộ thủ (ví dụ: 木(MỘC), 水(THỦY), 火(HỎA))</div>
+                <div style="text-align: center; margin: 1rem 0; padding: 1rem; background: rgba(255,255,255,0.1); border-radius: 10px; font-size: 0.9rem;">
+                    <strong>Hướng dẫn:</strong> Nhập chữ Hán hoặc tên bộ thủ, phân cách bằng dấu phẩy
+                </div>
+                <div class="input-game-container">
+                    <input type="text" id="radicals-input" class="input-field" placeholder="Nhập: 木(MỘC), 水(THỦY)..." autofocus style="max-width: 700px; font-size: 1.2rem;">
+                    <button class="submit-btn" onclick="checkChineseRadicalsAnswer()">Kiểm tra</button>
+                </div>
+                <div id="radicals-feedback" style="text-align: center; margin-top: 1rem; font-size: 1.5rem; font-weight: bold;"></div>
+            </div>
+        </div>
+    `;
+    
+    // Countdown timer
+    let timeLeft = 8;
+    const countdownEl = document.getElementById('radicals-countdown');
+    const countdownInterval = setInterval(() => {
+        timeLeft--;
+        if (countdownEl) countdownEl.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(countdownInterval);
+        }
+    }, 1000);
+    
+    setTimeout(() => {
+        clearInterval(countdownInterval);
+        document.getElementById('radicals-display').innerHTML = '<div style="font-size: 2rem; color: rgba(255,255,255,0.3);">Nhập đáp án...</div>';
+        document.getElementById('radicals-input-section').style.display = 'block';
+        document.getElementById('radicals-input').focus();
+    }, 8000);
+}
+
+window.checkChineseRadicalsAnswer = function() {
+    const input = document.getElementById('radicals-input');
+    const feedback = document.getElementById('radicals-feedback');
+    if (!input || !feedback) return;
+    
+    let userAnswer = input.value.trim();
+    
+    // Normalize: remove spaces, convert to uppercase for names
+    userAnswer = userAnswer.replace(/\s+/g, '').toUpperCase();
+    
+    // Build correct answer in multiple formats for flexible checking
+    const correctFormats = [
+        currentQuestion.correct.replace(/\s+/g, '').toUpperCase(),
+        currentQuestion.radicals.map(r => r.radical).join(',').toUpperCase(),
+        currentQuestion.radicals.map(r => `${r.radical}(${r.name})`).join(',').replace(/\s+/g, '').toUpperCase(),
+        currentQuestion.radicals.map(r => r.name).join(',').toUpperCase()
+    ];
+    
+    let isCorrect = false;
+    for (const format of correctFormats) {
+        if (userAnswer === format) {
+            isCorrect = true;
+            break;
+        }
+    }
+    
+    // Also check if user entered just radicals in order
+    if (!isCorrect) {
+        const userRadicals = userAnswer.split(',').map(s => s.trim().replace(/[\(\)]/g, '').split('(')[0]);
+        const correctRadicals = currentQuestion.radicals.map(r => r.radical);
+        if (userRadicals.length === correctRadicals.length) {
+            isCorrect = userRadicals.every((r, i) => r === correctRadicals[i]);
+        }
+    }
+    
+    if (isCorrect) {
+        feedback.textContent = '✅ Đúng rồi!';
+        feedback.style.color = '#10b981';
+        handleCorrect(25);
+        input.disabled = true;
+        setTimeout(() => nextChineseRadicalsQuestion(), 1500);
+    } else {
+        feedback.textContent = `❌ Sai rồi! Đáp án đúng: ${currentQuestion.correct}`;
+        feedback.style.color = '#ef4444';
+        handleWrong();
+        input.value = '';
+        input.focus();
+        setTimeout(() => nextChineseRadicalsQuestion(), 3000);
+    }
+};
+
+// Game 30: Chinese Radicals by Day
+function startChineseRadicalsByDayGame() {
+    gameResults = { correct: [], wrong: [], questions: [] };
+    
+    // Show day selection first
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Chọn ngày học bộ thủ (1-8)</div>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 2rem 0;">
+                ${[1,2,3,4,5,6,7,8].map(day => `
+                    <div class="answer-option" data-day="${day}" style="cursor: pointer; padding: 2rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📅</div>
+                        <div style="font-size: 1.5rem; font-weight: bold;">Ngày ${day}</div>
+                        <div style="font-size: 0.9rem; opacity: 0.9; margin-top: 0.5rem;">${getRadicalsByDay(day).length} bộ thủ</div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const day = parseInt(this.dataset.day);
+            startTimer(600, () => {
+                stopGame();
+            });
+            nextChineseRadicalsByDayQuestion(day);
+        });
+    });
+}
+
+function nextChineseRadicalsByDayQuestion(day) {
+    const radicals = getRadicalsByDay(day);
+    if (radicals.length === 0) {
+        alert('Không tìm thấy bộ thủ cho ngày này!');
+        return;
+    }
+    
+    // Show poem first
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Bài thơ ngày ${day} - Nhớ các bộ thủ (10 giây)</div>
+            <div id="poem-display" style="text-align: center; margin: 2rem 0; padding: 2rem; background: rgba(220, 38, 38, 0.2); border-radius: 15px; border: 2px solid rgba(220, 38, 38, 0.4);">
+                <div style="font-size: 1.3rem; line-height: 2; color: #ffffff; font-weight: 600;">
+                    ${radicals.map(r => `<span style="display: inline-block; margin: 0.3rem; padding: 0.5rem 1rem; background: rgba(255,255,255,0.15); border-radius: 8px;"><span style="font-size: 1.8rem;">${r.radical}</span> <strong>${r.name}</strong> - ${r.meaning}</span>`).join('<br>')}
+                </div>
+                <div style="font-size: 1.2rem; margin-top: 1rem; color: rgba(255,255,255,0.7);">Thời gian: <span id="poem-countdown">10</span> giây</div>
+            </div>
+            <div id="poem-input-section" style="display: none;">
+                <div class="question-label" style="margin-top: 2rem;">Điền lại các bộ thủ theo thứ tự trong bài thơ</div>
+                <div class="input-game-container">
+                    <input type="text" id="poem-input" class="input-field" placeholder="Nhập: 木(MỘC), 水(THỦY)..." autofocus style="max-width: 700px; font-size: 1.2rem;">
+                    <button class="submit-btn" onclick="checkChineseRadicalsByDayAnswer(${day})">Kiểm tra</button>
+                </div>
+                <div id="poem-feedback" style="text-align: center; margin-top: 1rem; font-size: 1.5rem; font-weight: bold;"></div>
+            </div>
+        </div>
+    `;
+    
+    // Countdown
+    let timeLeft = 10;
+    const countdownEl = document.getElementById('poem-countdown');
+    const countdownInterval = setInterval(() => {
+        timeLeft--;
+        if (countdownEl) countdownEl.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(countdownInterval);
+        }
+    }, 1000);
+    
+    const correctAnswer = radicals.map(r => `${r.radical}(${r.name})`).join(', ');
+    currentQuestion = { correct: correctAnswer, radicals: radicals, type: 'chineseradicalsbyday', day: day };
+    
+    setTimeout(() => {
+        clearInterval(countdownInterval);
+        document.getElementById('poem-display').innerHTML = '<div style="font-size: 2rem; color: rgba(255,255,255,0.3);">Nhập đáp án...</div>';
+        document.getElementById('poem-input-section').style.display = 'block';
+        document.getElementById('poem-input').focus();
+    }, 10000);
+}
+
+window.checkChineseRadicalsByDayAnswer = function(day) {
+    const input = document.getElementById('poem-input');
+    const feedback = document.getElementById('poem-feedback');
+    if (!input || !feedback) return;
+    
+    let userAnswer = input.value.trim().replace(/\s+/g, '').toUpperCase();
+    const correctAnswer = currentQuestion.correct.replace(/\s+/g, '').toUpperCase();
+    
+    // Also check just radicals
+    const userRadicals = userAnswer.split(',').map(s => s.trim().replace(/[\(\)]/g, '').split('(')[0]);
+    const correctRadicals = currentQuestion.radicals.map(r => r.radical);
+    
+    let isCorrect = userAnswer === correctAnswer;
+    if (!isCorrect && userRadicals.length === correctRadicals.length) {
+        isCorrect = userRadicals.every((r, i) => r === correctRadicals[i]);
+    }
+    
+    if (isCorrect) {
+        feedback.textContent = '✅ Đúng rồi!';
+        feedback.style.color = '#10b981';
+        handleCorrect(30);
+        input.disabled = true;
+        setTimeout(() => nextChineseRadicalsByDayQuestion(day), 1500);
+    } else {
+        feedback.textContent = `❌ Sai rồi! Đáp án đúng: ${currentQuestion.correct}`;
+        feedback.style.color = '#ef4444';
+        handleWrong();
+        input.value = '';
+        input.focus();
+        setTimeout(() => nextChineseRadicalsByDayQuestion(day), 3000);
+    }
+};
