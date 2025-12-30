@@ -65,42 +65,112 @@ function updateRank() {
         rankEl.textContent = `${rank.emoji} ${rank.name}`;
         rankEl.className = `rank-badge ${rank.class}`;
         
-        // Check for rank up
+        // Check for rank up - show big celebration only at end or pause
         if (previousRank && rank.minScore > previousRank.minScore) {
             playSound('levelup');
-            setTimeout(() => {
-                showEncouragement(true);
-                const overlay = document.createElement('div');
-                overlay.className = 'encouragement-message';
-                overlay.innerHTML = `
-                    <div class="encouragement-emoji">🎉</div>
-                    <div class="encouragement-text">Thăng hạng! ${rank.emoji} ${rank.name}</div>
-                `;
-                document.body.appendChild(overlay);
-                setTimeout(() => overlay.remove(), 3000);
-            }, 500);
+            // Show small corner message during gameplay
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'encouragement-message';
+            messageDiv.innerHTML = `
+                <span class="encouragement-emoji">🎉</span>
+                <span class="encouragement-text">Thăng hạng!</span>
+            `;
+            document.body.appendChild(messageDiv);
+            setTimeout(() => messageDiv.remove(), 2000);
+            // Big celebration will be shown at game end
         }
         previousRank = rank;
     }
 }
 
 function showEncouragement(isCorrect) {
+    // Only show small corner message, no big overlays during gameplay
     const messages = isCorrect ? encouragementMessages.correct : encouragementMessages.wrong;
     const message = messages[Math.floor(Math.random() * messages.length)];
     
-    const overlay = document.createElement('div');
-    overlay.className = 'encouragement-message';
-    overlay.innerHTML = `
-        <div class="encouragement-emoji">${message.emoji}</div>
-        <div class="encouragement-text">${message.text}</div>
+    // Create small fireworks particles (subtle)
+    if (isCorrect) {
+        createSubtleFireworks();
+    }
+    
+    // Create small corner message (non-intrusive)
+    const messageDiv = document.createElement('div');
+    messageDiv.className = 'encouragement-message';
+    messageDiv.innerHTML = `
+        <span class="encouragement-emoji">${message.emoji}</span>
+        <span class="encouragement-text">${message.text}</span>
     `;
     
-    document.body.appendChild(overlay);
+    document.body.appendChild(messageDiv);
     
+    // Auto remove after animation
     setTimeout(() => {
-        overlay.style.animation = 'encouragementPop 0.3s ease reverse';
-        setTimeout(() => overlay.remove(), 300);
+        messageDiv.remove();
     }, 1500);
+}
+
+// Subtle fireworks for corner encouragement
+function createSubtleFireworks() {
+    const colors = ['#ec4899', '#8b5cf6', '#f9ca24'];
+    const centerX = window.innerWidth - 100;
+    const centerY = 100;
+    
+    // Create small subtle particles
+    for (let i = 0; i < 5; i++) {
+        const angle = (Math.PI * 2 * i) / 5;
+        const distance = 30 + Math.random() * 20;
+        const x = centerX + Math.cos(angle) * distance;
+        const y = centerY + Math.sin(angle) * distance;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        
+        const particle = document.createElement('div');
+        particle.className = 'firework-particle';
+        particle.style.left = x + 'px';
+        particle.style.top = y + 'px';
+        particle.style.width = '4px';
+        particle.style.height = '4px';
+        particle.style.backgroundColor = color;
+        particle.style.boxShadow = `0 0 5px ${color}`;
+        particle.style.animationDuration = '0.8s';
+        particle.style.animationDelay = (Math.random() * 0.2) + 's';
+        
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 1000);
+    }
+}
+
+function createFireworks() {
+    const colors = ['#ec4899', '#8b5cf6', '#6366f1', '#f9ca24', '#4ecdc4', '#ff6b6b'];
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 3;
+    
+    // Create multiple firework bursts
+    for (let i = 0; i < 3; i++) {
+        setTimeout(() => {
+            const angleStep = (Math.PI * 2) / 12;
+            for (let j = 0; j < 12; j++) {
+                const angle = j * angleStep;
+                const distance = 100 + Math.random() * 50;
+                const x = centerX + Math.cos(angle) * distance;
+                const y = centerY + Math.sin(angle) * distance;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                const particle = document.createElement('div');
+                particle.className = 'firework-particle';
+                particle.style.left = x + 'px';
+                particle.style.top = y + 'px';
+                particle.style.backgroundColor = color;
+                particle.style.boxShadow = `0 0 10px ${color}`;
+                
+                // Random delay for each particle
+                particle.style.animationDelay = (Math.random() * 0.3) + 's';
+                
+                document.body.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 1800);
+            }
+        }, i * 200);
+    }
 }
 
 // Game definitions - Must be defined after games.js is loaded
@@ -317,6 +387,47 @@ const games = [
         desc: 'Cộng 2 số từ hình ảnh',
         category: 'advanced',
         func: typeof startDoubleChallengeGame !== 'undefined' ? startDoubleChallengeGame : null
+    },
+    // SIÊU TRÍ NHỚ GAMES
+    {
+        id: '52-cards-memory',
+        title: '52 Lá Bài',
+        icon: '🃏',
+        desc: 'Nhớ thứ tự các lá bài và điền đáp án',
+        category: 'advanced',
+        func: typeof start52CardsMemoryGame !== 'undefined' ? start52CardsMemoryGame : null
+    },
+    {
+        id: 'binary-memory',
+        title: 'Số Nhị Phân',
+        icon: '🔢',
+        desc: 'Nhớ và chuyển đổi số nhị phân',
+        category: 'advanced',
+        func: typeof startBinaryMemoryGame !== 'undefined' ? startBinaryMemoryGame : null
+    },
+    {
+        id: 'number-sequence',
+        title: 'Dãy Số Ngẫu Nhiên',
+        icon: '🔢',
+        desc: 'Nhớ dãy số tự nhiên ngẫu nhiên',
+        category: 'advanced',
+        func: typeof startNumberSequenceGame !== 'undefined' ? startNumberSequenceGame : null
+    },
+    {
+        id: 'speed-numbers',
+        title: 'Siêu Tốc Số',
+        icon: '⚡',
+        desc: 'Nhớ 20 chữ số trong 5 giây (Siêu Trí Nhớ)',
+        category: 'advanced',
+        func: typeof startSpeedNumbersGame !== 'undefined' ? startSpeedNumbersGame : null
+    },
+    {
+        id: 'random-words',
+        title: 'Từ Ngẫu Nhiên',
+        icon: '📝',
+        desc: 'Nhớ thứ tự các từ ngẫu nhiên',
+        category: 'advanced',
+        func: typeof startRandomWordsGame !== 'undefined' ? startRandomWordsGame : null
     }
 ].filter(game => game.func !== null); // Filter out games with null functions
 
@@ -554,7 +665,28 @@ function startGame(game) {
         wrongCount = 0;
         updateGameStats();
         
-        // Start game
+        // Check if it's a Memory Palace game and show room selection
+        const memoryPalaceGames = ['memory-palace-az', 'memory-palace-advanced'];
+        if (memoryPalaceGames.includes(game.id) && typeof showLociRoomSelection === 'function') {
+            showLociRoomSelection((selectedRoom) => {
+                // Store selected room and start the game
+                selectedLociRoom = selectedRoom;
+                currentGame = game;
+                if (game.func && typeof game.func === 'function') {
+                    // Override getRandomLociRoom temporarily
+                    const originalGetRandom = window.getRandomLociRoom;
+                    window.getRandomLociRoom = function() { return selectedRoom; };
+                    game.func();
+                    // Restore after a short delay
+                    setTimeout(() => {
+                        window.getRandomLociRoom = originalGetRandom;
+                    }, 100);
+                }
+            });
+            return;
+        }
+        
+        // Start game normally
         currentGame = game;
         if (game.func && typeof game.func === 'function') {
             game.func();
@@ -804,6 +936,53 @@ function handleCorrect(points = 10) {
             showEncouragement(true);
         }, 2000);
     }
+}
+
+// Loci room selection state
+let selectedLociRoom = null;
+
+// Show loci room selection UI
+function showLociRoomSelection(onSelect) {
+    const letterRooms = getLetterLociRooms();
+    const container = document.getElementById('game-container');
+    
+    container.innerHTML = `
+        <div class="loci-selection-container">
+            <div class="loci-selection-title">🏰 Chọn phòng trong Cung Điện (theo thứ tự A-B-C-D...)</div>
+            <div class="loci-rooms-grid">
+                ${letterRooms.map(room => {
+                    const letter = room.match(/^([A-Z]) - /)[1];
+                    const name = room.replace(/^[A-Z] - /, '').replace('.jpg', '');
+                    return `
+                        <div class="loci-room-option" data-room="${room}">
+                            <img src="loci/${room}" alt="${name}">
+                            <div class="room-letter">${letter}</div>
+                            <div class="room-name">${name}</div>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        </div>
+    `;
+    
+    // Add click handlers
+    container.querySelectorAll('.loci-room-option').forEach(option => {
+        option.addEventListener('click', function() {
+            // Remove previous selection
+            container.querySelectorAll('.loci-room-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Select this room
+            this.classList.add('selected');
+            selectedLociRoom = this.dataset.room;
+            
+            // Call callback after short delay for visual feedback
+            setTimeout(() => {
+                if (onSelect) onSelect(selectedLociRoom);
+            }, 300);
+        });
+    });
 }
 
 // Handle wrong answer

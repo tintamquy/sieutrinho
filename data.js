@@ -139,20 +139,27 @@ function getRandomNumber() {
     return String(num).padStart(2, '0');
 }
 
-// Get random special code (Jb, Jc, etc.)
+// Get random special code (Jb, Jc, etc.) - ordered J, Q, K
 function getRandomSpecialCode() {
-    const specialCodes = ['Jb', 'Jc', 'Jr', 'Jt', 'Kb', 'Kc', 'Kr', 'Kt', 'Qb', 'Qc', 'Qr', 'Qt'];
+    // Order: J first, then Q, then K
+    const specialCodes = ['Jb', 'Jc', 'Jr', 'Jt', 'Qb', 'Qc', 'Qr', 'Qt', 'Kb', 'Kc', 'Kr', 'Kt'];
     return specialCodes[Math.floor(Math.random() * specialCodes.length)];
 }
 
-// Get all codes (numbers + special)
+// Get all codes (numbers + special) - ordered J, Q, K
 function getAllCodes() {
     const numbers = [];
     for (let i = 0; i < 100; i++) {
         numbers.push(String(i).padStart(2, '0'));
     }
-    const special = ['Jb', 'Jc', 'Jr', 'Jt', 'Kb', 'Kc', 'Kr', 'Kt', 'Qb', 'Qc', 'Qr', 'Qt'];
+    // Order: J first, then Q, then K
+    const special = ['Jb', 'Jc', 'Jr', 'Jt', 'Qb', 'Qc', 'Qr', 'Qt', 'Kb', 'Kc', 'Kr', 'Kt'];
     return [...numbers, ...special];
+}
+
+// Get special codes in order J, Q, K
+function getSpecialCodesInOrder() {
+    return ['Jb', 'Jc', 'Jr', 'Jt', 'Qb', 'Qc', 'Qr', 'Qt', 'Kb', 'Kc', 'Kr', 'Kt'];
 }
 
 // Get random code (can be number or special)
@@ -179,6 +186,19 @@ function getAllLociRooms() {
         'Y- Yoga room (Phòng yoga).jpg',
         'Z- Zen garden room (Phòng vườn Thiền).jpg'
     ];
+}
+
+// Get letter-based loci rooms in order (A, B, C, D, etc.)
+function getLetterLociRooms() {
+    const allRooms = getAllLociRooms();
+    return allRooms.filter(room => {
+        const match = room.match(/^([A-Z]) - /);
+        return match !== null;
+    }).sort((a, b) => {
+        const letterA = a.match(/^([A-Z]) - /)[1];
+        const letterB = b.match(/^([A-Z]) - /)[1];
+        return letterA.localeCompare(letterB);
+    });
 }
 
 // Get random loci room
