@@ -220,22 +220,28 @@ function getLetterLociRooms() {
 
 // Get all loci files (including numbered ones if they exist)
 function getAllLociFiles() {
-    // Check for numbered loci files (00.jpg, 01.jpg, etc.)
-    // These would be castle loci with numbers already assigned
-    const numberedLoci = [];
-    for (let i = 0; i < 100; i++) {
-        const num = String(i).padStart(2, '0');
-        numberedLoci.push({
-            file: `${num}.jpg`,
-            number: num,
-            type: 'numbered'
-        });
+    // Castle loci with numbers already assigned (from loci-gan-so folder)
+    const castleLoci = [
+        { file: 'Loci-00-20.jpg', folder: 'loci-gan-so', numbers: generateRange(0, 20), type: 'castle-range', name: 'Loci 00-20' },
+        { file: 'Loci-21-40.jpg', folder: 'loci-gan-so', numbers: generateRange(21, 40), type: 'castle-range', name: 'Loci 21-40' },
+        { file: 'Loci-41-60.jpg', folder: 'loci-gan-so', numbers: generateRange(41, 60), type: 'castle-range', name: 'Loci 41-60' },
+        { file: 'Loci-61-80.jpg', folder: 'loci-gan-so', numbers: generateRange(61, 80), type: 'castle-range', name: 'Loci 61-80' },
+        { file: 'Loci-81-99.jpg', folder: 'loci-gan-so', numbers: generateRange(81, 99), type: 'castle-range', name: 'Loci 81-99' },
+        { file: 'Loci-Jc-Kt.jpg', folder: 'loci-gan-so', numbers: ['Jc', 'Jr', 'Jt', 'Kb', 'Kc', 'Kr', 'Kt'], type: 'castle-special', name: 'Loci J-K Đặc Biệt' }
+    ];
+    
+    // Helper function to generate number range
+    function generateRange(start, end) {
+        const range = [];
+        for (let i = start; i <= end; i++) {
+            range.push(String(i).padStart(2, '0'));
+        }
+        return range;
     }
     
-    // Return all loci: numbered + range + letter rooms
     return {
-        numbered: numberedLoci, // 00-99.jpg (if exist)
-        ranges: ['00-20.jpg', '21-40.jpg', '41-60.jpg'],
+        castle: castleLoci,
+        ranges: ['00-20.jpg', '21-40.jpg', '41-60.jpg'], // Original range files
         letters: getAllLociRooms().filter(r => r.match(/^[A-Z] - /))
     };
 }

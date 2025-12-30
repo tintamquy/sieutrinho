@@ -49974,41 +49974,37 @@ function showLociCastleSelection() {
     const allLociFiles = getAllLociFiles();
     const availableLoci = [];
     
-    // Add numbered loci (00-99.jpg if they exist)
-    for (let i = 0; i < 100; i++) {
-        const num = String(i).padStart(2, '0');
-        availableLoci.push({
-            file: `${num}.jpg`,
-            number: num,
-            name: `Loci ${num}`,
-            type: 'numbered'
+    // Add castle loci from loci-gan-so folder (these have numbers already assigned)
+    if (allLociFiles.castle) {
+        allLociFiles.castle.forEach(loci => {
+            availableLoci.push({
+                file: loci.file,
+                folder: loci.folder,
+                numbers: loci.numbers,
+                name: loci.name,
+                type: loci.type
+            });
         });
     }
     
-    // Add range loci
+    // Add original range loci (from loci folder)
     availableLoci.push(
-        { file: '00-20.jpg', number: '00-20', name: 'Loci 00-20', type: 'range' },
-        { file: '21-40.jpg', number: '21-40', name: 'Loci 21-40', type: 'range' },
-        { file: '41-60.jpg', number: '41-60', name: 'Loci 41-60', type: 'range' }
+        { file: '00-20.jpg', folder: 'loci', numbers: generateRange(0, 20), name: 'Loci 00-20 (Cũ)', type: 'range' },
+        { file: '21-40.jpg', folder: 'loci', numbers: generateRange(21, 40), name: 'Loci 21-40 (Cũ)', type: 'range' },
+        { file: '41-60.jpg', folder: 'loci', numbers: generateRange(41, 60), name: 'Loci 41-60 (Cũ)', type: 'range' }
     );
     
-    // Add letter rooms
-    const letterRooms = getLetterLociRooms();
-    letterRooms.forEach(room => {
-        const match = room.match(/^([A-Z]) - (.+)/);
-        if (match) {
-            availableLoci.push({
-                file: room,
-                letter: match[1],
-                name: match[2].replace('.jpg', ''),
-                type: 'letter'
-            });
+    // Helper to generate number range
+    function generateRange(start, end) {
+        const range = [];
+        for (let i = start; i <= end; i++) {
+            range.push(String(i).padStart(2, '0'));
         }
-    });
+        return range;
+    }
     
-    // Filter to only show loci that might exist (numbered ones will be checked dynamically)
-    // For now, show ranges and letters
-    const displayLoci = availableLoci.filter(l => l.type === 'range' || l.type === 'letter');
+    // Display all available loci
+    const displayLoci = availableLoci;
     
     const container = document.getElementById('game-container');
     container.innerHTML = `
@@ -50017,19 +50013,15 @@ function showLociCastleSelection() {
             <div style="text-align: center; margin: 1rem 0; padding: 1rem; background: rgba(255,255,255,0.1); border-radius: 10px; font-size: 0.9rem;">
                 <strong>Lưu ý:</strong> Các loci đã gắn số sẵn sẽ được hiển thị khi có file
             </div>
-            <div class="loci-rooms-grid" style="grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));">
+            <div class="loci-rooms-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem;">
                 ${displayLoci.map(loci => `
-                    <div class="loci-room-option" data-file="${loci.file}" data-type="${loci.type}">
-                        ${loci.type === 'letter' ? `
-                            <img src="loci/${loci.file}" alt="${loci.name}" onerror="this.style.display='none'">
-                            <div class="room-letter">${loci.letter}</div>
-                            <div class="room-name">${loci.name}</div>
-                        ` : `
-                            <div style="width: 100%; height: 120px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; font-weight: bold; margin-bottom: 0.5rem;">
-                                ${loci.number}
-                            </div>
-                            <div class="room-name">${loci.name}</div>
-                        `}
+                    <div class="loci-room-option" data-file="${loci.file}" data-folder="${loci.folder || 'loci-gan-so'}" data-type="${loci.type}" data-numbers="${loci.numbers.join(',')}" style="cursor: pointer; padding: 1rem; background: rgba(255,255,255,0.1); border-radius: 15px; border: 2px solid rgba(255,255,255,0.2); transition: all 0.3s;">
+                        <img src="${loci.folder || 'loci-gan-so'}/${loci.file}" alt="${loci.name}" style="width: 100%; height: 120px; object-fit: cover; border-radius: 10px; margin-bottom: 0.5rem;" onerror="this.style.display='none'; this.parentElement.querySelector('.fallback').style.display='flex';">
+                        <div class="fallback" style="width: 100%; height: 120px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; display: none; align-items: center; justify-content: center; font-size: 1.5rem; color: white; font-weight: bold; margin-bottom: 0.5rem;">
+                            ${loci.name.replace(/^Loci /, '')}
+                        </div>
+                        <div class="room-name" style="font-weight: bold; text-align: center; color: white; font-size: 0.9rem;">${loci.name}</div>
+                        <div style="font-size: 0.75rem; text-align: center; color: rgba(255,255,255,0.7); margin-top: 0.3rem;">${loci.numbers.length} số</div>
                     </div>
                 `).join('')}
             </div>
@@ -50040,48 +50032,31 @@ function showLociCastleSelection() {
     container.querySelectorAll('.loci-room-option').forEach(option => {
         option.addEventListener('click', function() {
             const file = this.dataset.file;
+            const folder = this.dataset.folder || 'loci-gan-so';
             const type = this.dataset.type;
+            const numbers = this.dataset.numbers.split(',');
             
             // Remove previous selection
             container.querySelectorAll('.loci-room-option').forEach(opt => {
-                opt.classList.remove('selected');
+                opt.style.borderColor = 'rgba(255,255,255,0.2)';
+                opt.style.transform = 'scale(1)';
             });
             
             // Select this room
-            this.classList.add('selected');
+            this.style.borderColor = '#ec4899';
+            this.style.transform = 'scale(1.05)';
             
             // Start game with selected loci
             setTimeout(() => {
-                startLociCastleGameWithRoom(file, type);
+                startLociCastleGameWithRoom(file, folder, type, numbers);
             }, 300);
         });
     });
 }
 
-function startLociCastleGameWithRoom(lociFile, lociType) {
-    // Determine which numbers are in this loci
-    let numbers = [];
-    
-    if (lociType === 'numbered') {
-        // Single number loci (00.jpg = number 00)
-        const num = lociFile.replace('.jpg', '');
-        numbers = [num];
-    } else if (lociType === 'range') {
-        // Range loci (00-20.jpg = numbers 00-20)
-        const match = lociFile.match(/(\d+)-(\d+)/);
-        if (match) {
-            const start = parseInt(match[1]);
-            const end = parseInt(match[2]);
-            for (let i = start; i <= end; i++) {
-                numbers.push(String(i).padStart(2, '0'));
-            }
-        }
-    } else {
-        // Letter room - use all numbers
-        for (let i = 0; i < 100; i++) {
-            numbers.push(String(i).padStart(2, '0'));
-        }
-    }
+function startLociCastleGameWithRoom(lociFile, lociFolder, lociType, numbersArray) {
+    // Use provided numbers array
+    const numbers = numbersArray || [];
     
     // Generate question: show loci, ask which number
     const correctNum = numbers[Math.floor(Math.random() * numbers.length)];
@@ -50095,31 +50070,52 @@ function startLociCastleGameWithRoom(lociFile, lociType) {
     }
     const wrongNums = allNums.filter(n => n !== correctNum && !numbers.includes(n));
     const shuffled = wrongNums.sort(() => Math.random() - 0.5);
-    options.push(...shuffled.slice(0, 3));
+                options.push(...shuffled.slice(0, 3));
     const shuffledOptions = options.sort(() => Math.random() - 0.5);
     
-    currentQuestion = { correct: correctNum, type: 'loci-castle' };
+    // Get name for correct number
+    let correctName = '';
+    if (correctNum.length === 2 && /^\d+$/.test(correctNum)) {
+        correctName = getName(correctNum);
+    } else {
+        // Special code
+        const allCodes = getAllCodes();
+        const codeData = allCodes.find(c => c.code === correctNum);
+        correctName = codeData ? codeData.name : correctNum;
+    }
+    
+    currentQuestion = { correct: correctNum, type: 'loci-castle', name: correctName };
     
     const container = document.getElementById('game-container');
     container.innerHTML = `
         <div class="question-container">
-            <div class="question-label">Trong loci này, số nào được gắn ở vị trí này?</div>
-            <img src="loci/${lociFile}" alt="Loci Castle" class="question-image" style="max-width: 100%; height: auto; max-height: 400px; object-fit: contain;" onerror="this.src='loci/${lociFile.replace(/[^\/]*$/, '00-20.jpg')}'">
+            <div class="question-label">Trong loci này, số nào được gắn ở vị trí được đánh dấu?</div>
+            <img src="${lociFolder}/${lociFile}" alt="Loci Castle" class="question-image" style="max-width: 100%; height: auto; max-height: 450px; object-fit: contain; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);" onerror="this.src='${lociFolder}/${lociFile}'">
             <div style="text-align: center; margin-top: 1rem; padding: 1rem; background: rgba(255,255,255,0.1); border-radius: 10px;">
-                <div style="font-size: 1.1rem; color: rgba(255,255,255,0.9);">Loci: <strong>${lociFile.replace('.jpg', '')}</strong></div>
-                <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 0.5rem;">Các số trong loci này: ${numbers.slice(0, 10).join(', ')}${numbers.length > 10 ? '...' : ''}</div>
+                <div style="font-size: 1.1rem; color: rgba(255,255,255,0.9);">Loci: <strong>${lociFile.replace('.jpg', '').replace('Loci-', '')}</strong></div>
+                <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 0.5rem;">Các số trong loci này: ${numbers.slice(0, 15).join(', ')}${numbers.length > 15 ? '...' : ''}</div>
             </div>
         </div>
         <div class="answers-grid">
-            ${shuffledOptions.map(num => `
+            ${shuffledOptions.map(num => {
+                let name = '';
+                if (num.length === 2 && /^\d+$/.test(num)) {
+                    name = getName(num);
+                } else {
+                    const allCodes = getAllCodes();
+                    const codeData = allCodes.find(c => c.code === num);
+                    name = codeData ? codeData.name : num;
+                }
+                return `
                 <div class="answer-option" data-answer="${num}">
                     <div class="answer-number">${num}</div>
-                    <div style="font-size: 1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                    <div style="font-size: 1rem; margin-top: 0.5rem; opacity: 0.9;">${name}</div>
                 </div>
-            `).join('')}
+            `;
+            }).join('')}
         </div>
         <div style="text-align: center; margin-top: 2rem;">
-            <button class="btn-back" onclick="showLociCastleSelection()" style="background: var(--secondary); margin: 0 auto;">
+            <button class="btn-back" onclick="showLociCastleSelection()" style="background: var(--secondary); margin: 0 auto; padding: 0.8rem 2rem; font-size: 1rem;">
                 🔄 Chọn Loci Khác
             </button>
         </div>
@@ -50132,11 +50128,11 @@ function startLociCastleGameWithRoom(lociFile, lociType) {
             if (isCorrect) {
                 this.classList.add('correct');
                 handleCorrect(15);
-                setTimeout(() => startLociCastleGameWithRoom(lociFile, lociType), 1500);
+                setTimeout(() => startLociCastleGameWithRoom(lociFile, lociFolder, lociType, numbers), 1500);
             } else {
                 this.classList.add('wrong');
                 handleWrong();
-                setTimeout(() => startLociCastleGameWithRoom(lociFile, lociType), 1500);
+                setTimeout(() => startLociCastleGameWithRoom(lociFile, lociFolder, lociType, numbers), 1500);
             }
         });
     });
