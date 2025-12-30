@@ -49004,42 +49004,63 @@ function start52CardsMemoryGame() {
 }
 
 function next52CardsQuestion() {
-    const suits = ['♠', '♥', '♦', '♣'];
+    const suits = [
+        { emoji: '♠', code: 'b', name: 'Bích' },
+        { emoji: '♥', code: 'c', name: 'Cơ' },
+        { emoji: '♦', code: 'r', name: 'Rô' },
+        { emoji: '♣', code: 't', name: 'Tép' }
+    ];
     const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
     
     // Generate random sequence of cards
     const cardSequence = [];
+    const cardSequenceWithCodes = []; // For answer checking
     const usedCards = new Set();
     const sequenceLength = 5 + Math.floor(Math.random() * 4); // 5-8 cards
     
     while (cardSequence.length < sequenceLength) {
-        const suit = suits[Math.floor(Math.random() * suits.length)];
+        const suitObj = suits[Math.floor(Math.random() * suits.length)];
         const rank = ranks[Math.floor(Math.random() * ranks.length)];
-        const card = `${rank}${suit}`;
+        const card = `${rank}${suitObj.emoji}`;
+        const cardCode = `${rank}${suitObj.code}`;
         
         if (!usedCards.has(card)) {
             usedCards.add(card);
             cardSequence.push(card);
+            cardSequenceWithCodes.push(cardCode);
         }
     }
     
-    currentQuestion = { correct: cardSequence.join(', '), type: '52cards' };
+    // Store both formats for checking
+    currentQuestion = { 
+        correct: cardSequence.join(', '), 
+        correctCode: cardSequenceWithCodes.join(', '),
+        type: '52cards' 
+    };
     
     const container = document.getElementById('game-container');
     container.innerHTML = `
         <div class="question-container">
             <div class="question-label">Nhớ thứ tự các lá bài (${sequenceLength} lá, ${5} giây để xem)</div>
             <div id="cards-display" style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin: 2rem 0; min-height: 150px;">
-                ${cardSequence.map(card => `
-                    <div style="width: 60px; height: 90px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.3);">
-                        <div style="font-size: 1.5rem;">${card}</div>
-                    </div>
-                `).join('')}
+                ${cardSequence.map((card, idx) => {
+                    const suitObj = suits.find(s => card.includes(s.emoji));
+                    return `
+                        <div style="width: 70px; height: 100px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.3);">
+                            <div style="font-size: 1.5rem;">${card}</div>
+                            <div style="font-size: 0.7rem; margin-top: 0.3rem; opacity: 0.8;">${suitObj.name}</div>
+                        </div>
+                    `;
+                }).join('')}
             </div>
             <div id="cards-input-section" style="display: none;">
-                <div class="question-label" style="margin-top: 2rem;">Điền thứ tự các lá bài (ví dụ: A♠, 2♥, K♦)</div>
+                <div class="question-label" style="margin-top: 2rem;">Điền thứ tự các lá bài</div>
+                <div style="text-align: center; margin: 1rem 0; padding: 1rem; background: rgba(255,255,255,0.1); border-radius: 10px; font-size: 0.9rem;">
+                    <strong>Hướng dẫn:</strong> Dùng ký hiệu <strong>r=rô, c=cơ, b=bích, t=tép</strong><br>
+                    Ví dụ: <strong>A♠, 2♥, K♦</strong> hoặc <strong>Ab, 2c, Kr</strong>
+                </div>
                 <div class="input-game-container">
-                    <input type="text" id="cards-input" class="input-field" placeholder="Nhập thứ tự các lá bài" autofocus style="max-width: 600px; font-size: 1.2rem;">
+                    <input type="text" id="cards-input" class="input-field" placeholder="Nhập: A♠, 2♥, K♦ hoặc Ab, 2c, Kr" autofocus style="max-width: 600px; font-size: 1.2rem;">
                     <button class="submit-btn" onclick="check52CardsAnswer()">Kiểm tra</button>
                 </div>
                 <div id="cards-feedback" style="text-align: center; margin-top: 1rem; font-size: 1.5rem; font-weight: bold;"></div>
@@ -49060,8 +49081,18 @@ window.check52CardsAnswer = function() {
     const feedback = document.getElementById('cards-feedback');
     if (!input || !feedback) return;
     
-    const userAnswer = input.value.trim().replace(/\s+/g, '');
-    const correctAnswer = currentQuestion.correct.replace(/\s+/g, '');
+    // Normalize user input - convert emoji to codes
+    let userAnswer = input.value.trim();
+    
+    // Convert emoji suits to codes
+    userAnswer = userAnswer.replace(/♠/g, 'b');
+    userAnswer = userAnswer.replace(/♥/g, 'c');
+    userAnswer = userAnswer.replace(/♦/g, 'r');
+    userAnswer = userAnswer.replace(/♣/g, 't');
+    
+    // Remove spaces and normalize
+    userAnswer = userAnswer.replace(/\s+/g, '').toUpperCase();
+    const correctAnswer = currentQuestion.correctCode.replace(/\s+/g, '').toUpperCase();
     
     if (userAnswer === correctAnswer) {
         feedback.textContent = '✅ Đúng rồi!';
@@ -49198,19 +49229,22 @@ function nextNumberSequenceQuestion() {
     
     currentQuestion = { correct: sequence, type: 'numbersequence' };
     
+    const viewTime = length + 2;
+    
     const container = document.getElementById('game-container');
     container.innerHTML = `
         <div class="question-container">
-            <div class="question-label">Nhớ dãy số này (${length} chữ số, ${length + 2} giây để xem)</div>
+            <div class="question-label">Nhớ dãy số này (${length} chữ số, ${viewTime} giây để xem)</div>
             <div id="sequence-display" style="text-align: center; margin: 2rem 0;">
                 <div style="font-size: 4rem; font-weight: 900; color: #f9ca24; text-shadow: 2px 2px 8px rgba(0,0,0,0.8); font-family: 'Courier New', monospace; letter-spacing: 0.3em;">
                     ${sequence}
                 </div>
+                <div style="font-size: 1.2rem; margin-top: 1rem; color: rgba(255,255,255,0.7);">Thời gian: <span id="countdown">${viewTime}</span> giây</div>
             </div>
             <div id="sequence-input-section" style="display: none;">
-                <div class="question-label" style="margin-top: 2rem;">Điền lại dãy số bạn đã nhìn thấy</div>
+                <div class="question-label" style="margin-top: 2rem;">Điền lại dãy số ${length} chữ số bạn đã nhìn thấy</div>
                 <div class="input-game-container">
-                    <input type="text" id="sequence-input" class="input-field" placeholder="Nhập dãy số" autofocus maxlength="${length}" style="font-family: 'Courier New', monospace; font-size: 2rem; letter-spacing: 0.2em;">
+                    <input type="text" id="sequence-input" class="input-field" placeholder="Nhập ${length} chữ số" autofocus maxlength="${length}" style="font-family: 'Courier New', monospace; font-size: 2rem; letter-spacing: 0.2em;">
                     <button class="submit-btn" onclick="checkNumberSequenceAnswer()">Kiểm tra</button>
                 </div>
                 <div id="sequence-feedback" style="text-align: center; margin-top: 1rem; font-size: 1.5rem; font-weight: bold;"></div>
@@ -49218,18 +49252,28 @@ function nextNumberSequenceQuestion() {
         </div>
     `;
     
+    // Countdown timer
+    let timeLeft = viewTime;
+    const countdownEl = document.getElementById('countdown');
+    const countdownInterval = setInterval(() => {
+        timeLeft--;
+        if (countdownEl) countdownEl.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(countdownInterval);
+        }
+    }, 1000);
+    
     // Hide sequence after time
     setTimeout(() => {
-        document.getElementById('sequence-display').innerHTML = '<div style="font-size: 2rem; color: rgba(255,255,255,0.3);">???</div>';
+        clearInterval(countdownInterval);
+        document.getElementById('sequence-display').innerHTML = '<div style="font-size: 2rem; color: rgba(255,255,255,0.3);">Nhập đáp án...</div>';
         document.getElementById('sequence-input-section').style.display = 'block';
-        document.getElementById('sequence-input').focus();
-        
-        // Auto-focus on input and prevent non-numeric
         const input = document.getElementById('sequence-input');
+        input.focus();
         input.addEventListener('input', (e) => {
             e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, length);
         });
-    }, (length + 2) * 1000);
+    }, viewTime * 1000);
 }
 
 window.checkNumberSequenceAnswer = function() {
@@ -49364,11 +49408,15 @@ function nextRandomWordsQuestion() {
                         </div>
                     `).join('')}
                 </div>
+                <div style="font-size: 1.2rem; margin-top: 1rem; color: rgba(255,255,255,0.7);">Thời gian: <span id="words-countdown">5</span> giây</div>
             </div>
             <div id="words-input-section" style="display: none;">
                 <div class="question-label" style="margin-top: 2rem;">Điền thứ tự các từ (ví dụ: TÁO, BƯỞI, CAM)</div>
+                <div style="text-align: center; margin: 1rem 0; padding: 0.8rem; background: rgba(255,255,255,0.1); border-radius: 10px; font-size: 0.9rem;">
+                    <strong>Lưu ý:</strong> Nhập đúng thứ tự, phân cách bằng dấu phẩy
+                </div>
                 <div class="input-game-container">
-                    <input type="text" id="words-input" class="input-field" placeholder="Nhập thứ tự các từ" autofocus style="max-width: 600px; font-size: 1.2rem;">
+                    <input type="text" id="words-input" class="input-field" placeholder="Nhập: TÁO, BƯỞI, CAM..." autofocus style="max-width: 600px; font-size: 1.2rem;">
                     <button class="submit-btn" onclick="checkRandomWordsAnswer()">Kiểm tra</button>
                 </div>
                 <div id="words-feedback" style="text-align: center; margin-top: 1rem; font-size: 1.5rem; font-weight: bold;"></div>
@@ -49376,8 +49424,20 @@ function nextRandomWordsQuestion() {
         </div>
     `;
     
+    // Countdown timer
+    let timeLeft = 5;
+    const countdownEl = document.getElementById('words-countdown');
+    const countdownInterval = setInterval(() => {
+        timeLeft--;
+        if (countdownEl) countdownEl.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(countdownInterval);
+        }
+    }, 1000);
+    
     setTimeout(() => {
-        document.getElementById('words-display').innerHTML = '<div style="font-size: 2rem; color: rgba(255,255,255,0.3);">???</div>';
+        clearInterval(countdownInterval);
+        document.getElementById('words-display').innerHTML = '<div style="font-size: 2rem; color: rgba(255,255,255,0.3);">Nhập đáp án...</div>';
         document.getElementById('words-input-section').style.display = 'block';
         document.getElementById('words-input').focus();
     }, 5000);
