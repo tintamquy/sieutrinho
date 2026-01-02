@@ -260,22 +260,6 @@ const games = [
         func: typeof startReverseChallengeGame !== 'undefined' ? startReverseChallengeGame : null
     },
     {
-        id: 'room-explorer',
-        title: 'Khám Phá Phòng',
-        icon: '🚪',
-        desc: 'Khám phá các phòng ngẫu nhiên và ghi nhớ số',
-        category: 'intermediate',
-        func: typeof startRoomExplorerGame !== 'undefined' ? startRoomExplorerGame : null
-    },
-    {
-        id: 'story-builder',
-        title: 'Xây Dựng Câu Chuyện',
-        icon: '📖',
-        desc: 'Tạo câu chuyện từ các số để ghi nhớ dễ hơn',
-        category: 'intermediate',
-        func: typeof startStoryBuilderGame !== 'undefined' ? startStoryBuilderGame : null
-    },
-    {
         id: 'match-pairs',
         title: 'Ghép Đôi',
         icon: '🎯',
@@ -291,14 +275,6 @@ const games = [
         desc: 'Ghi nhớ và lặp lại chuỗi số theo thứ tự',
         category: 'advanced',
         func: typeof startSequenceMemoryGame !== 'undefined' ? startSequenceMemoryGame : null
-    },
-    {
-        id: 'pattern-recognition',
-        title: 'Nhận Diện Mẫu',
-        icon: '🔍',
-        desc: 'Tìm quy luật và mẫu trong dãy số',
-        category: 'advanced',
-        func: typeof startPatternRecognitionGame !== 'undefined' ? startPatternRecognitionGame : null
     },
     {
         id: 'special-codes',
@@ -366,22 +342,14 @@ const games = [
         category: 'advanced',
         func: typeof startRapidFireGame !== 'undefined' ? startRapidFireGame : null
     },
-    {
-        id: 'double-challenge',
-        title: 'Thử Thách Kép',
-        icon: '🎲',
-        desc: 'Cộng 2 số từ hình ảnh',
-        category: 'advanced',
-        func: typeof startDoubleChallengeGame !== 'undefined' ? startDoubleChallengeGame : null
-    },
     // SIÊU TRÍ NHỚ GAMES
     {
-        id: '52-cards-memory',
-        title: '52 Lá Bài',
-        icon: '🃏',
-        desc: 'Nhớ thứ tự các lá bài và điền đáp án',
+        id: 'binary-digits',
+        title: 'Số Nhị Phân',
+        icon: '🔢',
+        desc: 'Ghi nhớ 1200 số nhị phân ngẫu nhiên trong 3 phút',
         category: 'advanced',
-        func: typeof start52CardsMemoryGame !== 'undefined' ? start52CardsMemoryGame : null
+        func: typeof startBinaryDigitsGame !== 'undefined' ? startBinaryDigitsGame : null
     },
     {
         id: 'speed-numbers',
@@ -1057,6 +1025,16 @@ function restartCurrentGame() {
         wrongCount = 0;
         updateGameStats();
         gameResults = { correct: [], wrong: [], questions: [] };
+        
+        // Stop any running timers
+        if (gameTimer) {
+            clearInterval(gameTimer);
+            gameTimer = null;
+        }
+        
+        // Ensure we're on game screen
+        document.getElementById('homepage').classList.remove('active');
+        document.getElementById('game-screen').classList.add('active');
         
         // Restart the game
         currentGame.func();

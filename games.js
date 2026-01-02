@@ -50420,3 +50420,363 @@ window.checkMemoryPalaceAZAnswer = function() {
         };
     }
 })();
+
+// Game: Binary Digits Memory (1200 digits)
+function startBinaryDigitsGame() {
+    gameResults = { correct: [], wrong: [], questions: [] };
+    
+    // Generate 1200 random binary digits
+    const totalDigits = 1200;
+    const digitsPerRow = 30;
+    const blocksPerRow = 5;
+    const digitsPerBlock = 6;
+    const totalRows = Math.ceil(totalDigits / digitsPerRow); // 40 rows
+    
+    const binaryDigits = [];
+    for (let i = 0; i < totalDigits; i++) {
+        binaryDigits.push(Math.floor(Math.random() * 2)); // 0 or 1
+    }
+    
+    // Store for later
+    window.binaryDigitsData = {
+        digits: binaryDigits,
+        totalDigits: totalDigits,
+        digitsPerRow: digitsPerRow,
+        blocksPerRow: blocksPerRow,
+        digitsPerBlock: digitsPerBlock,
+        totalRows: totalRows,
+        memorizationStartTime: null,
+        recallStartTime: null
+    };
+    
+    // Start with 5 second countdown
+    showBinaryDigitsCountdown(5, binaryDigits, totalRows, digitsPerRow, blocksPerRow, digitsPerBlock);
+}
+
+function showBinaryDigitsCountdown(count, binaryDigits, totalRows, digitsPerRow, blocksPerRow, digitsPerBlock) {
+    const container = document.getElementById('game-container');
+    
+    container.innerHTML = `
+        <div class="question-container" style="text-align: center;">
+            <div style="font-size: 5rem; font-weight: 900; color: #f9ca24; text-shadow: 0 0 30px rgba(249, 202, 36, 0.8); margin: 3rem 0;">
+                ${count > 0 ? count : 'BẮT ĐẦU!'}
+            </div>
+            <div style="font-size: 2rem; color: #ffffff; margin-top: 2rem; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">
+                ${count > 0 ? 'Chuẩn bị...' : 'Bắt đầu ghi nhớ!'}
+            </div>
+        </div>
+    `;
+    
+    if (count > 0) {
+        setTimeout(() => {
+            showBinaryDigitsCountdown(count - 1, binaryDigits, totalRows, digitsPerRow, blocksPerRow, digitsPerBlock);
+        }, 1000);
+    } else {
+        setTimeout(() => {
+            showBinaryDigitsMemorization(binaryDigits, totalRows, digitsPerRow, blocksPerRow, digitsPerBlock);
+        }, 1000);
+    }
+}
+
+function showBinaryDigitsMemorization(binaryDigits, totalRows, digitsPerRow, blocksPerRow, digitsPerBlock) {
+    window.binaryDigitsData.memorizationStartTime = Date.now();
+    
+    // Start 3 minute timer
+    let timeLeft = 180; // 3 minutes = 180 seconds
+    const container = document.getElementById('game-container');
+    
+    const updateDisplay = () => {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        
+        // Build grid HTML
+        let gridHTML = '';
+        for (let row = 0; row < totalRows; row++) {
+            const rowStart = row * digitsPerRow;
+            const rowDigits = binaryDigits.slice(rowStart, rowStart + digitsPerRow);
+            
+            gridHTML += `<div style="display: flex; align-items: center; margin-bottom: 0.3rem;">`;
+            // Row number
+            gridHTML += `<div style="width: 50px; text-align: center; font-weight: bold; color: #4a90e2; background: rgba(74, 144, 226, 0.2); padding: 0.5rem; border-radius: 5px; margin-right: 0.5rem;">${row + 1}</div>`;
+            
+            // Blocks
+            for (let block = 0; block < blocksPerRow; block++) {
+                const blockStart = block * digitsPerBlock;
+                const blockDigits = rowDigits.slice(blockStart, blockStart + digitsPerBlock);
+                const blockHTML = blockDigits.map(d => `<span style="display: inline-block; width: 25px; text-align: center; font-family: 'Courier New', monospace; font-size: 1.2rem; font-weight: bold;">${d}</span>`).join(' ');
+                
+                gridHTML += `<div style="display: inline-block; padding: 0.5rem; margin-right: 0.5rem; background: rgba(255,255,255,0.1); border-radius: 5px;">${blockHTML}</div>`;
+            }
+            
+            gridHTML += `</div>`;
+        }
+        
+        container.innerHTML = `
+            <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                <div style="font-size: 1.5rem; font-weight: bold; color: #ffffff;">MEMORIZATION STAGE</div>
+                <div style="font-size: 2rem; font-weight: 900; color: #f9ca24; text-shadow: 0 0 20px rgba(249, 202, 36, 0.8);">
+                    ${timeString}
+                </div>
+                <button class="btn-back" onclick="startBinaryDigitsRecall()" style="background: var(--success); padding: 0.8rem 2rem; font-size: 1.2rem;">
+                    Điền Kết Quả
+                </button>
+            </div>
+            <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; max-height: 70vh; overflow-y: auto;">
+                <div style="text-align: center; margin-bottom: 1rem; font-size: 1.2rem; font-weight: bold; color: #ffffff;">Page 1</div>
+                <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
+                    ${Array.from({length: blocksPerRow}, (_, i) => `<div style="width: 120px; text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.15); border-radius: 5px; margin: 0 0.3rem; font-weight: bold; color: #ffffff;">${i + 1}</div>`).join('')}
+                </div>
+                ${gridHTML}
+            </div>
+        `;
+    };
+    
+    updateDisplay();
+    
+    const timer = setInterval(() => {
+        timeLeft--;
+        updateDisplay();
+        
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            startBinaryDigitsRecall();
+        }
+    }, 1000);
+    
+    window.binaryDigitsTimer = timer;
+}
+
+window.startBinaryDigitsRecall = function() {
+    if (window.binaryDigitsTimer) {
+        clearInterval(window.binaryDigitsTimer);
+        window.binaryDigitsTimer = null;
+    }
+    
+    window.binaryDigitsData.recallStartTime = Date.now();
+    const memorizationTime = (window.binaryDigitsData.recallStartTime - window.binaryDigitsData.memorizationStartTime) / 1000;
+    
+    const { digits, totalRows, digitsPerRow, blocksPerRow, digitsPerBlock } = window.binaryDigitsData;
+    
+    // Build recall grid with input fields
+    let gridHTML = '';
+    for (let row = 0; row < totalRows; row++) {
+        const rowStart = row * digitsPerRow;
+        
+        gridHTML += `<div style="display: flex; align-items: center; margin-bottom: 0.3rem;">`;
+        // Row number
+        gridHTML += `<div style="width: 50px; text-align: center; font-weight: bold; color: #4a90e2; background: rgba(74, 144, 226, 0.2); padding: 0.5rem; border-radius: 5px; margin-right: 0.5rem;">${row + 1}</div>`;
+        
+        // Blocks with input fields
+        for (let block = 0; block < blocksPerRow; block++) {
+            const blockStart = block * digitsPerBlock;
+            const blockIndex = rowStart + blockStart;
+            
+            let blockInputs = '';
+            for (let i = 0; i < digitsPerBlock; i++) {
+                const digitIndex = blockIndex + i;
+                if (digitIndex < digits.length) {
+                    blockInputs += `<input type="text" maxlength="1" class="binary-input" data-index="${digitIndex}" style="width: 25px; height: 30px; text-align: center; font-family: 'Courier New', monospace; font-size: 1.2rem; font-weight: bold; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: #ffffff; border-radius: 3px; margin: 0 2px;" oninput="this.value = this.value.replace(/[^01]/g, '')">`;
+                }
+            }
+            
+            gridHTML += `<div style="display: inline-block; padding: 0.5rem; margin-right: 0.5rem; background: rgba(255,255,255,0.1); border-radius: 5px;">${blockInputs}</div>`;
+        }
+        
+        gridHTML += `</div>`;
+    }
+    
+    let recallTime = 0;
+    const recallTimer = setInterval(() => {
+        recallTime++;
+    }, 1000);
+    window.binaryDigitsRecallTimer = recallTimer;
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div style="background: rgba(239, 68, 68, 0.3); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 1.5rem; font-weight: bold; color: #ffffff;">RECALL STAGE</div>
+            <div id="recall-timer" style="font-size: 2rem; font-weight: 900; color: #ef4444; text-shadow: 0 0 20px rgba(239, 68, 68, 0.8);">
+                0:00:00
+            </div>
+            <button class="btn-back" onclick="finishBinaryDigitsRecall()" style="background: var(--primary); padding: 0.8rem 2rem; font-size: 1.2rem;">
+                Hoàn Thành
+            </button>
+        </div>
+        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; max-height: 70vh; overflow-y: auto;">
+            <div style="text-align: center; margin-bottom: 1rem; font-size: 1.2rem; font-weight: bold; color: #ffffff;">Page 1</div>
+            <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
+                ${Array.from({length: blocksPerRow}, (_, i) => `<div style="width: 120px; text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.15); border-radius: 5px; margin: 0 0.3rem; font-weight: bold; color: #ffffff;">${i + 1}</div>`).join('')}
+            </div>
+            ${gridHTML}
+        </div>
+    `;
+    
+    // Update recall timer display
+    const updateRecallTimer = () => {
+        const hours = Math.floor(recallTime / 3600);
+        const minutes = Math.floor((recallTime % 3600) / 60);
+        const seconds = recallTime % 60;
+        const timerEl = document.getElementById('recall-timer');
+        if (timerEl) {
+            timerEl.textContent = `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+    };
+    
+    const recallTimerDisplay = setInterval(updateRecallTimer, 1000);
+    window.binaryDigitsRecallTimerDisplay = recallTimerDisplay;
+    
+    // Auto-focus first input
+    setTimeout(() => {
+        const firstInput = container.querySelector('.binary-input');
+        if (firstInput) firstInput.focus();
+    }, 100);
+};
+
+window.finishBinaryDigitsRecall = function() {
+    if (window.binaryDigitsRecallTimer) {
+        clearInterval(window.binaryDigitsRecallTimer);
+    }
+    if (window.binaryDigitsRecallTimerDisplay) {
+        clearInterval(window.binaryDigitsRecallTimerDisplay);
+    }
+    
+    const recallTime = (Date.now() - window.binaryDigitsData.recallStartTime) / 1000;
+    const memorizationTime = (window.binaryDigitsData.recallStartTime - window.binaryDigitsData.memorizationStartTime) / 1000;
+    
+    const { digits } = window.binaryDigitsData;
+    const inputs = document.querySelectorAll('.binary-input');
+    
+    // Collect user answers
+    const userAnswers = Array(digits.length).fill('');
+    inputs.forEach(input => {
+        const index = parseInt(input.dataset.index);
+        userAnswers[index] = input.value || '';
+    });
+    
+    // Calculate score
+    let correctCount = 0;
+    let totalDigits = digits.length;
+    
+    for (let i = 0; i < digits.length; i++) {
+        if (userAnswers[i] === digits[i].toString()) {
+            correctCount++;
+        }
+    }
+    
+    const score = Math.round((correctCount / totalDigits) * 100);
+    const points = correctCount * 2; // 2 points per correct digit
+    
+    // Update game stats
+    gameScore += points;
+    correctCount = correctCount;
+    wrongCount = totalDigits - correctCount;
+    totalScore += points;
+    saveScores();
+    updateGameStats();
+    
+    // Show results
+    showBinaryDigitsResults(digits, userAnswers, score, points, memorizationTime, recallTime);
+};
+
+function showBinaryDigitsResults(correctDigits, userAnswers, score, points, memorizationTime, recallTime) {
+    const { totalRows, digitsPerRow, blocksPerRow, digitsPerBlock } = window.binaryDigitsData;
+    
+    // Build results grid
+    let gridHTML = '';
+    for (let row = 0; row < totalRows; row++) {
+        const rowStart = row * digitsPerRow;
+        
+        gridHTML += `<div style="display: flex; align-items: center; margin-bottom: 0.3rem;">`;
+        // Row number
+        gridHTML += `<div style="width: 50px; text-align: center; font-weight: bold; color: #4a90e2; background: rgba(74, 144, 226, 0.2); padding: 0.5rem; border-radius: 5px; margin-right: 0.5rem;">${row + 1}</div>`;
+        
+        // Blocks with results
+        for (let block = 0; block < blocksPerRow; block++) {
+            const blockStart = block * digitsPerBlock;
+            const blockIndex = rowStart + blockStart;
+            
+            let blockCells = '';
+            let rowCorrect = 0;
+            for (let i = 0; i < digitsPerBlock; i++) {
+                const digitIndex = blockIndex + i;
+                if (digitIndex < correctDigits.length) {
+                    const correct = correctDigits[digitIndex];
+                    const user = userAnswers[digitIndex] || '';
+                    const isCorrect = user === correct.toString();
+                    if (isCorrect) rowCorrect++;
+                    
+                    const bgColor = isCorrect ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)';
+                    const borderColor = isCorrect ? '#10b981' : '#ef4444';
+                    
+                    blockCells += `<div style="display: inline-block; width: 25px; height: 40px; text-align: center; font-family: 'Courier New', monospace; font-size: 1rem; font-weight: bold; border: 2px solid ${borderColor}; background: ${bgColor}; color: #ffffff; border-radius: 3px; margin: 0 2px; padding-top: 2px;">
+                        <div style="font-size: 0.7rem; opacity: 0.8;">${correct}</div>
+                        <div style="font-size: 0.9rem;">${user || '-'}</div>
+                    </div>`;
+                }
+            }
+            
+            gridHTML += `<div style="display: inline-block; padding: 0.5rem; margin-right: 0.5rem; background: rgba(255,255,255,0.1); border-radius: 5px;">${blockCells}</div>`;
+        }
+        
+        // Row score
+        let rowScore = 0;
+        for (let i = row * digitsPerRow; i < (row + 1) * digitsPerRow && i < correctDigits.length; i++) {
+            if (userAnswers[i] === correctDigits[i].toString()) {
+                rowScore++;
+            }
+        }
+        gridHTML += `<div style="width: 60px; text-align: center; font-weight: bold; color: #f9ca24; background: rgba(249, 202, 36, 0.2); padding: 0.5rem; border-radius: 5px; margin-left: 0.5rem;">${rowScore}</div>`;
+        
+        gridHTML += `</div>`;
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="game-results">
+            <h2 style="text-align: center; font-size: 3rem; color: #ffffff; margin-bottom: 2rem; text-shadow: 3px 3px 8px rgba(0,0,0,0.8);">
+                🎉 Kết Quả Game
+            </h2>
+            
+            <div style="background: rgba(255,255,255,0.2); padding: 2rem; border-radius: 15px; margin-bottom: 2rem;">
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <div style="font-size: 1.5rem; color: #ef4444; font-weight: bold; margin-bottom: 0.5rem;">SCORE</div>
+                    <div style="font-size: 4rem; color: #ef4444; font-weight: 900; text-shadow: 0 0 30px rgba(239, 68, 68, 0.8);">${points}</div>
+                </div>
+                <div style="display: flex; justify-content: space-around; margin-top: 1.5rem;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 1rem; color: rgba(255,255,255,0.8); margin-bottom: 0.5rem;">Memorization Time (sec.)</div>
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #ffffff;">${memorizationTime.toFixed(2)}</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1rem; color: rgba(255,255,255,0.8); margin-bottom: 0.5rem;">Recall Time (sec.)</div>
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #ffffff;">${recallTime.toFixed(2)}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; max-height: 60vh; overflow-y: auto; margin-bottom: 2rem;">
+                <div style="text-align: center; margin-bottom: 1rem; font-size: 1.2rem; font-weight: bold; color: #ffffff;">Page 1</div>
+                <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
+                    ${Array.from({length: blocksPerRow}, (_, i) => `<div style="width: 120px; text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.15); border-radius: 5px; margin: 0 0.3rem; font-weight: bold; color: #ffffff;">${i + 1}</div>`).join('')}
+                    <div style="width: 60px; text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.15); border-radius: 5px; margin: 0 0.3rem; font-weight: bold; color: #ffffff;">Score</div>
+                </div>
+                ${gridHTML}
+                <div style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: rgba(255,255,255,0.7);">
+                    Question is written at the top of each cell and your answer at the bottom.
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn-back" onclick="restartCurrentGame()" style="background: var(--success); font-size: 1.2rem; padding: 1rem 2rem;">
+                    🔄 Chơi Lại
+                </button>
+                <button class="btn-back" onclick="showHomepage()" style="background: var(--primary); font-size: 1.2rem; padding: 1rem 2rem;">
+                    🏠 Về Trang Chủ
+                </button>
+            </div>
+        </div>
+    `;
+    
+    handleCorrect(points);
+};
