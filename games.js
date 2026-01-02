@@ -16294,7 +16294,8 @@ function nextDoubleChallengeQuestion() {
 
 // Game 5: Memory Palace
 function startMemoryPalaceGame() {
-    startTimer(180, () => {
+    gameResults = { correct: [], wrong: [], questions: [] };
+    startTimer(300, () => {
         stopGame();
     });
     
@@ -16307,44 +16308,101 @@ function startMemoryPalaceGame() {
         numbers.push(getRandomNumber());
     }
     
+    // Store numbers for later
+    window.memoryPalaceNumbers = numbers;
+    window.memoryPalaceLoci = selectedLoci;
+    
+    // Start slideshow
+    showMemoryPalaceSlides(numbers, selectedLoci, 0);
+}
+
+function showMemoryPalaceSlides(numbers, lociImage, currentIndex) {
     const container = document.getElementById('game-container');
+    const imagePath = getImagePath(numbers[currentIndex]);
+    const number = numbers[currentIndex];
+    const name = getName(number);
+    
     container.innerHTML = `
         <div class="question-container">
-            <div class="question-label">Gắn các số vào căn phòng trong cung điện</div>
-            <img src="loci/${selectedLoci}" alt="Memory Palace" class="question-image" style="max-width: 600px;">
-        </div>
-        <div class="palace-container">
-            ${numbers.map((num, index) => {
-                const imagePath = getImagePath(num);
-                return `
-                    <div class="palace-room" data-number="${num}" data-index="${index}">
-                        <img src="${imagePath}" alt="${getName(num)}" class="palace-image">
-                        <div class="palace-number">${num}</div>
-                    </div>
-                `;
-            }).join('')}
-        </div>
-        <div style="text-align: center; margin-top: 2rem;">
-            <div class="question-label">Nhấp vào từng phòng để xem số và ghi nhớ vị trí</div>
+            <div class="question-label">Xem slide ${currentIndex + 1}/${numbers.length} (3 giây mỗi slide)</div>
+            <img src="loci/${lociImage}" alt="Memory Palace" class="question-image" style="max-width: 600px; height: 350px; object-fit: contain; margin-bottom: 1rem;">
+            <div style="position: relative; display: inline-block;">
+                <img src="${imagePath}" alt="${name}" class="question-image" style="max-width: 400px; height: 300px; object-fit: contain;">
+                <div style="position: absolute; top: 10px; right: 10px; background: rgba(236, 72, 153, 0.9); color: white; padding: 1rem 1.5rem; border-radius: 15px; font-size: 2.5rem; font-weight: 900; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+                    ${number}
+                </div>
+            </div>
         </div>
     `;
     
-    // Add click to show/hide number
-    container.querySelectorAll('.palace-room').forEach(room => {
-        room.addEventListener('click', function() {
-            const numberEl = this.querySelector('.palace-number');
-            if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
-                numberEl.style.opacity = '1';
-                numberEl.style.transform = 'scale(1.2)';
-                setTimeout(() => {
-                    numberEl.style.transform = 'scale(1)';
-                }, 300);
-            } else {
-                numberEl.style.opacity = '0';
+    // Move to next slide or show input
+    if (currentIndex < numbers.length - 1) {
+        setTimeout(() => {
+            showMemoryPalaceSlides(numbers, lociImage, currentIndex + 1);
+        }, 3000);
+    } else {
+        // All slides shown, now hide and ask for input
+        setTimeout(() => {
+            showMemoryPalaceInput(numbers, lociImage);
+        }, 3000);
+    }
+}
+
+function showMemoryPalaceInput(numbers, lociImage) {
+    const container = document.getElementById('game-container');
+    const shuffledNumbers = [...numbers].sort(() => Math.random() - 0.5);
+    
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Điền các số đã xuất hiện trên các slide (${numbers.length} số)</div>
+            <img src="loci/${lociImage}" alt="Memory Palace" class="question-image" style="max-width: 600px; height: 350px; object-fit: contain; opacity: 0.3; margin-bottom: 1rem;">
+            <div class="input-game-container">
+                <input type="text" id="palace-input" class="input-field" placeholder="Nhập các số cách nhau bởi dấu phẩy (ví dụ: 00, 01, 02)" autofocus style="max-width: 600px; font-size: 1.5rem;">
+                <button class="submit-btn" onclick="checkMemoryPalaceAnswer()">Kiểm tra</button>
+            </div>
+            <div id="palace-feedback" style="text-align: center; margin-top: 1rem; font-size: 1.5rem; font-weight: bold;"></div>
+        </div>
+    `;
+    
+    const input = document.getElementById('palace-input');
+    if (input) {
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkMemoryPalaceAnswer();
             }
         });
-    });
+    }
 }
+
+window.checkMemoryPalaceAnswer = function() {
+    const input = document.getElementById('palace-input');
+    const feedback = document.getElementById('palace-feedback');
+    if (!input || !feedback) return;
+    
+    const userAnswer = input.value.trim().split(',').map(s => s.trim().padStart(2, '0')).sort();
+    const correctAnswer = window.memoryPalaceNumbers.map(n => n.padStart(2, '0')).sort();
+    
+    const isCorrect = JSON.stringify(userAnswer) === JSON.stringify(correctAnswer);
+    
+    if (isCorrect) {
+        feedback.textContent = '✅ Đúng rồi! Tất cả các số đều chính xác!';
+        feedback.style.color = '#10b981';
+        handleCorrect(20);
+        input.disabled = true;
+        setTimeout(() => {
+            startMemoryPalaceGame();
+        }, 2000);
+    } else {
+        feedback.textContent = `❌ Sai rồi! Đáp án đúng: ${window.memoryPalaceNumbers.join(', ')}`;
+        feedback.style.color = '#ef4444';
+        handleWrong('Điền các số đã xuất hiện?', userAnswer.join(', '), window.memoryPalaceNumbers.join(', '));
+        input.value = '';
+        input.focus();
+        setTimeout(() => {
+            startMemoryPalaceGame();
+        }, 3000);
+    }
+};
 
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
@@ -50137,3 +50195,228 @@ function startLociCastleGameWithRoom(lociFile, lociFolder, lociType, numbersArra
         });
     });
 }
+
+// Memory Palace Advanced - Slideshow Helper Functions
+window.showMemoryPalaceAdvancedSlides = function(numbers, lociImage, currentIndex) {
+    const container = document.getElementById('game-container');
+    const code = numbers[currentIndex];
+    const imagePath = getImagePath(code);
+    const name = getName(code);
+    
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Xem slide ${currentIndex + 1}/${numbers.length} (3 giây mỗi slide)</div>
+            <img src="loci/${lociImage}" alt="Memory Palace" class="question-image" style="max-width: 600px; height: 350px; object-fit: contain; margin-bottom: 1rem;">
+            <div style="position: relative; display: inline-block;">
+                <img src="${imagePath}" alt="${name}" class="question-image" style="max-width: 400px; height: 300px; object-fit: contain;">
+                <div style="position: absolute; top: 10px; right: 10px; background: rgba(236, 72, 153, 0.9); color: white; padding: 1rem 1.5rem; border-radius: 15px; font-size: 2.5rem; font-weight: 900; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+                    ${code}
+                </div>
+            </div>
+        </div>
+    `;
+    
+    if (currentIndex < numbers.length - 1) {
+        setTimeout(() => {
+            showMemoryPalaceAdvancedSlides(numbers, lociImage, currentIndex + 1);
+        }, 3000);
+    } else {
+        setTimeout(() => {
+            showMemoryPalaceAdvancedInput(numbers, lociImage);
+        }, 3000);
+    }
+};
+
+window.showMemoryPalaceAdvancedInput = function(numbers, lociImage) {
+    const container = document.getElementById('game-container');
+    
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Điền các mã đã xuất hiện trên các slide (${numbers.length} mã)</div>
+            <img src="loci/${lociImage}" alt="Memory Palace" class="question-image" style="max-width: 600px; height: 350px; object-fit: contain; opacity: 0.3; margin-bottom: 1rem;">
+            <div class="input-game-container">
+                <input type="text" id="palace-advanced-input" class="input-field" placeholder="Nhập các mã cách nhau bởi dấu phẩy (ví dụ: 00, 01, Jb)" autofocus style="max-width: 600px; font-size: 1.5rem;">
+                <button class="submit-btn" onclick="checkMemoryPalaceAdvancedAnswer()">Kiểm tra</button>
+            </div>
+            <div id="palace-advanced-feedback" style="text-align: center; margin-top: 1rem; font-size: 1.5rem; font-weight: bold;"></div>
+        </div>
+    `;
+    
+    const input = document.getElementById('palace-advanced-input');
+    if (input) {
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkMemoryPalaceAdvancedAnswer();
+            }
+        });
+    }
+};
+
+window.checkMemoryPalaceAdvancedAnswer = function() {
+    const input = document.getElementById('palace-advanced-input');
+    const feedback = document.getElementById('palace-advanced-feedback');
+    if (!input || !feedback) return;
+    
+    const userAnswer = input.value.trim().split(',').map(s => s.trim()).sort();
+    const correctAnswer = [...window.memoryPalaceAdvancedNumbers].sort();
+    
+    const isCorrect = JSON.stringify(userAnswer) === JSON.stringify(correctAnswer);
+    
+    if (isCorrect) {
+        feedback.textContent = '✅ Đúng rồi! Tất cả các mã đều chính xác!';
+        feedback.style.color = '#10b981';
+        handleCorrect(25);
+        input.disabled = true;
+        setTimeout(() => {
+            startMemoryPalaceAdvancedGame();
+        }, 2000);
+    } else {
+        feedback.textContent = `❌ Sai rồi! Đáp án đúng: ${window.memoryPalaceAdvancedNumbers.join(', ')}`;
+        feedback.style.color = '#ef4444';
+        handleWrong('Điền các mã đã xuất hiện?', userAnswer.join(', '), window.memoryPalaceAdvancedNumbers.join(', '));
+        input.value = '';
+        input.focus();
+        setTimeout(() => {
+            startMemoryPalaceAdvancedGame();
+        }, 3000);
+    }
+};
+
+// Memory Palace A-Z - Slideshow Helper Functions
+window.showMemoryPalaceAZSlides = function(numbers, lociImage, currentIndex) {
+    const container = document.getElementById('game-container');
+    const code = numbers[currentIndex];
+    const imagePath = getImagePath(code);
+    const name = getName(code);
+    const roomName = lociImage.replace('.jpg', '').replace(/^[A-Z] - /, '');
+    
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Cung Điện A-Z: Slide ${currentIndex + 1}/${numbers.length} - Phòng ${roomName} (3 giây mỗi slide)</div>
+            <img src="loci/${lociImage}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain; margin-bottom: 1rem;">
+            <div style="position: relative; display: inline-block;">
+                <img src="${imagePath}" alt="${name}" class="question-image" style="max-width: 400px; height: 300px; object-fit: contain;">
+                <div style="position: absolute; top: 10px; right: 10px; background: rgba(236, 72, 153, 0.9); color: white; padding: 1rem 1.5rem; border-radius: 15px; font-size: 2.5rem; font-weight: 900; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+                    ${code}
+                </div>
+            </div>
+        </div>
+    `;
+    
+    if (currentIndex < numbers.length - 1) {
+        setTimeout(() => {
+            showMemoryPalaceAZSlides(numbers, lociImage, currentIndex + 1);
+        }, 3000);
+    } else {
+        setTimeout(() => {
+            showMemoryPalaceAZInput(numbers, lociImage);
+        }, 3000);
+    }
+};
+
+window.showMemoryPalaceAZInput = function(numbers, lociImage) {
+    const container = document.getElementById('game-container');
+    const roomName = lociImage.replace('.jpg', '').replace(/^[A-Z] - /, '');
+    
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Điền các mã đã xuất hiện trong phòng ${roomName} (${numbers.length} mã)</div>
+            <img src="loci/${lociImage}" alt="Memory Palace" class="question-image" style="max-width: 700px; height: 350px; object-fit: contain; opacity: 0.3; margin-bottom: 1rem;">
+            <div class="input-game-container">
+                <input type="text" id="palace-az-input" class="input-field" placeholder="Nhập các mã cách nhau bởi dấu phẩy (ví dụ: 00, 01, Jb)" autofocus style="max-width: 600px; font-size: 1.5rem;">
+                <button class="submit-btn" onclick="checkMemoryPalaceAZAnswer()">Kiểm tra</button>
+            </div>
+            <div id="palace-az-feedback" style="text-align: center; margin-top: 1rem; font-size: 1.5rem; font-weight: bold;"></div>
+        </div>
+    `;
+    
+    const input = document.getElementById('palace-az-input');
+    if (input) {
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkMemoryPalaceAZAnswer();
+            }
+        });
+    }
+};
+
+window.checkMemoryPalaceAZAnswer = function() {
+    const input = document.getElementById('palace-az-input');
+    const feedback = document.getElementById('palace-az-feedback');
+    if (!input || !feedback) return;
+    
+    const userAnswer = input.value.trim().split(',').map(s => s.trim()).sort();
+    const correctAnswer = [...window.memoryPalaceAZNumbers].sort();
+    
+    const isCorrect = JSON.stringify(userAnswer) === JSON.stringify(correctAnswer);
+    
+    if (isCorrect) {
+        feedback.textContent = '✅ Đúng rồi! Tất cả các mã đều chính xác!';
+        feedback.style.color = '#10b981';
+        handleCorrect(30);
+        input.disabled = true;
+        setTimeout(() => {
+            startMemoryPalaceAZGame();
+        }, 2000);
+    } else {
+        feedback.textContent = `❌ Sai rồi! Đáp án đúng: ${window.memoryPalaceAZNumbers.join(', ')}`;
+        feedback.style.color = '#ef4444';
+        handleWrong('Điền các mã đã xuất hiện?', userAnswer.join(', '), window.memoryPalaceAZNumbers.join(', '));
+        input.value = '';
+        input.focus();
+        setTimeout(() => {
+            startMemoryPalaceAZGame();
+        }, 3000);
+    }
+};
+
+// Override Memory Palace Advanced to use slideshow
+(function() {
+    const originalAdvanced = window.startMemoryPalaceAdvancedGame;
+    if (typeof originalAdvanced === 'function') {
+        window.startMemoryPalaceAdvancedGame = function() {
+            gameResults = { correct: [], wrong: [], questions: [] };
+            startTimer(360, () => {
+                stopGame();
+            });
+            
+            const lociImages = ['00-20.jpg', '21-40.jpg', '41-60.jpg'];
+            const selectedLoci = lociImages[Math.floor(Math.random() * lociImages.length)];
+            const allCodes = getAllCodes();
+            const numbers = [];
+            
+            for (let i = 0; i < 8; i++) {
+                numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+            }
+            
+            window.memoryPalaceAdvancedNumbers = numbers;
+            window.memoryPalaceAdvancedLoci = selectedLoci;
+            showMemoryPalaceAdvancedSlides(numbers, selectedLoci, 0);
+        };
+    }
+})();
+
+// Override Memory Palace A-Z to use slideshow
+(function() {
+    const originalAZ = window.startMemoryPalaceAZGame;
+    if (typeof originalAZ === 'function') {
+        window.startMemoryPalaceAZGame = function() {
+            gameResults = { correct: [], wrong: [], questions: [] };
+            startTimer(420, () => {
+                stopGame();
+            });
+            
+            const selectedLoci = getRandomLociRoom();
+            const allCodes = getAllCodes();
+            const numbers = [];
+            
+            for (let i = 0; i < 10; i++) {
+                numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
+            }
+            
+            window.memoryPalaceAZNumbers = numbers;
+            window.memoryPalaceAZLoci = selectedLoci;
+            showMemoryPalaceAZSlides(numbers, selectedLoci, 0);
+        };
+    }
+})();

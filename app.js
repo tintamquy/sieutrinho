@@ -252,14 +252,6 @@ const games = [
         func: typeof startSpeedChallengeGame !== 'undefined' ? startSpeedChallengeGame : null
     },
     {
-        id: 'time-attack',
-        title: 'Tấn Công Thời Gian',
-        icon: '⏰',
-        desc: 'Trả lời càng nhiều càng tốt trong thời gian ngắn',
-        category: 'intermediate',
-        func: typeof startTimeAttackGame !== 'undefined' ? startTimeAttackGame : null
-    },
-    {
         id: 'reverse-challenge',
         title: 'Thử Thách Ngược',
         icon: '🔄',
@@ -324,14 +316,6 @@ const games = [
         category: 'advanced',
         func: typeof startAllCodesMasterGame !== 'undefined' ? startAllCodesMasterGame : null
     },
-    {
-        id: 'basic-review-all',
-        title: 'Ôn Tập Toàn Bộ',
-        icon: '📖',
-        desc: 'Ôn tập tất cả mã (00-99 + đặc biệt)',
-        category: 'advanced',
-        func: typeof startBasicReviewAllGame !== 'undefined' ? startBasicReviewAllGame : null
-    },
     // PALACE GAMES
     {
         id: 'memory-palace',
@@ -383,14 +367,6 @@ const games = [
         func: typeof startRapidFireGame !== 'undefined' ? startRapidFireGame : null
     },
     {
-        id: 'memory-challenge',
-        title: 'Thử Thách Trí Nhớ',
-        icon: '🧩',
-        desc: 'Thử thách với tất cả mã',
-        category: 'advanced',
-        func: typeof startMemoryChallengeGame !== 'undefined' ? startMemoryChallengeGame : null
-    },
-    {
         id: 'double-challenge',
         title: 'Thử Thách Kép',
         icon: '🎲',
@@ -408,36 +384,12 @@ const games = [
         func: typeof start52CardsMemoryGame !== 'undefined' ? start52CardsMemoryGame : null
     },
     {
-        id: 'binary-memory',
-        title: 'Số Nhị Phân',
-        icon: '🔢',
-        desc: 'Nhớ và chuyển đổi số nhị phân',
-        category: 'advanced',
-        func: typeof startBinaryMemoryGame !== 'undefined' ? startBinaryMemoryGame : null
-    },
-    {
-        id: 'number-sequence',
-        title: 'Dãy Số Ngẫu Nhiên',
-        icon: '🔢',
-        desc: 'Nhớ dãy số tự nhiên ngẫu nhiên',
-        category: 'advanced',
-        func: typeof startNumberSequenceGame !== 'undefined' ? startNumberSequenceGame : null
-    },
-    {
         id: 'speed-numbers',
         title: 'Siêu Tốc Số',
         icon: '⚡',
         desc: 'Nhớ 20 chữ số trong 5 giây (Siêu Trí Nhớ)',
         category: 'advanced',
         func: typeof startSpeedNumbersGame !== 'undefined' ? startSpeedNumbersGame : null
-    },
-    {
-        id: 'random-words',
-        title: 'Từ Ngẫu Nhiên',
-        icon: '📝',
-        desc: 'Nhớ thứ tự các từ ngẫu nhiên',
-        category: 'advanced',
-        func: typeof startRandomWordsGame !== 'undefined' ? startRandomWordsGame : null
     },
     // CHINESE RADICALS GAMES
     {
@@ -898,7 +850,10 @@ function showGameResults() {
                 </div>
             `}
             
-            <div style="text-align: center; margin-top: 2rem;">
+            <div style="text-align: center; margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn-back" onclick="restartCurrentGame()" style="background: var(--success); font-size: 1.2rem; padding: 1rem 2rem;">
+                    🔄 Chơi Lại
+                </button>
                 <button class="btn-back" onclick="showHomepage()" style="background: var(--primary); font-size: 1.2rem; padding: 1rem 2rem;">
                     🏠 Về Trang Chủ
                 </button>
@@ -1092,6 +1047,26 @@ function showLociRoomSelection(onSelect) {
         });
     });
 }
+
+// Restart current game
+function restartCurrentGame() {
+    if (currentGame && currentGame.func && typeof currentGame.func === 'function') {
+        // Reset stats
+        gameScore = 0;
+        correctCount = 0;
+        wrongCount = 0;
+        updateGameStats();
+        gameResults = { correct: [], wrong: [], questions: [] };
+        
+        // Restart the game
+        currentGame.func();
+    } else {
+        showHomepage();
+    }
+}
+
+// Make restartCurrentGame available globally
+window.restartCurrentGame = restartCurrentGame;
 
 // Handle wrong answer
 function handleWrong(question = null, userAnswer = null, correctAnswer = null, image = null) {

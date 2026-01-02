@@ -298,6 +298,8 @@ body {
     min-height: 500px;
     border: 3px solid rgba(255, 255, 255, 0.4);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 1;
 }
 
 /* Question Styles */
@@ -448,7 +450,7 @@ body {
     position: fixed;
     top: 80px;
     left: 20px;
-    z-index: 2000;
+    z-index: 1000;
     pointer-events: none;
     text-align: left;
     max-width: 180px;
@@ -1372,7 +1374,7 @@ body {
     position: fixed;
     top: 80px;
     right: 20px;
-    z-index: 2000;
+    z-index: 1001;
     pointer-events: none;
     text-align: right;
     max-width: 200px;
@@ -1413,7 +1415,7 @@ body {
     height: 6px;
     border-radius: 50%;
     pointer-events: none;
-    z-index: 1999;
+    z-index: 999;
     animation: fireworkExplode 1.5s ease-out forwards;
 }
 
