@@ -1854,3 +1854,18 @@ body {
         }
     }
 }
+
+/* Achievement Image Container Styles */
+#achievement-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-sizing: border-box;
+}
+
+#achievement-container .rank-badge {
+    padding: 0.5rem 1.5rem;
+    border-radius: 25px;
+    font-size: 2rem !important;
+    font-weight: 900;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    display: inline-block;
+}

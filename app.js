@@ -639,6 +639,13 @@ function setupEventListeners() {
             }
         });
     }
+    
+    const shareAchievementBtn = document.getElementById('share-achievement-btn');
+    if (shareAchievementBtn) {
+        shareAchievementBtn.addEventListener('click', () => {
+            generateAchievementImage();
+        });
+    }
 }
 
 // Render reference section
