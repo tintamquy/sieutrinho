@@ -832,6 +832,125 @@ function showGameResults() {
     gameResults = { correct: [], wrong: [], questions: [] };
 }
 
+// Generate and share achievement image
+window.generateAchievementImage = async function generateAchievementImage() {
+    const shareBtn = document.getElementById('share-achievement-btn');
+    if (shareBtn) {
+        shareBtn.disabled = true;
+        shareBtn.textContent = '⏳ Đang tạo hình...';
+    }
+    
+    try {
+        // Update achievement container with current stats
+        const achievementContainer = document.getElementById('achievement-container');
+        const highScoreEl = document.getElementById('achievement-high-score');
+        const totalScoreEl = document.getElementById('achievement-total-score');
+        const rankEl = document.getElementById('achievement-rank');
+        
+        if (highScoreEl) highScoreEl.textContent = highScore;
+        if (totalScoreEl) totalScoreEl.textContent = totalScore.toLocaleString('vi-VN');
+        
+        // Get rank info
+        const rank = getRank(totalScore);
+        if (rankEl) {
+            rankEl.textContent = `${rank.emoji} ${rank.name}`;
+            rankEl.className = `rank-badge ${rank.class}`;
+            rankEl.style.display = 'inline-block';
+        }
+        
+        // Show container temporarily for screenshot
+        if (achievementContainer) {
+            achievementContainer.style.display = 'block';
+            achievementContainer.style.position = 'absolute';
+            achievementContainer.style.left = '-9999px';
+        }
+        
+        // Wait a bit for rendering
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        // Create canvas from achievement container
+        const canvas = await html2canvas(achievementContainer, {
+            backgroundColor: null,
+            scale: 2,
+            logging: false,
+            useCORS: true,
+            allowTaint: true,
+            width: 1200,
+            height: 630
+        });
+        
+        // Hide container again
+        if (achievementContainer) {
+            achievementContainer.style.display = 'none';
+        }
+        
+        // Convert canvas to blob
+        canvas.toBlob(async (blob) => {
+            if (!blob) {
+                alert('Không thể tạo hình ảnh. Vui lòng thử lại.');
+                if (shareBtn) {
+                    shareBtn.disabled = false;
+                    shareBtn.textContent = '📸 Tạo Ảnh Khoe Thành Tích';
+                }
+                return;
+            }
+            
+            const file = new File([blob], 'thanh-tich-sieu-tri-nho.png', { type: 'image/png' });
+            const url = URL.createObjectURL(blob);
+            
+            // Try Web Share API first (mobile)
+            if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                try {
+                    await navigator.share({
+                        title: 'Thành tích Siêu Trí Nhớ của tôi! 🧠',
+                        text: `Tôi đã đạt ${highScore} điểm cao nhất và ${totalScore.toLocaleString('vi-VN')} tổng điểm! ${rank.emoji} ${rank.name}`,
+                        files: [file]
+                    });
+                    if (shareBtn) {
+                        shareBtn.disabled = false;
+                        shareBtn.textContent = '📸 Tạo Ảnh Khoe Thành Tích';
+                    }
+                    URL.revokeObjectURL(url);
+                    return;
+                } catch (err) {
+                    console.log('Web Share API failed, falling back to download');
+                }
+            }
+            
+            // Fallback: Download image
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'thanh-tich-sieu-tri-nho.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Show success message
+            setTimeout(() => {
+                alert('✅ Đã tạo hình ảnh thành tích! Bạn có thể chia sẻ hình ảnh này trên mạng xã hội.');
+                URL.revokeObjectURL(url);
+            }, 100);
+            
+            if (shareBtn) {
+                shareBtn.disabled = false;
+                shareBtn.textContent = '📸 Tạo Ảnh Khoe Thành Tích';
+            }
+        }, 'image/png');
+    } catch (error) {
+        console.error('Error creating achievement image:', error);
+        alert('Có lỗi xảy ra khi tạo hình ảnh. Vui lòng thử lại.');
+        if (shareBtn) {
+            shareBtn.disabled = false;
+            shareBtn.textContent = '📸 Tạo Ảnh Khoe Thành Tích';
+        }
+        // Make sure to hide container on error
+        const achievementContainer = document.getElementById('achievement-container');
+        if (achievementContainer) {
+            achievementContainer.style.display = 'none';
+        }
+    }
+};
+
 // Share game result as image
 window.shareGameResult = async function shareGameResult() {
     const resultsContainer = document.querySelector('.game-results');
