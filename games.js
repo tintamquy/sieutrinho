@@ -50425,13 +50425,85 @@ window.checkMemoryPalaceAZAnswer = function() {
 function startBinaryDigitsGame() {
     gameResults = { correct: [], wrong: [], questions: [] };
     
-    // Generate 1200 random binary digits
+    // Show settings screen first
+    showBinaryDigitsSettings();
+}
+
+function showBinaryDigitsSettings() {
+    const container = document.getElementById('game-container');
+    
+    // Default settings
+    const defaultSettings = {
+        totalDigits: 1200,
+        digitsPerRow: 30,
+        blocksPerRow: 5,
+        digitsPerBlock: 6,
+        concentrationTime: 5,
+        memorizationTime: 5, // 5 minutes default
+        timerEnabled: true
+    };
+    
+    container.innerHTML = `
+        <div style="background: rgba(0,0,0,0.3); padding: 2rem; border-radius: 20px; max-width: 800px; margin: 0 auto;">
+            <h2 style="text-align: center; font-size: 2.5rem; color: #ffffff; margin-bottom: 2rem; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">
+                🔢 BINARY DIGITS - Cài Đặt
+            </h2>
+            
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                    <label style="font-size: 1.1rem; color: #ffffff; font-weight: 600;">Số cột được highlight:</label>
+                    <input type="number" id="digits-per-block" value="${defaultSettings.digitsPerBlock}" min="1" max="10" style="width: 80px; padding: 0.5rem; border-radius: 5px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.2); color: #ffffff; font-size: 1rem; text-align: center;">
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                    <label style="font-size: 1.1rem; color: #ffffff; font-weight: 600;">Số hàng được highlight:</label>
+                    <input type="number" id="highlight-rows" value="1" min="1" max="5" style="width: 80px; padding: 0.5rem; border-radius: 5px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.2); color: #ffffff; font-size: 1rem; text-align: center;">
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                    <label style="font-size: 1.1rem; color: #ffffff; font-weight: 600;">Thời gian tập trung (giây):</label>
+                    <input type="number" id="concentration-time" value="${defaultSettings.concentrationTime}" min="1" max="10" style="width: 80px; padding: 0.5rem; border-radius: 5px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.2); color: #ffffff; font-size: 1rem; text-align: center;">
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                    <label style="font-size: 1.1rem; color: #ffffff; font-weight: 600;">Thời gian ghi nhớ (phút):</label>
+                    <input type="number" id="memorization-time" value="${defaultSettings.memorizationTime}" min="1" max="60" style="width: 80px; padding: 0.5rem; border-radius: 5px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.2); color: #ffffff; font-size: 1rem; text-align: center;">
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                    <label style="font-size: 1.1rem; color: #ffffff; font-weight: 600;">Bật timer:</label>
+                    <select id="timer-enabled" style="width: 100px; padding: 0.5rem; border-radius: 5px; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.2); color: #ffffff; font-size: 1rem;">
+                        <option value="true" selected>Có</option>
+                        <option value="false">Không</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+                <button class="btn-back" onclick="showHomepage()" style="background: var(--danger); padding: 1rem 2rem; font-size: 1.2rem;">
+                    ← Quay Lại
+                </button>
+                <button class="btn-back" onclick="startBinaryDigitsWithSettings()" style="background: var(--success); padding: 1rem 2rem; font-size: 1.2rem;">
+                    Bắt Đầu
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+window.startBinaryDigitsWithSettings = function() {
+    const digitsPerBlock = parseInt(document.getElementById('digits-per-block').value) || 6;
+    const concentrationTime = parseInt(document.getElementById('concentration-time').value) || 5;
+    const memorizationTime = parseInt(document.getElementById('memorization-time').value) || 5;
+    const timerEnabled = document.getElementById('timer-enabled').value === 'true';
+    
+    // Calculate other values based on digitsPerBlock
     const totalDigits = 1200;
     const digitsPerRow = 30;
-    const blocksPerRow = 5;
-    const digitsPerBlock = 6;
-    const totalRows = Math.ceil(totalDigits / digitsPerRow); // 40 rows
+    const blocksPerRow = Math.floor(digitsPerRow / digitsPerBlock);
+    const totalRows = Math.ceil(totalDigits / digitsPerRow);
     
+    // Generate 1200 random binary digits
     const binaryDigits = [];
     for (let i = 0; i < totalDigits; i++) {
         binaryDigits.push(Math.floor(Math.random() * 2)); // 0 or 1
@@ -50445,13 +50517,16 @@ function startBinaryDigitsGame() {
         blocksPerRow: blocksPerRow,
         digitsPerBlock: digitsPerBlock,
         totalRows: totalRows,
+        concentrationTime: concentrationTime,
+        memorizationTime: memorizationTime * 60, // Convert to seconds
+        timerEnabled: timerEnabled,
         memorizationStartTime: null,
         recallStartTime: null
     };
     
-    // Start with 5 second countdown
-    showBinaryDigitsCountdown(5, binaryDigits, totalRows, digitsPerRow, blocksPerRow, digitsPerBlock);
-}
+    // Start with countdown
+    showBinaryDigitsCountdown(concentrationTime, binaryDigits, totalRows, digitsPerRow, blocksPerRow, digitsPerBlock);
+};
 
 function showBinaryDigitsCountdown(count, binaryDigits, totalRows, digitsPerRow, blocksPerRow, digitsPerBlock) {
     const container = document.getElementById('game-container');
@@ -50481,8 +50556,8 @@ function showBinaryDigitsCountdown(count, binaryDigits, totalRows, digitsPerRow,
 function showBinaryDigitsMemorization(binaryDigits, totalRows, digitsPerRow, blocksPerRow, digitsPerBlock) {
     window.binaryDigitsData.memorizationStartTime = Date.now();
     
-    // Start 3 minute timer
-    let timeLeft = 180; // 3 minutes = 180 seconds
+    // Get memorization time from settings
+    let timeLeft = window.binaryDigitsData.memorizationTime || 300; // Default 5 minutes
     const container = document.getElementById('game-container');
     
     const updateDisplay = () => {
@@ -50490,24 +50565,26 @@ function showBinaryDigitsMemorization(binaryDigits, totalRows, digitsPerRow, blo
         const seconds = timeLeft % 60;
         const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
         
-        // Build grid HTML
+        // Build grid HTML - centered
         let gridHTML = '';
         for (let row = 0; row < totalRows; row++) {
             const rowStart = row * digitsPerRow;
             const rowDigits = binaryDigits.slice(rowStart, rowStart + digitsPerRow);
             
-            gridHTML += `<div style="display: flex; align-items: center; margin-bottom: 0.3rem;">`;
+            gridHTML += `<div style="display: flex; align-items: center; justify-content: center; margin-bottom: 0.3rem;">`;
             // Row number
-            gridHTML += `<div style="width: 50px; text-align: center; font-weight: bold; color: #4a90e2; background: rgba(74, 144, 226, 0.2); padding: 0.5rem; border-radius: 5px; margin-right: 0.5rem;">${row + 1}</div>`;
+            gridHTML += `<div style="width: 50px; text-align: center; font-weight: bold; color: #4a90e2; background: rgba(74, 144, 226, 0.2); padding: 0.5rem; border-radius: 5px; margin-right: 0.5rem; flex-shrink: 0;">${row + 1}</div>`;
             
-            // Blocks
+            // Blocks container - centered
+            gridHTML += `<div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 0.5rem;">`;
             for (let block = 0; block < blocksPerRow; block++) {
                 const blockStart = block * digitsPerBlock;
                 const blockDigits = rowDigits.slice(blockStart, blockStart + digitsPerBlock);
                 const blockHTML = blockDigits.map(d => `<span style="display: inline-block; width: 25px; text-align: center; font-family: 'Courier New', monospace; font-size: 1.2rem; font-weight: bold;">${d}</span>`).join(' ');
                 
-                gridHTML += `<div style="display: inline-block; padding: 0.5rem; margin-right: 0.5rem; background: rgba(255,255,255,0.1); border-radius: 5px;">${blockHTML}</div>`;
+                gridHTML += `<div style="display: inline-block; padding: 0.5rem; background: rgba(255,255,255,0.1); border-radius: 5px;">${blockHTML}</div>`;
             }
+            gridHTML += `</div>`;
             
             gridHTML += `</div>`;
         }
@@ -50515,36 +50592,41 @@ function showBinaryDigitsMemorization(binaryDigits, totalRows, digitsPerRow, blo
         container.innerHTML = `
             <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center;">
                 <div style="font-size: 1.5rem; font-weight: bold; color: #ffffff;">MEMORIZATION STAGE</div>
-                <div style="font-size: 2rem; font-weight: 900; color: #f9ca24; text-shadow: 0 0 20px rgba(249, 202, 36, 0.8);">
+                ${window.binaryDigitsData.timerEnabled ? `<div style="font-size: 2rem; font-weight: 900; color: #f9ca24; text-shadow: 0 0 20px rgba(249, 202, 36, 0.8);">
                     ${timeString}
-                </div>
+                </div>` : '<div style="font-size: 1.5rem; color: rgba(255,255,255,0.5);">Timer đã tắt</div>'}
                 <button class="btn-back" onclick="startBinaryDigitsRecall()" style="background: var(--success); padding: 0.8rem 2rem; font-size: 1.2rem;">
                     Điền Kết Quả
                 </button>
             </div>
-            <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; max-height: 70vh; overflow-y: auto;">
+            <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; max-height: 70vh; overflow-y: auto; overflow-x: hidden;">
                 <div style="text-align: center; margin-bottom: 1rem; font-size: 1.2rem; font-weight: bold; color: #ffffff;">Page 1</div>
-                <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
-                    ${Array.from({length: blocksPerRow}, (_, i) => `<div style="width: 120px; text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.15); border-radius: 5px; margin: 0 0.3rem; font-weight: bold; color: #ffffff;">${i + 1}</div>`).join('')}
+                <div style="display: flex; justify-content: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.3rem;">
+                    ${Array.from({length: blocksPerRow}, (_, i) => `<div style="min-width: 120px; text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.15); border-radius: 5px; font-weight: bold; color: #ffffff;">${i + 1}</div>`).join('')}
                 </div>
-                ${gridHTML}
+                <div style="width: 100%;">
+                    ${gridHTML}
+                </div>
             </div>
         `;
     };
     
     updateDisplay();
     
-    const timer = setInterval(() => {
-        timeLeft--;
-        updateDisplay();
+    let timer = null;
+    if (window.binaryDigitsData.timerEnabled) {
+        timer = setInterval(() => {
+            timeLeft--;
+            updateDisplay();
+            
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                startBinaryDigitsRecall();
+            }
+        }, 1000);
         
-        if (timeLeft <= 0) {
-            clearInterval(timer);
-            startBinaryDigitsRecall();
-        }
-    }, 1000);
-    
-    window.binaryDigitsTimer = timer;
+        window.binaryDigitsTimer = timer;
+    }
 }
 
 window.startBinaryDigitsRecall = function() {
@@ -50558,16 +50640,17 @@ window.startBinaryDigitsRecall = function() {
     
     const { digits, totalRows, digitsPerRow, blocksPerRow, digitsPerBlock } = window.binaryDigitsData;
     
-    // Build recall grid with input fields
+    // Build recall grid with input fields - centered
     let gridHTML = '';
     for (let row = 0; row < totalRows; row++) {
         const rowStart = row * digitsPerRow;
         
-        gridHTML += `<div style="display: flex; align-items: center; margin-bottom: 0.3rem;">`;
+        gridHTML += `<div style="display: flex; align-items: center; justify-content: center; margin-bottom: 0.3rem;">`;
         // Row number
-        gridHTML += `<div style="width: 50px; text-align: center; font-weight: bold; color: #4a90e2; background: rgba(74, 144, 226, 0.2); padding: 0.5rem; border-radius: 5px; margin-right: 0.5rem;">${row + 1}</div>`;
+        gridHTML += `<div style="width: 50px; text-align: center; font-weight: bold; color: #4a90e2; background: rgba(74, 144, 226, 0.2); padding: 0.5rem; border-radius: 5px; margin-right: 0.5rem; flex-shrink: 0;">${row + 1}</div>`;
         
-        // Blocks with input fields
+        // Blocks container - centered
+        gridHTML += `<div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 0.5rem;">`;
         for (let block = 0; block < blocksPerRow; block++) {
             const blockStart = block * digitsPerBlock;
             const blockIndex = rowStart + blockStart;
@@ -50580,8 +50663,9 @@ window.startBinaryDigitsRecall = function() {
                 }
             }
             
-            gridHTML += `<div style="display: inline-block; padding: 0.5rem; margin-right: 0.5rem; background: rgba(255,255,255,0.1); border-radius: 5px;">${blockInputs}</div>`;
+            gridHTML += `<div style="display: inline-block; padding: 0.5rem; background: rgba(255,255,255,0.1); border-radius: 5px;">${blockInputs}</div>`;
         }
+        gridHTML += `</div>`;
         
         gridHTML += `</div>`;
     }
@@ -50603,12 +50687,14 @@ window.startBinaryDigitsRecall = function() {
                 Hoàn Thành
             </button>
         </div>
-        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; max-height: 70vh; overflow-y: auto;">
+        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; max-height: 70vh; overflow-y: auto; overflow-x: hidden;">
             <div style="text-align: center; margin-bottom: 1rem; font-size: 1.2rem; font-weight: bold; color: #ffffff;">Page 1</div>
-            <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
-                ${Array.from({length: blocksPerRow}, (_, i) => `<div style="width: 120px; text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.15); border-radius: 5px; margin: 0 0.3rem; font-weight: bold; color: #ffffff;">${i + 1}</div>`).join('')}
+            <div style="display: flex; justify-content: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.3rem;">
+                ${Array.from({length: blocksPerRow}, (_, i) => `<div style="min-width: 120px; text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.15); border-radius: 5px; font-weight: bold; color: #ffffff;">${i + 1}</div>`).join('')}
             </div>
-            ${gridHTML}
+            <div style="width: 100%;">
+                ${gridHTML}
+            </div>
         </div>
     `;
     
@@ -50687,24 +50773,23 @@ function showBinaryDigitsResults(correctDigits, userAnswers, score, points, memo
     for (let row = 0; row < totalRows; row++) {
         const rowStart = row * digitsPerRow;
         
-        gridHTML += `<div style="display: flex; align-items: center; margin-bottom: 0.3rem;">`;
+        gridHTML += `<div style="display: flex; align-items: center; justify-content: center; margin-bottom: 0.3rem;">`;
         // Row number
-        gridHTML += `<div style="width: 50px; text-align: center; font-weight: bold; color: #4a90e2; background: rgba(74, 144, 226, 0.2); padding: 0.5rem; border-radius: 5px; margin-right: 0.5rem;">${row + 1}</div>`;
+        gridHTML += `<div style="width: 50px; text-align: center; font-weight: bold; color: #4a90e2; background: rgba(74, 144, 226, 0.2); padding: 0.5rem; border-radius: 5px; margin-right: 0.5rem; flex-shrink: 0;">${row + 1}</div>`;
         
-        // Blocks with results
+        // Blocks container - centered
+        gridHTML += `<div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 0.5rem;">`;
         for (let block = 0; block < blocksPerRow; block++) {
             const blockStart = block * digitsPerBlock;
             const blockIndex = rowStart + blockStart;
             
             let blockCells = '';
-            let rowCorrect = 0;
             for (let i = 0; i < digitsPerBlock; i++) {
                 const digitIndex = blockIndex + i;
                 if (digitIndex < correctDigits.length) {
                     const correct = correctDigits[digitIndex];
                     const user = userAnswers[digitIndex] || '';
                     const isCorrect = user === correct.toString();
-                    if (isCorrect) rowCorrect++;
                     
                     const bgColor = isCorrect ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)';
                     const borderColor = isCorrect ? '#10b981' : '#ef4444';
@@ -50716,8 +50801,9 @@ function showBinaryDigitsResults(correctDigits, userAnswers, score, points, memo
                 }
             }
             
-            gridHTML += `<div style="display: inline-block; padding: 0.5rem; margin-right: 0.5rem; background: rgba(255,255,255,0.1); border-radius: 5px;">${blockCells}</div>`;
+            gridHTML += `<div style="display: inline-block; padding: 0.5rem; background: rgba(255,255,255,0.1); border-radius: 5px;">${blockCells}</div>`;
         }
+        gridHTML += `</div>`;
         
         // Row score
         let rowScore = 0;
@@ -50726,7 +50812,7 @@ function showBinaryDigitsResults(correctDigits, userAnswers, score, points, memo
                 rowScore++;
             }
         }
-        gridHTML += `<div style="width: 60px; text-align: center; font-weight: bold; color: #f9ca24; background: rgba(249, 202, 36, 0.2); padding: 0.5rem; border-radius: 5px; margin-left: 0.5rem;">${rowScore}</div>`;
+        gridHTML += `<div style="width: 60px; text-align: center; font-weight: bold; color: #f9ca24; background: rgba(249, 202, 36, 0.2); padding: 0.5rem; border-radius: 5px; margin-left: 0.5rem; flex-shrink: 0;">${rowScore}</div>`;
         
         gridHTML += `</div>`;
     }
@@ -50755,13 +50841,15 @@ function showBinaryDigitsResults(correctDigits, userAnswers, score, points, memo
                 </div>
             </div>
             
-            <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; max-height: 60vh; overflow-y: auto; margin-bottom: 2rem;">
+            <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; max-height: 60vh; overflow-y: auto; overflow-x: hidden; margin-bottom: 2rem;">
                 <div style="text-align: center; margin-bottom: 1rem; font-size: 1.2rem; font-weight: bold; color: #ffffff;">Page 1</div>
-                <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
-                    ${Array.from({length: blocksPerRow}, (_, i) => `<div style="width: 120px; text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.15); border-radius: 5px; margin: 0 0.3rem; font-weight: bold; color: #ffffff;">${i + 1}</div>`).join('')}
-                    <div style="width: 60px; text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.15); border-radius: 5px; margin: 0 0.3rem; font-weight: bold; color: #ffffff;">Score</div>
+                <div style="display: flex; justify-content: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.3rem;">
+                    ${Array.from({length: blocksPerRow}, (_, i) => `<div style="min-width: 120px; text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.15); border-radius: 5px; font-weight: bold; color: #ffffff;">${i + 1}</div>`).join('')}
+                    <div style="min-width: 60px; text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.15); border-radius: 5px; font-weight: bold; color: #ffffff;">Score</div>
                 </div>
-                ${gridHTML}
+                <div style="width: 100%;">
+                    ${gridHTML}
+                </div>
                 <div style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: rgba(255,255,255,0.7);">
                     Question is written at the top of each cell and your answer at the bottom.
                 </div>

@@ -492,47 +492,28 @@ function updateScoreDisplay() {
 }
 
 // Render games on homepage by categories
-// Render quick menu games - Map/Roadmap style
+// Render quick menu games - Only featured games
 function renderQuickMenu() {
     const quickMenu = document.getElementById('game-quick-menu');
     if (!quickMenu) return;
     
-    // Get all available games grouped by category
-    const gamesByCategory = {};
-    games.forEach(game => {
-        if (game.func && typeof game.func === 'function') {
-            const category = game.category || 'beginner';
-            if (!gamesByCategory[category]) {
-                gamesByCategory[category] = [];
-            }
-            gamesByCategory[category].push(game);
-        }
-    });
+    // Featured games - only the most important/representative ones
+    const featuredGameIds = [
+        'binary-digits',      // New binary digits game - put first
+        'image-to-number',    // Basic game
+        'number-to-image',    // Basic game
+        'flashcard',          // Basic game
+        'memory-palace',      // Palace game
+        'speed-challenge',    // Intermediate
+        'sequence-memory',    // Advanced
+        'all-codes-master'    // Advanced
+    ];
     
-    // Create roadmap: show 1-2 games from each category in order
-    const roadmapGames = [];
-    const sortedCategories = Object.keys(gameCategories).sort((a, b) => {
-        return (gameCategories[a].order || 999) - (gameCategories[b].order || 999);
-    });
+    const featuredGames = featuredGameIds
+        .map(id => games.find(g => g.id === id))
+        .filter(g => g && g.func && typeof g.func === 'function');
     
-    sortedCategories.forEach(categoryKey => {
-        const categoryGames = gamesByCategory[categoryKey] || [];
-        // Take first 2 games from each category for roadmap
-        roadmapGames.push(...categoryGames.slice(0, 2));
-    });
-    
-    // Fill up to 16 games total
-    const allGames = games.filter(g => g.func && typeof g.func === 'function');
-    while (roadmapGames.length < 16 && roadmapGames.length < allGames.length) {
-        const remaining = allGames.filter(g => !roadmapGames.includes(g));
-        if (remaining.length > 0) {
-            roadmapGames.push(remaining[0]);
-        } else {
-            break;
-        }
-    }
-    
-    quickMenu.innerHTML = roadmapGames.map(game => {
+    quickMenu.innerHTML = featuredGames.map(game => {
         const category = gameCategories[game.category] || gameCategories.beginner;
         return `
             <div class="quick-game-card" data-game-id="${game.id}" style="border-top: 3px solid ${category.color};">
