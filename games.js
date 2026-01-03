@@ -50599,10 +50599,10 @@ function showBinaryDigitsMemorization(binaryDigits, totalRows, digitsPerRow, blo
                     Điền Kết Quả
                 </button>
             </div>
-            <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; max-height: 70vh; overflow-y: auto; overflow-x: hidden;">
+            <div class="binary-scroll-container" style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; max-height: 70vh; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; scroll-behavior: smooth; position: relative;">
                 <div style="text-align: center; margin-bottom: 1rem; font-size: 1.2rem; font-weight: bold; color: #ffffff;">Page 1</div>
-                <div style="display: flex; justify-content: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.3rem;">
-                    ${Array.from({length: blocksPerRow}, (_, i) => `<div style="min-width: 120px; text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.15); border-radius: 5px; font-weight: bold; color: #ffffff;">${i + 1}</div>`).join('')}
+                <div style="display: flex; justify-content: center; margin-bottom: 1rem; flex-wrap: wrap;">
+                    ${Array.from({length: blocksPerRow}, (_, i) => `<div style="width: 120px; text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.15); border-radius: 5px; margin: 0 0.3rem; font-weight: bold; color: #ffffff;">${i + 1}</div>`).join('')}
                 </div>
                 <div style="width: 100%;">
                     ${gridHTML}
@@ -50687,10 +50687,10 @@ window.startBinaryDigitsRecall = function() {
                 Hoàn Thành
             </button>
         </div>
-        <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; max-height: 70vh; overflow-y: auto; overflow-x: hidden;">
+        <div class="binary-scroll-container" style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; max-height: 70vh; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; scroll-behavior: smooth; position: relative;">
             <div style="text-align: center; margin-bottom: 1rem; font-size: 1.2rem; font-weight: bold; color: #ffffff;">Page 1</div>
-            <div style="display: flex; justify-content: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.3rem;">
-                ${Array.from({length: blocksPerRow}, (_, i) => `<div style="min-width: 120px; text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.15); border-radius: 5px; font-weight: bold; color: #ffffff;">${i + 1}</div>`).join('')}
+            <div style="display: flex; justify-content: center; margin-bottom: 1rem; flex-wrap: wrap;">
+                ${Array.from({length: blocksPerRow}, (_, i) => `<div style="width: 120px; text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.15); border-radius: 5px; margin: 0 0.3rem; font-weight: bold; color: #ffffff;">${i + 1}</div>`).join('')}
             </div>
             <div style="width: 100%;">
                 ${gridHTML}
@@ -50712,10 +50712,100 @@ window.startBinaryDigitsRecall = function() {
     const recallTimerDisplay = setInterval(updateRecallTimer, 1000);
     window.binaryDigitsRecallTimerDisplay = recallTimerDisplay;
     
-    // Auto-focus first input
+    // Auto-focus first input and setup navigation
+    const scrollContainer = container.querySelector('.binary-scroll-container');
+    let savedScrollTop = 0;
+    
+    // Function to save scroll position
+    const saveScrollPosition = () => {
+        if (scrollContainer) {
+            savedScrollTop = scrollContainer.scrollTop;
+        }
+    };
+    
+    // Function to restore scroll position
+    const restoreScrollPosition = () => {
+        if (scrollContainer) {
+            scrollContainer.scrollTop = savedScrollTop;
+        }
+    };
+    
+    // Function to focus input without scrolling
+    const focusInputWithoutScroll = (input) => {
+        saveScrollPosition();
+        input.focus({ preventScroll: true });
+        // Restore scroll after a tiny delay to ensure focus doesn't cause scroll
+        setTimeout(() => {
+            restoreScrollPosition();
+        }, 0);
+    };
+    
     setTimeout(() => {
-        const firstInput = container.querySelector('.binary-input');
-        if (firstInput) firstInput.focus();
+        const inputs = container.querySelectorAll('.binary-input');
+        if (inputs.length > 0) {
+            // Focus first input without scrolling
+            focusInputWithoutScroll(inputs[0]);
+            
+            // Add keyboard navigation between inputs
+            inputs.forEach((input, index) => {
+                input.addEventListener('input', (e) => {
+                    // Auto-advance to next input when digit is entered - immediate transition
+                    const value = e.target.value;
+                    // Only allow 0 or 1
+                    if (value && (value === '0' || value === '1')) {
+                        if (index < inputs.length - 1) {
+                            // Immediately move to next input without scrolling
+                            focusInputWithoutScroll(inputs[index + 1]);
+                            // Select all text in next input for quick replacement
+                            inputs[index + 1].select();
+                        }
+                    }
+                });
+                
+                input.addEventListener('keydown', (e) => {
+                    // Arrow key navigation
+                    if (e.key === 'ArrowRight' && index < inputs.length - 1) {
+                        e.preventDefault();
+                        focusInputWithoutScroll(inputs[index + 1]);
+                        inputs[index + 1].select();
+                    } else if (e.key === 'ArrowLeft' && index > 0) {
+                        e.preventDefault();
+                        focusInputWithoutScroll(inputs[index - 1]);
+                        inputs[index - 1].select();
+                    } else if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                        e.preventDefault();
+                        focusInputWithoutScroll(inputs[index - 1]);
+                        inputs[index - 1].value = '';
+                        inputs[index - 1].select();
+                    } else if ((e.key === '0' || e.key === '1') && e.target.value) {
+                        // If input already has value and user types 0 or 1, replace and move to next
+                        e.preventDefault();
+                        e.target.value = e.key;
+                        if (index < inputs.length - 1) {
+                            focusInputWithoutScroll(inputs[index + 1]);
+                            inputs[index + 1].select();
+                        }
+                    }
+                });
+                
+                // Prevent scroll on focus
+                input.addEventListener('focus', (e) => {
+                    saveScrollPosition();
+                });
+                
+                // Restore scroll after focus
+                input.addEventListener('focusin', (e) => {
+                    setTimeout(() => {
+                        restoreScrollPosition();
+                    }, 0);
+                });
+            });
+            
+            // Save scroll position on scroll
+            if (scrollContainer) {
+                scrollContainer.addEventListener('scroll', saveScrollPosition);
+            }
+        }
     }, 100);
 };
 
@@ -50841,11 +50931,11 @@ function showBinaryDigitsResults(correctDigits, userAnswers, score, points, memo
                 </div>
             </div>
             
-            <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; max-height: 60vh; overflow-y: auto; overflow-x: hidden; margin-bottom: 2rem;">
+            <div class="binary-scroll-container" style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; max-height: 60vh; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; margin-bottom: 2rem; scroll-behavior: smooth; position: relative;">
                 <div style="text-align: center; margin-bottom: 1rem; font-size: 1.2rem; font-weight: bold; color: #ffffff;">Page 1</div>
-                <div style="display: flex; justify-content: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.3rem;">
-                    ${Array.from({length: blocksPerRow}, (_, i) => `<div style="min-width: 120px; text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.15); border-radius: 5px; font-weight: bold; color: #ffffff;">${i + 1}</div>`).join('')}
-                    <div style="min-width: 60px; text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.15); border-radius: 5px; font-weight: bold; color: #ffffff;">Score</div>
+                <div style="display: flex; justify-content: center; margin-bottom: 1rem; flex-wrap: wrap;">
+                    ${Array.from({length: blocksPerRow}, (_, i) => `<div style="width: 120px; text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.15); border-radius: 5px; margin: 0 0.3rem; font-weight: bold; color: #ffffff;">${i + 1}</div>`).join('')}
+                    <div style="width: 60px; text-align: center; padding: 0.5rem; background: rgba(255,255,255,0.15); border-radius: 5px; margin: 0 0.3rem; font-weight: bold; color: #ffffff;">Score</div>
                 </div>
                 <div style="width: 100%;">
                     ${gridHTML}
@@ -50856,6 +50946,517 @@ function showBinaryDigitsResults(correctDigits, userAnswers, score, points, memo
             </div>
             
             <div style="text-align: center; margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn-back" id="share-result-btn" onclick="shareGameResult()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-size: 1.2rem; padding: 1rem 2rem;">
+                    📸 Chia Sẻ Kết Quả
+                </button>
+                <button class="btn-back" onclick="restartCurrentGame()" style="background: var(--success); font-size: 1.2rem; padding: 1rem 2rem;">
+                    🔄 Chơi Lại
+                </button>
+                <button class="btn-back" onclick="showHomepage()" style="background: var(--primary); font-size: 1.2rem; padding: 1rem 2rem;">
+                    🏠 Về Trang Chủ
+                </button>
+            </div>
+        </div>
+    `;
+    
+    handleCorrect(points);
+};
+
+// Game: Memorize Numbers with Custom Time
+function startNumberMemoryGame() {
+    gameResults = { correct: [], wrong: [], questions: [] };
+    
+    // Show configuration screen
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+            <h2 style="font-size: 2.5rem; color: #ffffff; margin-bottom: 2rem; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">
+                🔢 Ghi Nhớ Số
+            </h2>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 15px; margin-bottom: 2rem;">
+                <label style="display: block; font-size: 1.3rem; color: #ffffff; margin-bottom: 1rem; font-weight: bold;">
+                    Số lượng chữ số cần nhớ:
+                </label>
+                <input type="number" id="num-digits-input" class="input-field" 
+                       value="50" min="10" max="500" step="10" 
+                       style="font-size: 2rem; padding: 1rem; width: 100%; max-width: 300px; margin: 0 auto;">
+                <div style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 0.5rem;">
+                    (Từ 10 đến 500 chữ số)
+                </div>
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 2rem; border-radius: 15px; margin-bottom: 2rem;">
+                <label style="display: block; font-size: 1.3rem; color: #ffffff; margin-bottom: 1rem; font-weight: bold;">
+                    Thời gian ghi nhớ:
+                </label>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                    <button class="time-option-btn" data-time="300" style="padding: 1rem; border-radius: 10px; border: 3px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: #ffffff; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: all 0.3s;">
+                        5 phút
+                    </button>
+                    <button class="time-option-btn" data-time="600" style="padding: 1rem; border-radius: 10px; border: 3px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: #ffffff; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: all 0.3s;">
+                        10 phút
+                    </button>
+                    <button class="time-option-btn" data-time="900" style="padding: 1rem; border-radius: 10px; border: 3px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: #ffffff; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: all 0.3s;">
+                        15 phút
+                    </button>
+                    <button class="time-option-btn" data-time="1200" style="padding: 1rem; border-radius: 10px; border: 3px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: #ffffff; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: all 0.3s;">
+                        20 phút
+                    </button>
+                </div>
+                <div style="margin-top: 1rem;">
+                    <label style="display: block; font-size: 1rem; color: rgba(255,255,255,0.8); margin-bottom: 0.5rem;">
+                        Hoặc tùy chỉnh (giây):
+                    </label>
+                    <input type="number" id="custom-time-input" class="input-field" 
+                           value="300" min="60" max="3600" step="60" 
+                           style="font-size: 1.5rem; padding: 0.8rem; width: 100%; max-width: 200px;">
+                </div>
+            </div>
+            
+            <button id="start-number-memory-btn" class="btn-back" 
+                    style="background: var(--success); font-size: 1.5rem; padding: 1.2rem 3rem; margin-top: 1rem;">
+                Bắt Đầu
+            </button>
+        </div>
+    `;
+    
+    // Set default selected time (5 minutes)
+    let selectedTime = 300;
+    container.querySelector('[data-time="300"]').style.borderColor = 'var(--accent)';
+    container.querySelector('[data-time="300"]').style.background = 'rgba(236, 72, 153, 0.3)';
+    
+    // Time option buttons
+    container.querySelectorAll('.time-option-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Reset all buttons
+            container.querySelectorAll('.time-option-btn').forEach(b => {
+                b.style.borderColor = 'rgba(255,255,255,0.3)';
+                b.style.background = 'rgba(255,255,255,0.1)';
+            });
+            // Select this button
+            this.style.borderColor = 'var(--accent)';
+            this.style.background = 'rgba(236, 72, 153, 0.3)';
+            selectedTime = parseInt(this.dataset.time);
+            // Update custom input
+            document.getElementById('custom-time-input').value = selectedTime;
+        });
+    });
+    
+    // Custom time input
+    const customTimeInput = document.getElementById('custom-time-input');
+    customTimeInput.addEventListener('input', function() {
+        const customTime = parseInt(this.value) || 300;
+        selectedTime = customTime;
+        // Reset option buttons
+        container.querySelectorAll('.time-option-btn').forEach(b => {
+            b.style.borderColor = 'rgba(255,255,255,0.3)';
+            b.style.background = 'rgba(255,255,255,0.1)';
+        });
+    });
+    
+    // Start button
+    document.getElementById('start-number-memory-btn').addEventListener('click', function() {
+        const numDigits = parseInt(document.getElementById('num-digits-input').value) || 50;
+        const memorizationTime = selectedTime;
+        
+        if (numDigits < 10 || numDigits > 500) {
+            alert('Vui lòng nhập số lượng chữ số từ 10 đến 500!');
+            return;
+        }
+        
+        if (memorizationTime < 60 || memorizationTime > 3600) {
+            alert('Vui lòng chọn thời gian từ 60 giây đến 3600 giây!');
+            return;
+        }
+        
+        // Generate random digits
+        const digits = [];
+        for (let i = 0; i < numDigits; i++) {
+            digits.push(Math.floor(Math.random() * 10)); // 0-9
+        }
+        
+        // Store data
+        window.numberMemoryData = {
+            digits: digits,
+            numDigits: numDigits,
+            memorizationTime: memorizationTime,
+            memorizationStartTime: null,
+            recallStartTime: null
+        };
+        
+        // Start countdown
+        showNumberMemoryCountdown(5, digits, numDigits, memorizationTime);
+    });
+}
+
+function showNumberMemoryCountdown(count, digits, numDigits, memorizationTime) {
+    const container = document.getElementById('game-container');
+    
+    container.innerHTML = `
+        <div class="question-container" style="text-align: center;">
+            <div style="font-size: 5rem; font-weight: 900; color: #f9ca24; text-shadow: 0 0 30px rgba(249, 202, 36, 0.8); margin: 3rem 0;">
+                ${count > 0 ? count : 'BẮT ĐẦU!'}
+            </div>
+            <div style="font-size: 2rem; color: #ffffff; margin-top: 2rem; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">
+                ${count > 0 ? 'Chuẩn bị...' : 'Bắt đầu ghi nhớ!'}
+            </div>
+        </div>
+    `;
+    
+    if (count > 0) {
+        setTimeout(() => {
+            showNumberMemoryCountdown(count - 1, digits, numDigits, memorizationTime);
+        }, 1000);
+    } else {
+        setTimeout(() => {
+            showNumberMemoryMemorization(digits, numDigits, memorizationTime);
+        }, 1000);
+    }
+}
+
+function showNumberMemoryMemorization(digits, numDigits, memorizationTime) {
+    window.numberMemoryData.memorizationStartTime = Date.now();
+    
+    let timeLeft = memorizationTime;
+    const container = document.getElementById('game-container');
+    
+    // Format digits for display (group by 10 for readability)
+    const digitsPerRow = 20;
+    const totalRows = Math.ceil(numDigits / digitsPerRow);
+    
+    let gridHTML = '';
+    for (let row = 0; row < totalRows; row++) {
+        const rowStart = row * digitsPerRow;
+        const rowDigits = digits.slice(rowStart, rowStart + digitsPerRow);
+        
+        gridHTML += `<div style="display: flex; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap;">`;
+        // Row number
+        gridHTML += `<div style="width: 60px; text-align: center; font-weight: bold; color: #4a90e2; background: rgba(74, 144, 226, 0.2); padding: 0.5rem; border-radius: 5px; margin-right: 0.5rem;">${row + 1}</div>`;
+        
+        // Digits in groups of 5
+        for (let i = 0; i < rowDigits.length; i += 5) {
+            const group = rowDigits.slice(i, i + 5);
+            gridHTML += `<div style="display: inline-block; padding: 0.5rem; margin-right: 0.5rem; background: rgba(255,255,255,0.1); border-radius: 5px; font-family: 'Courier New', monospace; font-size: 1.5rem; font-weight: bold; color: #ffffff;">${group.join(' ')}</div>`;
+        }
+        
+        gridHTML += `</div>`;
+    }
+    
+    const updateDisplay = () => {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        
+        container.innerHTML = `
+            <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                <div style="font-size: 1.5rem; font-weight: bold; color: #ffffff;">MEMORIZATION STAGE</div>
+                <div style="font-size: 2rem; font-weight: 900; color: #f9ca24; text-shadow: 0 0 20px rgba(249, 202, 36, 0.8);">
+                    ${timeString}
+                </div>
+                <button class="btn-back" onclick="startNumberMemoryRecall()" style="background: var(--success); padding: 0.8rem 2rem; font-size: 1.2rem;">
+                    Điền Kết Quả
+                </button>
+            </div>
+            <div class="binary-scroll-container" style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; max-height: 70vh; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; scroll-behavior: smooth; position: relative;">
+                ${gridHTML}
+            </div>
+        `;
+    };
+    
+    updateDisplay();
+    
+    const timer = setInterval(() => {
+        timeLeft--;
+        updateDisplay();
+        
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            startNumberMemoryRecall();
+        }
+    }, 1000);
+    
+    window.numberMemoryTimer = timer;
+}
+
+window.startNumberMemoryRecall = function() {
+    if (window.numberMemoryTimer) {
+        clearInterval(window.numberMemoryTimer);
+        window.numberMemoryTimer = null;
+    }
+    
+    window.numberMemoryData.recallStartTime = Date.now();
+    const { digits, numDigits } = window.numberMemoryData;
+    
+    // Build recall grid with input fields
+    const digitsPerRow = 20;
+    const totalRows = Math.ceil(numDigits / digitsPerRow);
+    
+    let gridHTML = '';
+    for (let row = 0; row < totalRows; row++) {
+        const rowStart = row * digitsPerRow;
+        const rowDigits = digits.slice(rowStart, rowStart + digitsPerRow);
+        
+        gridHTML += `<div style="display: flex; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap;">`;
+        // Row number
+        gridHTML += `<div style="width: 60px; text-align: center; font-weight: bold; color: #4a90e2; background: rgba(74, 144, 226, 0.2); padding: 0.5rem; border-radius: 5px; margin-right: 0.5rem;">${row + 1}</div>`;
+        
+        // Input fields in groups of 5
+        for (let i = 0; i < rowDigits.length; i += 5) {
+            let groupInputs = '';
+            for (let j = 0; j < 5 && (i + j) < rowDigits.length; j++) {
+                const digitIndex = rowStart + i + j;
+                groupInputs += `<input type="text" maxlength="1" class="binary-input" data-index="${digitIndex}" style="width: 35px; height: 40px; text-align: center; font-family: 'Courier New', monospace; font-size: 1.5rem; font-weight: bold; border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: #ffffff; border-radius: 3px; margin: 0 2px;" oninput="this.value = this.value.replace(/[^0-9]/g, '')">`;
+            }
+            gridHTML += `<div style="display: inline-block; padding: 0.5rem; margin-right: 0.5rem; background: rgba(255,255,255,0.1); border-radius: 5px;">${groupInputs}</div>`;
+        }
+        
+        gridHTML += `</div>`;
+    }
+    
+    let recallTime = 0;
+    const recallTimer = setInterval(() => {
+        recallTime++;
+    }, 1000);
+    window.numberMemoryRecallTimer = recallTimer;
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div style="background: rgba(239, 68, 68, 0.3); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div style="font-size: 1.5rem; font-weight: bold; color: #ffffff;">RECALL STAGE</div>
+            <div id="recall-timer" style="font-size: 2rem; font-weight: 900; color: #ef4444; text-shadow: 0 0 20px rgba(239, 68, 68, 0.8);">
+                0:00:00
+            </div>
+            <button class="btn-back" onclick="finishNumberMemoryRecall()" style="background: var(--primary); padding: 0.8rem 2rem; font-size: 1.2rem;">
+                Hoàn Thành
+            </button>
+        </div>
+        <div class="binary-scroll-container" style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; max-height: 70vh; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; scroll-behavior: smooth; position: relative;">
+            ${gridHTML}
+        </div>
+    `;
+    
+    // Update recall timer display
+    const updateRecallTimer = () => {
+        const hours = Math.floor(recallTime / 3600);
+        const minutes = Math.floor((recallTime % 3600) / 60);
+        const seconds = recallTime % 60;
+        const timerEl = document.getElementById('recall-timer');
+        if (timerEl) {
+            timerEl.textContent = `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+    };
+    
+    const recallTimerDisplay = setInterval(updateRecallTimer, 1000);
+    window.numberMemoryRecallTimerDisplay = recallTimerDisplay;
+    
+    // Setup input navigation (same as binary game)
+    const scrollContainer = container.querySelector('.binary-scroll-container');
+    let savedScrollTop = 0;
+    
+    const saveScrollPosition = () => {
+        if (scrollContainer) {
+            savedScrollTop = scrollContainer.scrollTop;
+        }
+    };
+    
+    const restoreScrollPosition = () => {
+        if (scrollContainer) {
+            scrollContainer.scrollTop = savedScrollTop;
+        }
+    };
+    
+    const focusInputWithoutScroll = (input) => {
+        saveScrollPosition();
+        input.focus({ preventScroll: true });
+        setTimeout(() => {
+            restoreScrollPosition();
+        }, 0);
+    };
+    
+    setTimeout(() => {
+        const inputs = container.querySelectorAll('.binary-input');
+        if (inputs.length > 0) {
+            focusInputWithoutScroll(inputs[0]);
+            
+            inputs.forEach((input, index) => {
+                input.addEventListener('input', (e) => {
+                    const value = e.target.value;
+                    if (value && /^[0-9]$/.test(value)) {
+                        if (index < inputs.length - 1) {
+                            focusInputWithoutScroll(inputs[index + 1]);
+                            inputs[index + 1].select();
+                        }
+                    }
+                });
+                
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowRight' && index < inputs.length - 1) {
+                        e.preventDefault();
+                        focusInputWithoutScroll(inputs[index + 1]);
+                        inputs[index + 1].select();
+                    } else if (e.key === 'ArrowLeft' && index > 0) {
+                        e.preventDefault();
+                        focusInputWithoutScroll(inputs[index - 1]);
+                        inputs[index - 1].select();
+                    } else if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                        e.preventDefault();
+                        focusInputWithoutScroll(inputs[index - 1]);
+                        inputs[index - 1].value = '';
+                        inputs[index - 1].select();
+                    } else if (/^[0-9]$/.test(e.key) && e.target.value) {
+                        e.preventDefault();
+                        e.target.value = e.key;
+                        if (index < inputs.length - 1) {
+                            focusInputWithoutScroll(inputs[index + 1]);
+                            inputs[index + 1].select();
+                        }
+                    }
+                });
+                
+                input.addEventListener('focus', saveScrollPosition);
+                input.addEventListener('focusin', () => {
+                    setTimeout(restoreScrollPosition, 0);
+                });
+            });
+            
+            if (scrollContainer) {
+                scrollContainer.addEventListener('scroll', saveScrollPosition);
+            }
+        }
+    }, 100);
+};
+
+window.finishNumberMemoryRecall = function() {
+    if (window.numberMemoryRecallTimer) {
+        clearInterval(window.numberMemoryRecallTimer);
+    }
+    if (window.numberMemoryRecallTimerDisplay) {
+        clearInterval(window.numberMemoryRecallTimerDisplay);
+    }
+    
+    const recallTime = (Date.now() - window.numberMemoryData.recallStartTime) / 1000;
+    const memorizationTime = (window.numberMemoryData.recallStartTime - window.numberMemoryData.memorizationStartTime) / 1000;
+    
+    const { digits } = window.numberMemoryData;
+    const inputs = document.querySelectorAll('.binary-input');
+    
+    // Collect user answers
+    const userAnswers = Array(digits.length).fill('');
+    inputs.forEach(input => {
+        const index = parseInt(input.dataset.index);
+        userAnswers[index] = input.value || '';
+    });
+    
+    // Calculate score
+    let correctCount = 0;
+    for (let i = 0; i < digits.length; i++) {
+        if (userAnswers[i] === digits[i].toString()) {
+            correctCount++;
+        }
+    }
+    
+    const score = Math.round((correctCount / digits.length) * 100);
+    const points = correctCount * 2;
+    
+    // Update game stats
+    gameScore += points;
+    correctCount = correctCount;
+    wrongCount = digits.length - correctCount;
+    totalScore += points;
+    saveScores();
+    updateGameStats();
+    
+    // Show results
+    showNumberMemoryResults(digits, userAnswers, score, points, memorizationTime, recallTime);
+};
+
+function showNumberMemoryResults(correctDigits, userAnswers, score, points, memorizationTime, recallTime) {
+    const { numDigits } = window.numberMemoryData;
+    const digitsPerRow = 20;
+    const totalRows = Math.ceil(numDigits / digitsPerRow);
+    
+    // Build results grid
+    let gridHTML = '';
+    for (let row = 0; row < totalRows; row++) {
+        const rowStart = row * digitsPerRow;
+        const rowDigits = correctDigits.slice(rowStart, rowStart + digitsPerRow);
+        
+        gridHTML += `<div style="display: flex; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap;">`;
+        // Row number
+        gridHTML += `<div style="width: 60px; text-align: center; font-weight: bold; color: #4a90e2; background: rgba(74, 144, 226, 0.2); padding: 0.5rem; border-radius: 5px; margin-right: 0.5rem;">${row + 1}</div>`;
+        
+        // Results in groups of 5
+        for (let i = 0; i < rowDigits.length; i += 5) {
+            let groupCells = '';
+            for (let j = 0; j < 5 && (i + j) < rowDigits.length; j++) {
+                const digitIndex = rowStart + i + j;
+                const correct = correctDigits[digitIndex];
+                const user = userAnswers[digitIndex] || '';
+                const isCorrect = user === correct.toString();
+                
+                const bgColor = isCorrect ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)';
+                const borderColor = isCorrect ? '#10b981' : '#ef4444';
+                
+                groupCells += `<div style="display: inline-block; width: 35px; height: 50px; text-align: center; font-family: 'Courier New', monospace; font-size: 1rem; font-weight: bold; border: 2px solid ${borderColor}; background: ${bgColor}; color: #ffffff; border-radius: 3px; margin: 0 2px; padding-top: 2px;">
+                    <div style="font-size: 0.7rem; opacity: 0.8;">${correct}</div>
+                    <div style="font-size: 0.9rem;">${user || '-'}</div>
+                </div>`;
+            }
+            gridHTML += `<div style="display: inline-block; padding: 0.5rem; margin-right: 0.5rem; background: rgba(255,255,255,0.1); border-radius: 5px;">${groupCells}</div>`;
+        }
+        
+        // Row score
+        let rowScore = 0;
+        for (let i = row * digitsPerRow; i < (row + 1) * digitsPerRow && i < correctDigits.length; i++) {
+            if (userAnswers[i] === correctDigits[i].toString()) {
+                rowScore++;
+            }
+        }
+        gridHTML += `<div style="width: 60px; text-align: center; font-weight: bold; color: #f9ca24; background: rgba(249, 202, 36, 0.2); padding: 0.5rem; border-radius: 5px; margin-left: 0.5rem;">${rowScore}</div>`;
+        
+        gridHTML += `</div>`;
+    }
+    
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="game-results">
+            <h2 style="text-align: center; font-size: 3rem; color: #ffffff; margin-bottom: 2rem; text-shadow: 3px 3px 8px rgba(0,0,0,0.8);">
+                🎉 Kết Quả Game
+            </h2>
+            
+            <div style="background: rgba(255,255,255,0.2); padding: 2rem; border-radius: 15px; margin-bottom: 2rem;">
+                <div style="text-align: center; margin-bottom: 1.5rem;">
+                    <div style="font-size: 1.5rem; color: #ef4444; font-weight: bold; margin-bottom: 0.5rem;">SCORE</div>
+                    <div style="font-size: 4rem; color: #ef4444; font-weight: 900; text-shadow: 0 0 30px rgba(239, 68, 68, 0.8);">${points}</div>
+                </div>
+                <div style="display: flex; justify-content: space-around; margin-top: 1.5rem;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 1rem; color: rgba(255,255,255,0.8); margin-bottom: 0.5rem;">Thời gian ghi nhớ (giây)</div>
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #ffffff;">${memorizationTime.toFixed(2)}</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1rem; color: rgba(255,255,255,0.8); margin-bottom: 0.5rem;">Thời gian điền (giây)</div>
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #ffffff;">${recallTime.toFixed(2)}</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1rem; color: rgba(255,255,255,0.8); margin-bottom: 0.5rem;">Độ chính xác</div>
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #ffffff;">${score}%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="binary-scroll-container" style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 10px; max-height: 60vh; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; margin-bottom: 2rem; scroll-behavior: smooth; position: relative;">
+                ${gridHTML}
+                <div style="text-align: center; margin-top: 1rem; font-size: 0.9rem; color: rgba(255,255,255,0.7);">
+                    Số đúng ở trên, câu trả lời của bạn ở dưới.
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn-back" id="share-result-btn" onclick="shareGameResult()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-size: 1.2rem; padding: 1rem 2rem;">
+                    📸 Chia Sẻ Kết Quả
+                </button>
                 <button class="btn-back" onclick="restartCurrentGame()" style="background: var(--success); font-size: 1.2rem; padding: 1rem 2rem;">
                     🔄 Chơi Lại
                 </button>

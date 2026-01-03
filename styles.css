@@ -300,6 +300,8 @@ body {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     position: relative;
     z-index: 1;
+    overflow-x: hidden;
+    word-wrap: break-word;
 }
 
 /* Question Styles */
@@ -982,6 +984,8 @@ body {
         display: flex;
         align-items: center;
         justify-content: center;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0.3);
     }
     
     .answer-number {
@@ -1012,6 +1016,14 @@ body {
     .game-container {
         padding: 1rem;
         min-height: auto;
+        border-radius: 15px;
+        overflow-x: hidden;
+    }
+    
+    /* Ensure all game content is scrollable on mobile */
+    .game-container > * {
+        max-width: 100%;
+        overflow-x: hidden;
     }
     
     .question-container {
@@ -1023,6 +1035,7 @@ body {
         max-height: 250px;
         height: auto;
         width: auto;
+        object-fit: contain;
     }
     
     .question-text {
@@ -1125,6 +1138,35 @@ body {
         font-size: 1.2rem;
         padding: 0.75rem 2rem;
     }
+    
+    /* Game results mobile */
+    .game-results {
+        padding: 1.5rem;
+    }
+    
+    .results-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+    
+    .result-stat {
+        padding: 1rem;
+    }
+    
+    .result-icon {
+        font-size: 2rem;
+    }
+    
+    .result-value {
+        font-size: 1.5rem;
+    }
+    
+    /* Better button spacing */
+    .btn-back {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+        min-height: 44px; /* iOS touch target */
+    }
 }
 
 @media (max-width: 480px) {
@@ -1155,6 +1197,8 @@ body {
     .answer-option {
         padding: 0.6rem;
         min-height: 55px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0.3);
     }
     
     .answer-number {
@@ -1177,6 +1221,12 @@ body {
     .input-field {
         font-size: 1.5rem;
         padding: 0.6rem 1.2rem;
+        min-height: 44px; /* iOS touch target */
+    }
+    
+    .submit-btn {
+        min-height: 44px; /* iOS touch target */
+        padding: 0.8rem 1.5rem;
     }
     
     .game-quick-menu-container {
@@ -1597,4 +1647,210 @@ body {
 .binary-input:hover {
     border-color: rgba(255, 255, 255, 0.5) !important;
     background: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Binary Scroll Container - Fix scrolling issues */
+.binary-scroll-container {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.1);
+    scroll-behavior: smooth;
+    position: relative;
+    /* Prevent scroll jump on focus */
+    scroll-padding-top: 20px;
+}
+
+.binary-scroll-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.binary-scroll-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.binary-scroll-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+.binary-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Prevent auto-scroll on input focus */
+.binary-input {
+    scroll-margin: 0;
+}
+
+/* Mobile: Better scroll behavior */
+@media (max-width: 768px) {
+    .binary-scroll-container {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
+        /* Better touch scrolling on mobile */
+        touch-action: pan-y;
+        /* Prevent momentum scrolling issues */
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+    }
+    
+    .binary-input:focus {
+        /* Prevent scroll on focus on mobile */
+        scroll-margin: 0;
+    }
+}
+
+/* Mobile optimizations for inputs */
+@media (max-width: 768px) {
+    .binary-input {
+        width: 30px !important;
+        height: 35px !important;
+        font-size: 1.4rem !important;
+        margin: 0 1px !important;
+    }
+    
+    .input-field {
+        font-size: 1.2rem !important;
+        padding: 1rem !important;
+        min-height: 50px !important;
+    }
+    
+    /* Better touch targets */
+    .answer-option,
+    .game-card,
+    .quick-game-card {
+        min-height: 60px;
+        min-width: 60px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    /* Improve button touch targets */
+    .btn-back,
+    .submit-btn {
+        min-height: 44px;
+        min-width: 44px;
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    /* Fix header on mobile */
+    .game-header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(15, 23, 42, 0.95);
+        backdrop-filter: blur(10px);
+    }
+    
+    /* Optimize game stats for mobile */
+    .game-stats {
+        flex-wrap: wrap;
+    }
+    
+    .stat-item {
+        flex: 1 1 calc(50% - 0.25rem);
+        min-width: 80px;
+    }
+    
+    /* Game container optimizations */
+    .game-container {
+        padding: 1rem !important;
+    }
+    
+    .question-container {
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .question-image {
+        max-width: 100% !important;
+        max-height: 40vh !important;
+        object-fit: contain;
+    }
+    
+    /* Input game container */
+    .input-game-container {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+        margin: 1.5rem 0 !important;
+    }
+    
+    .input-game-container .input-field {
+        width: 100%;
+        max-width: 100%;
+        font-size: 1.5rem !important;
+    }
+    
+    .input-game-container .submit-btn {
+        width: 100%;
+        max-width: 100%;
+        padding: 1rem !important;
+        font-size: 1.2rem !important;
+    }
+}
+
+/* Landscape orientation optimizations */
+@media (max-width: 768px) and (orientation: landscape) {
+    .title-3d {
+        font-size: 1.8rem !important;
+        margin: 0.5rem 0 !important;
+    }
+    
+    .subtitle {
+        font-size: 0.9rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .game-container {
+        padding: 0.5rem !important;
+        max-height: calc(100vh - 120px);
+        overflow-y: auto;
+    }
+    
+    .question-image {
+        max-height: 30vh !important;
+    }
+    
+    .input-field {
+        font-size: 1.3rem !important;
+        padding: 0.8rem !important;
+    }
+    
+    .binary-input {
+        width: 28px !important;
+        height: 32px !important;
+        font-size: 1.2rem !important;
+    }
+    
+    .binary-scroll-container {
+        max-height: 50vh !important;
+    }
+    
+    .game-results {
+        padding: 1rem !important;
+    }
+    
+    .results-stats {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 0.75rem !important;
+    }
+}
+
+/* Prevent zoom on input focus on iOS - must be 16px or larger */
+@media (max-width: 768px) {
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    .input-field {
+        font-size: 16px !important;
+    }
+    
+    /* Override for larger displays */
+    @media (min-width: 481px) {
+        .input-field {
+            font-size: 1.5rem !important;
+        }
+    }
 }

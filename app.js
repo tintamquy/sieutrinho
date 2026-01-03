@@ -346,10 +346,18 @@ const games = [
     {
         id: 'binary-digits',
         title: 'Số Nhị Phân',
-        icon: '🔢',
+        icon: '⚡',
         desc: 'Ghi nhớ 1200 số nhị phân ngẫu nhiên trong 3 phút',
         category: 'advanced',
         func: typeof startBinaryDigitsGame !== 'undefined' ? startBinaryDigitsGame : null
+    },
+    {
+        id: 'number-memory',
+        title: 'Ghi Nhớ Số',
+        icon: '🔢',
+        desc: 'Ghi nhớ số lượng số tùy chọn trong thời gian tùy chỉnh (5-20 phút)',
+        category: 'advanced',
+        func: typeof startNumberMemoryGame !== 'undefined' ? startNumberMemoryGame : null
     },
     {
         id: 'speed-numbers',
@@ -800,6 +808,9 @@ function showGameResults() {
             `}
             
             <div style="text-align: center; margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn-back" id="share-result-btn" onclick="shareGameResult()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-size: 1.2rem; padding: 1rem 2rem;">
+                    📸 Chia Sẻ Kết Quả
+                </button>
                 <button class="btn-back" onclick="restartCurrentGame()" style="background: var(--success); font-size: 1.2rem; padding: 1rem 2rem;">
                     🔄 Chơi Lại
                 </button>
@@ -812,6 +823,89 @@ function showGameResults() {
     
     // Reset results
     gameResults = { correct: [], wrong: [], questions: [] };
+}
+
+// Share game result as image
+window.shareGameResult = async function shareGameResult() {
+    const resultsContainer = document.querySelector('.game-results');
+    if (!resultsContainer) return;
+    
+    const shareBtn = document.getElementById('share-result-btn');
+    if (shareBtn) {
+        shareBtn.disabled = true;
+        shareBtn.textContent = '⏳ Đang tạo hình...';
+    }
+    
+    try {
+        // Create a canvas from the results container
+        const canvas = await html2canvas(resultsContainer, {
+            backgroundColor: '#0f172a',
+            scale: 2,
+            logging: false,
+            useCORS: true,
+            allowTaint: true
+        });
+        
+        // Convert canvas to blob
+        canvas.toBlob(async (blob) => {
+            if (!blob) {
+                alert('Không thể tạo hình ảnh. Vui lòng thử lại.');
+                if (shareBtn) {
+                    shareBtn.disabled = false;
+                    shareBtn.textContent = '📸 Chia Sẻ Kết Quả';
+                }
+                return;
+            }
+            
+            const file = new File([blob], 'ket-qua-game.png', { type: 'image/png' });
+            const url = URL.createObjectURL(blob);
+            
+            // Try Web Share API first (mobile)
+            if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                try {
+                    await navigator.share({
+                        title: 'Kết quả game Siêu Trí Nhớ',
+                        text: `Tôi đã đạt ${gameScore} điểm với độ chính xác ${Math.round((correctCount / (correctCount + wrongCount)) * 100)}%! 🎉`,
+                        files: [file]
+                    });
+                    if (shareBtn) {
+                        shareBtn.disabled = false;
+                        shareBtn.textContent = '📸 Chia Sẻ Kết Quả';
+                    }
+                    URL.revokeObjectURL(url);
+                    return;
+                } catch (err) {
+                    console.log('Web Share API failed, falling back to download');
+                }
+            }
+            
+            // Fallback: Download image
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'ket-qua-game.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // Show success message
+            setTimeout(() => {
+                alert('✅ Đã lưu hình ảnh! Bạn có thể chia sẻ hình ảnh này trên mạng xã hội.');
+                URL.revokeObjectURL(url);
+            }, 100);
+            
+            if (shareBtn) {
+                shareBtn.disabled = false;
+                shareBtn.textContent = '📸 Chia Sẻ Kết Quả';
+            }
+        }, 'image/png');
+    } catch (error) {
+        console.error('Error creating image:', error);
+        alert('Có lỗi xảy ra khi tạo hình ảnh. Vui lòng thử lại.');
+        if (shareBtn) {
+            shareBtn.disabled = false;
+            shareBtn.textContent = '📸 Chia Sẻ Kết Quả';
+        }
+    }
 }
 
 // Track wrong answer
