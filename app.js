@@ -769,6 +769,66 @@ function startActualGame(gameId) {
     }
 }
 
+// Show Difficulty Selection Modal
+function showDifficultyModal(game) {
+    // Remove existing modal if any
+    const existing = document.getElementById('difficulty-modal');
+    if (existing) existing.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'difficulty-modal';
+    modal.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.85); z-index: 1000;
+        display: flex; justify-content: center; align-items: center;
+        backdrop-filter: blur(5px); animation: fadeIn 0.3s ease;
+    `;
+
+    modal.innerHTML = `
+        <div style="
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            padding: 2rem; border-radius: 20px; text-align: center;
+            border: 1px solid rgba(255,255,255,0.2);
+            max-width: 90%; width: 400px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        ">
+            <h2 style="color: white; margin-bottom: 0.5rem; font-size: 1.8rem;">${game.title}</h2>
+            <p style="color: #94a3b8; margin-bottom: 2rem;">Chọn độ khó để bắt đầu</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <button onclick="selectDifficulty('${game.id}', 'easy')" class="diff-btn" style="border-left: 5px solid #10b981;">
+                    <div style="font-weight: bold; font-size: 1.2rem;">🐣 Dễ</div>
+                    <div style="font-size: 0.8rem; opacity: 0.8;">Thoải mái thời gian • Gợi ý</div>
+                </button>
+                <button onclick="selectDifficulty('${game.id}', 'medium')" class="diff-btn" style="border-left: 5px solid #f59e0b;">
+                    <div style="font-weight: bold; font-size: 1.2rem;">⚖️ Trung Bình</div>
+                    <div style="font-size: 0.8rem; opacity: 0.8;">Thời gian tiêu chuẩn</div>
+                </button>
+                <button onclick="selectDifficulty('${game.id}', 'hard')" class="diff-btn" style="border-left: 5px solid #ef4444;">
+                    <div style="font-weight: bold; font-size: 1.2rem;">🌶️ Khó</div>
+                    <div style="font-size: 0.8rem; opacity: 0.8;">Thời gian ngắn • Không gợi ý</div>
+                </button>
+            </div>
+            
+            <button onclick="document.getElementById('difficulty-modal').remove()" style="
+                margin-top: 1.5rem; background: transparent; border: none; 
+                color: #94a3b8; cursor: pointer; font-size: 0.9rem; text-decoration: underline;
+            ">
+                Hủy bỏ
+            </button>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+}
+
+window.selectDifficulty = function (gameId, diff) {
+    gameSettings.difficulty = diff;
+    document.getElementById('difficulty-modal').remove();
+    startActualGame(gameId);
+}
+
+
 // Game results tracking
 let gameResults = {
     correct: [],
