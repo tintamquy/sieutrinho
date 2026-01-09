@@ -559,47 +559,46 @@ function renderQuickMenu() {
     });
 }
 
+// Render games into tabs
 function renderGames() {
-    const grid = document.getElementById('games-grid');
-    if (!grid) {
-        console.error('Games grid not found!');
-        return;
-    }
+    console.error('Games grid not found!');
+    return;
+}
 
-    if (!games || games.length === 0) {
-        console.error('No games defined!');
-        grid.innerHTML = '<div style="text-align: center; color: white;">Không tìm thấy game nào</div>';
-        return;
-    }
+if (!games || games.length === 0) {
+    console.error('No games defined!');
+    grid.innerHTML = '<div style="text-align: center; color: white;">Không tìm thấy game nào</div>';
+    return;
+}
 
-    // Render quick menu first
-    renderQuickMenu();
+// Render quick menu first
+renderQuickMenu();
 
-    // Group games by category
-    const gamesByCategory = {};
-    games.forEach(game => {
-        if (game.func && typeof game.func === 'function') {
-            const category = game.category || 'beginner';
-            if (!gamesByCategory[category]) {
-                gamesByCategory[category] = [];
-            }
-            gamesByCategory[category].push(game);
+// Group games by category
+const gamesByCategory = {};
+games.forEach(game => {
+    if (game.func && typeof game.func === 'function') {
+        const category = game.category || 'beginner';
+        if (!gamesByCategory[category]) {
+            gamesByCategory[category] = [];
         }
-    });
+        gamesByCategory[category].push(game);
+    }
+});
 
-    // Sort categories by order
-    const sortedCategories = Object.keys(gameCategories).sort((a, b) => {
-        return (gameCategories[a].order || 999) - (gameCategories[b].order || 999);
-    });
+// Sort categories by order
+const sortedCategories = Object.keys(gameCategories).sort((a, b) => {
+    return (gameCategories[a].order || 999) - (gameCategories[b].order || 999);
+});
 
-    // Render by categories in order
-    let html = '';
-    sortedCategories.forEach(categoryKey => {
-        const category = gameCategories[categoryKey];
-        const categoryGames = gamesByCategory[categoryKey] || [];
+// Render by categories in order
+let html = '';
+sortedCategories.forEach(categoryKey => {
+    const category = gameCategories[categoryKey];
+    const categoryGames = gamesByCategory[categoryKey] || [];
 
-        if (categoryGames.length > 0) {
-            html += `
+    if (categoryGames.length > 0) {
+        html += `
                 <div class="category-section">
                     <div class="category-header" style="border-left: 5px solid ${category.color};">
                         <h2 class="category-title">${category.name}</h2>
@@ -616,25 +615,25 @@ function renderGames() {
                     </div>
                 </div>
             `;
+    }
+});
+
+grid.innerHTML = html;
+
+// Add click listeners
+document.querySelectorAll('.game-card').forEach(card => {
+    card.addEventListener('click', () => {
+        const gameId = card.dataset.gameId;
+        const game = games.find(g => g.id === gameId);
+        if (game && game.func && typeof game.func === 'function') {
+            startGame(game);
+        } else {
+            console.error('Game function not found for:', gameId);
+            alert('Game này chưa sẵn sàng. Vui lòng thử lại sau.');
         }
     });
+});
 
-    grid.innerHTML = html;
-
-    // Add click listeners
-    document.querySelectorAll('.game-card').forEach(card => {
-        card.addEventListener('click', () => {
-            const gameId = card.dataset.gameId;
-            const game = games.find(g => g.id === gameId);
-            if (game && game.func && typeof game.func === 'function') {
-                startGame(game);
-            } else {
-                console.error('Game function not found for:', gameId);
-                alert('Game này chưa sẵn sàng. Vui lòng thử lại sau.');
-            }
-        });
-    });
-}
 
 // Setup event listeners
 function setupEventListeners() {

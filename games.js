@@ -20,9 +20,9 @@ function nextImageToNumberQuestion() {
     const correctNum = getRandomNumber();
     const options = getRandomOptions(correctNum, 4);
     const imagePath = getImagePath(correctNum);
-    
+
     currentQuestion = { correct: correctNum, type: 'image-to-number' };
-    
+
     const container = document.getElementById('game-container');
     container.innerHTML = `
         <div class="question-container">
@@ -37,9 +37,9 @@ function nextImageToNumberQuestion() {
             `).join('')}
         </div>
     `;
-    
+
     container.querySelectorAll('.answer-option').forEach(option => {
-        option.addEventListener('click', function() {
+        option.addEventListener('click', function () {
             if (this.dataset.answer === correctNum) {
                 this.classList.add('correct');
                 handleCorrect(10);
@@ -66,7 +66,7 @@ function nextBasicReviewQuestion() {
     const correctNum = getRandomNumber();
     const options = getRandomOptions(correctNum, 4);
     const imagePath = getImagePath(correctNum);
-    
+
     const container = document.getElementById('game-container');
     container.innerHTML = `
         <div class="question-container">
@@ -82,9 +82,9 @@ function nextBasicReviewQuestion() {
             `).join('')}
         </div>
     `;
-    
+
     container.querySelectorAll('.answer-option').forEach(option => {
-        option.addEventListener('click', function() {
+        option.addEventListener('click', function () {
             const isCorrect = this.dataset.correct === 'true';
             if (isCorrect) {
                 this.classList.add('correct');
@@ -119,7 +119,7 @@ function startTypeNumberGame() {
 function nextTypeNumberQuestion() {
     const correctNum = getRandomNumber();
     const imagePath = getImagePath(correctNum);
-    
+
     const container = document.getElementById('game-container');
     container.innerHTML = `
         <div class="question-container">
@@ -132,28 +132,31 @@ function nextTypeNumberQuestion() {
         </div>
         <div id="type-number-feedback" style="text-align: center; margin-top: 1rem; font-size: 1.5rem; font-weight: bold;"></div>
     `;
-    
+
     const input = document.getElementById('number-input');
     if (input) {
+        // Auto-focus logic
+        setTimeout(() => input.focus(), 100);
+
         input.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 checkTypeNumber(correctNum);
             }
         });
-        
+
         input.addEventListener('input', (e) => {
             e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 2);
         });
     }
 }
 
-window.checkTypeNumber = function(correctNum) {
+window.checkTypeNumber = function (correctNum) {
     const input = document.getElementById('number-input');
     const feedback = document.getElementById('type-number-feedback');
     if (!input || !feedback) return;
-    
+
     const userAnswer = input.value.padStart(2, '0');
-    
+
     if (userAnswer === correctNum) {
         feedback.textContent = '✅ Đúng rồi!';
         feedback.style.color = '#10b981';
@@ -182,7 +185,7 @@ function startTypeNameGame() {
 function nextTypeNameQuestion() {
     const correctNum = getRandomNumber();
     const correctName = getName(correctNum);
-    
+
     const container = document.getElementById('game-container');
     container.innerHTML = `
         <div class="question-container">
@@ -195,9 +198,12 @@ function nextTypeNameQuestion() {
         </div>
         <div id="type-name-feedback" style="text-align: center; margin-top: 1rem; font-size: 1.5rem; font-weight: bold;"></div>
     `;
-    
+
     const input = document.getElementById('name-input');
     if (input) {
+        // Auto-focus logic
+        setTimeout(() => input.focus(), 100);
+
         input.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 checkTypeName(correctName, correctNum);
@@ -206,19 +212,19 @@ function nextTypeNameQuestion() {
     }
 }
 
-window.checkTypeName = function(correctName, correctNum) {
+window.checkTypeName = function (correctName, correctNum) {
     const input = document.getElementById('name-input');
     const feedback = document.getElementById('type-name-feedback');
     if (!input || !feedback) return;
-    
+
     const userAnswer = input.value.trim().toLowerCase();
     const correctAnswer = correctName.toLowerCase();
-    
+
     // Remove Vietnamese accents for comparison
     const normalize = (str) => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     const normalizedUser = normalize(userAnswer);
     const normalizedCorrect = normalize(correctAnswer);
-    
+
     if (normalizedUser === normalizedCorrect) {
         feedback.textContent = '✅ Đúng rồi!';
         feedback.style.color = '#10b981';
@@ -251,7 +257,7 @@ function nextDoubleChallengeQuestion() {
     const imagePath2 = getImagePath(num2);
     const correctAnswer = num1 + num2;
     const options = [correctAnswer];
-    
+
     // Generate wrong options
     for (let i = 0; i < 3; i++) {
         let wrong = Math.floor(Math.random() * 200);
@@ -261,7 +267,7 @@ function nextDoubleChallengeQuestion() {
         options.push(wrong);
     }
     const shuffledOptions = options.sort(() => Math.random() - 0.5);
-    
+
     const container = document.getElementById('game-container');
     container.innerHTML = `
         <div class="question-container">
@@ -286,9 +292,9 @@ function nextDoubleChallengeQuestion() {
             `).join('')}
         </div>
     `;
-    
+
     container.querySelectorAll('.answer-option').forEach(option => {
-        option.addEventListener('click', function() {
+        option.addEventListener('click', function () {
             const isCorrect = this.dataset.correct === 'true';
             if (isCorrect) {
                 this.classList.add('correct');
@@ -324,7 +330,7 @@ function startRapidFireGame() {
 function nextRapidFireQuestion() {
     const correctNum = getRandomNumber();
     const imagePath = getImagePath(correctNum);
-    
+
     const container = document.getElementById('game-container');
     container.innerHTML = `
         <div class="question-container">
@@ -339,9 +345,9 @@ function nextRapidFireQuestion() {
             `).join('')}
         </div>
     `;
-    
+
     container.querySelectorAll('.answer-option').forEach(option => {
-        option.addEventListener('click', function() {
+        option.addEventListener('click', function () {
             const isCorrect = this.dataset.correct === 'true';
             if (isCorrect) {
                 this.classList.add('correct');
@@ -373,7 +379,7 @@ function nextBasicReviewAllQuestion() {
     options.push(...shuffled.slice(0, 3));
     const shuffledOptions = options.sort(() => Math.random() - 0.5);
     const imagePath = getImagePath(correctCode);
-    
+
     const container = document.getElementById('game-container');
     container.innerHTML = `
         <div class="question-container">
@@ -389,9 +395,9 @@ function nextBasicReviewAllQuestion() {
             `).join('')}
         </div>
     `;
-    
+
     container.querySelectorAll('.answer-option').forEach(option => {
-        option.addEventListener('click', function() {
+        option.addEventListener('click', function () {
             const isCorrect = this.dataset.correct === 'true';
             if (isCorrect) {
                 this.classList.add('correct');
@@ -423,7 +429,7 @@ function nextAllCodesQuestion() {
     options.push(...shuffled.slice(0, 3));
     const shuffledOptions = options.sort(() => Math.random() - 0.5);
     const imagePath = getImagePath(correctCode);
-    
+
     const container = document.getElementById('game-container');
     container.innerHTML = `
         <div class="question-container">
@@ -439,9 +445,9 @@ function nextAllCodesQuestion() {
             `).join('')}
         </div>
     `;
-    
+
     container.querySelectorAll('.answer-option').forEach(option => {
-        option.addEventListener('click', function() {
+        option.addEventListener('click', function () {
             const isCorrect = this.dataset.correct === 'true';
             if (isCorrect) {
                 this.classList.add('correct');
@@ -468,25 +474,25 @@ function start52CardsMemoryGame() {
 function next52CardsQuestion() {
     const suits = ['♠', '♥', '♦', '♣'];
     const ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
-    
+
     // Generate random sequence of cards
     const cardSequence = [];
     const usedCards = new Set();
     const sequenceLength = 5 + Math.floor(Math.random() * 4); // 5-8 cards
-    
+
     while (cardSequence.length < sequenceLength) {
         const suit = suits[Math.floor(Math.random() * suits.length)];
         const rank = ranks[Math.floor(Math.random() * ranks.length)];
         const card = `${rank}${suit}`;
-        
+
         if (!usedCards.has(card)) {
             usedCards.add(card);
             cardSequence.push(card);
         }
     }
-    
+
     currentQuestion = { correct: cardSequence.join(', '), type: '52cards' };
-    
+
     const container = document.getElementById('game-container');
     container.innerHTML = `
         <div class="question-container">
@@ -508,7 +514,7 @@ function next52CardsQuestion() {
             </div>
         </div>
     `;
-    
+
     // Hide cards after 5 seconds
     setTimeout(() => {
         document.getElementById('cards-display').innerHTML = '';
@@ -517,14 +523,14 @@ function next52CardsQuestion() {
     }, 5000);
 }
 
-window.check52CardsAnswer = function() {
+window.check52CardsAnswer = function () {
     const input = document.getElementById('cards-input');
     const feedback = document.getElementById('cards-feedback');
     if (!input || !feedback) return;
-    
+
     const userAnswer = input.value.trim().replace(/\s+/g, '');
     const correctAnswer = currentQuestion.correct.replace(/\s+/g, '');
-    
+
     if (userAnswer === correctAnswer) {
         feedback.textContent = '✅ Đúng rồi!';
         feedback.style.color = '#10b981';
@@ -556,14 +562,14 @@ function nextBinaryQuestion() {
     for (let i = 0; i < bitLength; i++) {
         binaryString += Math.random() > 0.5 ? '1' : '0';
     }
-    
+
     const decimalValue = parseInt(binaryString, 2);
     currentQuestion = { correct: binaryString, decimal: decimalValue, type: 'binary' };
-    
+
     const questionType = Math.random() > 0.5 ? 'binary-to-decimal' : 'decimal-to-binary';
-    
+
     const container = document.getElementById('game-container');
-    
+
     if (questionType === 'binary-to-decimal') {
         container.innerHTML = `
             <div class="question-container">
@@ -583,7 +589,7 @@ function nextBinaryQuestion() {
                 </div>
             </div>
         `;
-        
+
         setTimeout(() => {
             document.getElementById('binary-display').innerHTML = '<div style="font-size: 2rem; color: rgba(255,255,255,0.3);">???</div>';
             document.getElementById('binary-input-section').style.display = 'block';
@@ -608,13 +614,13 @@ function nextBinaryQuestion() {
     }
 }
 
-window.checkBinaryAnswer = function(mode) {
+window.checkBinaryAnswer = function (mode) {
     const input = document.getElementById('binary-input');
     const feedback = document.getElementById('binary-feedback');
     if (!input || !feedback) return;
-    
+
     let isCorrect = false;
-    
+
     if (mode === 'decimal') {
         const userAnswer = parseInt(input.value);
         isCorrect = userAnswer === currentQuestion.decimal;
@@ -622,7 +628,7 @@ window.checkBinaryAnswer = function(mode) {
         const userAnswer = input.value.trim();
         isCorrect = userAnswer === currentQuestion.correct;
     }
-    
+
     if (isCorrect) {
         feedback.textContent = '✅ Đúng rồi!';
         feedback.style.color = '#10b981';
@@ -655,9 +661,9 @@ function nextNumberSequenceQuestion() {
     for (let i = 0; i < length; i++) {
         sequence += Math.floor(Math.random() * 10);
     }
-    
+
     currentQuestion = { correct: sequence, type: 'numbersequence' };
-    
+
     const container = document.getElementById('game-container');
     container.innerHTML = `
         <div class="question-container">
@@ -677,12 +683,12 @@ function nextNumberSequenceQuestion() {
             </div>
         </div>
     `;
-    
+
     setTimeout(() => {
         document.getElementById('sequence-display').innerHTML = '<div style="font-size: 2rem; color: rgba(255,255,255,0.3);">???</div>';
         document.getElementById('sequence-input-section').style.display = 'block';
         document.getElementById('sequence-input').focus();
-        
+
         const input = document.getElementById('sequence-input');
         input.addEventListener('input', (e) => {
             e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, length);
@@ -690,14 +696,14 @@ function nextNumberSequenceQuestion() {
     }, (length + 2) * 1000);
 }
 
-window.checkNumberSequenceAnswer = function() {
+window.checkNumberSequenceAnswer = function () {
     const input = document.getElementById('sequence-input');
     const feedback = document.getElementById('sequence-feedback');
     if (!input || !feedback) return;
-    
+
     const userAnswer = input.value.trim();
     const correctAnswer = currentQuestion.correct;
-    
+
     if (userAnswer === correctAnswer) {
         feedback.textContent = '✅ Đúng rồi!';
         feedback.style.color = '#10b981';
@@ -728,9 +734,9 @@ function nextSpeedNumbersQuestion() {
     for (let i = 0; i < 20; i++) {
         digits += Math.floor(Math.random() * 10);
     }
-    
+
     currentQuestion = { correct: digits, type: 'speednumbers' };
-    
+
     const container = document.getElementById('game-container');
     container.innerHTML = `
         <div class="question-container">
@@ -750,7 +756,7 @@ function nextSpeedNumbersQuestion() {
             </div>
         </div>
     `;
-    
+
     setTimeout(() => {
         document.getElementById('speed-display').innerHTML = '<div style="font-size: 2rem; color: rgba(255,255,255,0.3);">Nhập đáp án...</div>';
         document.getElementById('speed-input-section').style.display = 'block';
@@ -762,14 +768,14 @@ function nextSpeedNumbersQuestion() {
     }, 5000);
 }
 
-window.checkSpeedNumbersAnswer = function() {
+window.checkSpeedNumbersAnswer = function () {
     const input = document.getElementById('speed-input');
     const feedback = document.getElementById('speed-feedback');
     if (!input || !feedback) return;
-    
+
     const userAnswer = input.value.trim();
     const correctAnswer = currentQuestion.correct;
-    
+
     if (userAnswer === correctAnswer) {
         feedback.textContent = '✅ Đúng rồi!';
         feedback.style.color = '#10b981';
@@ -799,16 +805,16 @@ function nextRandomWordsQuestion() {
     const words = ['TÁO', 'BƯỞI', 'CAM', 'CHUỐI', 'NHO', 'DƯA', 'XÒAI', 'ỔI', 'LỰU', 'CHANH'];
     const selectedWords = [];
     const wordCount = 4 + Math.floor(Math.random() * 3); // 4-6 words
-    
+
     while (selectedWords.length < wordCount) {
         const word = words[Math.floor(Math.random() * words.length)];
         if (!selectedWords.includes(word)) {
             selectedWords.push(word);
         }
     }
-    
+
     currentQuestion = { correct: selectedWords.join(', '), type: 'randomwords' };
-    
+
     const container = document.getElementById('game-container');
     container.innerHTML = `
         <div class="question-container">
@@ -832,7 +838,7 @@ function nextRandomWordsQuestion() {
             </div>
         </div>
     `;
-    
+
     setTimeout(() => {
         document.getElementById('words-display').innerHTML = '<div style="font-size: 2rem; color: rgba(255,255,255,0.3);">???</div>';
         document.getElementById('words-input-section').style.display = 'block';
@@ -840,14 +846,14 @@ function nextRandomWordsQuestion() {
     }, 5000);
 }
 
-window.checkRandomWordsAnswer = function() {
+window.checkRandomWordsAnswer = function () {
     const input = document.getElementById('words-input');
     const feedback = document.getElementById('words-feedback');
     if (!input || !feedback) return;
-    
+
     const userAnswer = input.value.trim().toUpperCase().replace(/\s+/g, ' ');
     const correctAnswer = currentQuestion.correct.toUpperCase();
-    
+
     if (userAnswer === correctAnswer) {
         feedback.textContent = '✅ Đúng rồi!';
         feedback.style.color = '#10b981';
@@ -877,16 +883,16 @@ function startMemoryPalaceAZGame() {
     startTimer(300, () => {
         stopGame();
     });
-    
+
     const selectedLoci = getRandomLociRoom();
     const allCodes = getAllCodes();
     const numbers = [];
-    
+
     // Generate 10 random codes
     for (let i = 0; i < 10; i++) {
         numbers.push(allCodes[Math.floor(Math.random() * allCodes.length)]);
     }
-    
+
     const container = document.getElementById('game-container');
     container.innerHTML = `
         <div class="question-container">
@@ -895,24 +901,24 @@ function startMemoryPalaceAZGame() {
         </div>
         <div class="palace-container">
             ${numbers.map((code, index) => {
-                const imagePath = getImagePath(code);
-                return `
+        const imagePath = getImagePath(code);
+        return `
                     <div class="palace-room" data-code="${code}" data-index="${index}">
                         <img src="${imagePath}" alt="${getName(code)}" class="palace-image">
                         <div class="palace-number">${code}</div>
                         <div style="font-size: 0.9rem; margin-top: 0.5rem; text-align: center; opacity: 0.9;">${getName(code)}</div>
                     </div>
                 `;
-            }).join('')}
+    }).join('')}
         </div>
         <div style="text-align: center; margin-top: 2rem;">
             <div class="question-label" style="font-size: 1.3rem;">Nhấp vào từng phòng để xem mã và ghi nhớ vị trí trong cung điện</div>
         </div>
     `;
-    
+
     // Add click to show/hide number
     container.querySelectorAll('.palace-room').forEach(room => {
-        room.addEventListener('click', function() {
+        room.addEventListener('click', function () {
             const numberEl = this.querySelector('.palace-number');
             if (numberEl.style.opacity === '0' || numberEl.style.opacity === '') {
                 numberEl.style.opacity = '1';
@@ -950,7 +956,7 @@ function nextMemoryChallengeQuestion() {
     options.push(...shuffled.slice(0, 3));
     const shuffledOptions = options.sort(() => Math.random() - 0.5);
     const imagePath = getImagePath(correctCode);
-    
+
     const container = document.getElementById('game-container');
     container.innerHTML = `
         <div class="question-container">
@@ -966,9 +972,9 @@ function nextMemoryChallengeQuestion() {
             `).join('')}
         </div>
     `;
-    
+
     container.querySelectorAll('.answer-option').forEach(option => {
-        option.addEventListener('click', function() {
+        option.addEventListener('click', function () {
             const isCorrect = this.dataset.correct === 'true';
             if (isCorrect) {
                 this.classList.add('correct');

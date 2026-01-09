@@ -86,57 +86,39 @@
                 </div>
             </div>
             
-            <!-- Game Quick Menu -->
-            <div class="game-quick-menu-container">
-                <h2 class="quick-menu-title">🎮 Chọn Game Nhanh</h2>
-                <div class="game-quick-menu" id="game-quick-menu">
-                    <!-- Games will be populated by JavaScript -->
+            <!-- Categories / Tabs -->
+            <div class="tabs-container">
+                <button class="tab-btn active" onclick="switchTab('basic')">🌱 Cơ Bản</button>
+                <button class="tab-btn" onclick="switchTab('training')">🏋️ Luyện Tập</button>
+                <button class="tab-btn" onclick="switchTab('competition')">🏆 Thi Đấu</button>
+            </div>
+
+            <!-- Tab Contents -->
+            <div id="tab-basic" class="tab-content active">
+                <div class="compact-grid" id="games-grid-basic">
+                    <!-- Standard Games populated here -->
                 </div>
             </div>
             
-            <div style="text-align: center; margin: 2rem 0; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                <button id="toggle-reference" class="btn-back" style="background: var(--primary); margin: 0;">
-                    📖 Xem Bảng Tham Khảo Tất Cả Mã
+            <div id="tab-training" class="tab-content">
+                <div class="compact-grid" id="games-grid-training">
+                    <!-- Training Games populated here -->
+                </div>
+            </div>
+            
+            <div id="tab-competition" class="tab-content">
+                <div class="compact-grid" id="games-grid-competition">
+                    <!-- Advanced/Championship Games populated here -->
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button id="toggle-reference" class="btn-subtle">
+                    📖 Bảng Mã
                 </button>
-                <button id="share-achievement-btn" class="btn-back" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0;">
-                    📸 Tạo Ảnh Khoe Thành Tích
+                <button id="share-achievement-btn" class="btn-subtle">
+                    📸 Khoe Thành Tích
                 </button>
-            </div>
-            
-            <!-- Hidden container for achievement image generation -->
-            <div id="achievement-container" style="position: absolute; left: -9999px; width: 1200px; height: 630px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 3rem; display: none;">
-                <div style="text-align: center; color: white; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                    <h1 style="font-size: 4rem; margin-bottom: 1rem; text-shadow: 3px 3px 8px rgba(0,0,0,0.8);">🧠 SIÊU TRÍ NHỚ</h1>
-                    <h2 style="font-size: 2.5rem; margin-bottom: 3rem; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">Thành Tích Của Tôi</h2>
-                    <div style="display: flex; gap: 3rem; justify-content: center; margin-bottom: 2rem;">
-                        <div style="background: rgba(255,255,255,0.2); padding: 2rem; border-radius: 20px; backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.3);">
-                            <div style="font-size: 1.5rem; margin-bottom: 1rem; font-weight: 600;">Điểm cao nhất</div>
-                            <div id="achievement-high-score" style="font-size: 4rem; font-weight: 900; color: #f9ca24; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">0</div>
-                        </div>
-                        <div style="background: rgba(255,255,255,0.2); padding: 2rem; border-radius: 20px; backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.3);">
-                            <div style="font-size: 1.5rem; margin-bottom: 1rem; font-weight: 600;">Tổng điểm</div>
-                            <div id="achievement-total-score" style="font-size: 4rem; font-weight: 900; color: #f9ca24; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">0</div>
-                        </div>
-                        <div style="background: rgba(255,255,255,0.2); padding: 2rem; border-radius: 20px; backdrop-filter: blur(10px); border: 2px solid rgba(255,255,255,0.3);">
-                            <div style="font-size: 1.5rem; margin-bottom: 1rem; font-weight: 600;">Rank</div>
-                            <div id="achievement-rank" style="font-size: 3rem; font-weight: 900; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">Mới bắt đầu</div>
-                        </div>
-                    </div>
-                    <div style="font-size: 1.2rem; opacity: 0.9; margin-top: 2rem;">sieutrinho.pages.dev</div>
-                </div>
-            </div>
-            
-            <div id="reference-section" class="reference-section hidden">
-                <h2 style="text-align: center; color: #ffffff; font-size: 2rem; margin-bottom: 1.5rem; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">
-                    📚 Bảng Tham Khảo Tất Cả Mã
-                </h2>
-                <div id="reference-grid" class="reference-grid">
-                    <!-- Will be populated by JavaScript -->
-                </div>
-            </div>
-            
-            <div class="games-grid" id="games-grid">
-                <!-- Games will be dynamically loaded -->
             </div>
         </div>
     </div>
