@@ -689,9 +689,22 @@ function showHomepage() {
     updateScoreDisplay();
 }
 
+// Global Game Settings
+let gameSettings = {
+    difficulty: 'easy' // easy, medium, hard
+};
+
 // Start game
 function startGame(game) {
+    // Check if game supports difficulty (most do)
+    showDifficultyModal(game);
+}
+
+function startActualGame(gameId) {
     try {
+        const game = games.find(g => g.id === gameId);
+        if (!game) return;
+
         document.getElementById('homepage').classList.remove('active');
         document.getElementById('game-screen').classList.add('active');
 
@@ -700,6 +713,26 @@ function startGame(game) {
         correctCount = 0;
         wrongCount = 0;
         updateGameStats();
+
+        // Reset timer class
+        const timerEl = document.getElementById('timer');
+        if (timerEl && timerEl.parentElement) {
+            timerEl.parentElement.classList.remove('timer-warning');
+        }
+
+        // Show difficulty indicator
+        const diffText = gameSettings.difficulty === 'hard' ? 'Khó 🌶️' :
+            gameSettings.difficulty === 'medium' ? 'Vừa ⚖️' : 'Dễ 🐣';
+
+        // Add difficulty badge to header if not exists
+        let badge = document.getElementById('difficulty-badge');
+        if (!badge) {
+            badge = document.createElement('div');
+            badge.id = 'difficulty-badge';
+            badge.className = 'stat-item';
+            document.querySelector('.game-stats').prepend(badge);
+        }
+        badge.innerHTML = `<span class="stat-icon">📊</span>${diffText}`;
 
         // Check if it's a Memory Palace game and show room selection
         const memoryPalaceGames = ['memory-palace-az', 'memory-palace-advanced'];

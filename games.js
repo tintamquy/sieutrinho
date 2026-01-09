@@ -10,10 +10,175 @@ let gameInterval = null;
 // Game 1: Image to Number
 function startImageToNumberGame() {
     gameResults = { correct: [], wrong: [], questions: [] };
-    startTimer(120, () => {
+
+    // Difficulty adjustments
+    let timeLimit = 120;
+    if (gameSettings.difficulty === 'hard') timeLimit = 60;
+    if (gameSettings.difficulty === 'easy') timeLimit = 300;
+
+    startTimer(timeLimit, () => {
         stopGame();
     });
     nextImageToNumberQuestion();
+}
+
+// Game 30: Loci Castle (New)
+function startLociCastleGame() {
+    gameResults = { correct: [], wrong: [], questions: [] };
+
+    const castleImage = 'memory_palace_castle_interior.png'; // Generated artifact
+
+    // Define 5 loci points based on the image description (approximate coordinates for now)
+    // In a real app, we'd need a tool to define these precise coords. 
+    // Here we simulate clicking on zones.
+    const lociPoints = [
+        { id: 1, name: 'Cầu Thang', x: 20, y: 60, width: 20, height: 30 },
+        { id: 2, name: 'Ngai Vàng', x: 50, y: 50, width: 15, height: 20 },
+        { id: 3, name: 'Lò Sưởi', x: 80, y: 60, width: 15, height: 25 },
+        { id: 4, name: 'Bàn Ăn', x: 50, y: 80, width: 30, height: 15 },
+        { id: 5, name: 'Cửa Sổ', x: 20, y: 30, width: 15, height: 25 }
+    ];
+
+    // For this demo, let's make it a "memorize the sequence" game using these locations
+    // Or simpler: Show a number on a location, user has to recall it.
+
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="questions-container">
+            <div class="question-label">Ghi nhớ vị trí các số trong Lâu Đài</div>
+            <div style="position: relative; width: 100%; max-width: 800px; margin: 0 auto;">
+                <img src="${castleImage}" style="width: 100%; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);">
+                <div id="loci-overlay" style="position: absolute; top:0; left:0; width:100%; height:100%;">
+                    <!-- Numbers will appear here -->
+                </div>
+            </div>
+            <div id="loci-controls" style="text-align: center; margin-top: 1rem;">
+                <button class="submit-btn" onclick="startLociPhase1()">Bắt Đầu Ghi Nhớ</button>
+            </div>
+        </div>
+    `;
+
+    // Store for game logic
+    currentGameData = { points: lociPoints, step: 0, sequence: [] };
+}
+
+window.startLociPhase1 = function () {
+    const overlay = document.getElementById('loci-overlay');
+    const controls = document.getElementById('loci-controls');
+    controls.innerHTML = '<div style="color: #f9ca24; font-size: 1.2rem;">Hãy nhớ các số xuất hiện...</div>';
+
+    // Generate random numbers for each point
+    currentGameData.sequence = currentGameData.points.map(p => ({
+        ...p,
+        number: Math.floor(Math.random() * 100)
+    }));
+
+    // Show numbers one by one
+    let i = 0;
+    const showNext = () => {
+        if (i >= currentGameData.sequence.length) {
+            setTimeout(startLociRecall, 1000);
+            return;
+        }
+
+        const item = currentGameData.sequence[i];
+        overlay.innerHTML = `
+            <div style="
+                position: absolute; 
+                left: ${item.x}%; top: ${item.y}%; 
+                background: #f9ca24; color: black;
+                width: 50px; height: 50px;
+                border-radius: 50%;
+                display: flex; justify-content: center; align-items: center;
+                font-weight: 900; font-size: 1.5rem;
+                box-shadow: 0 0 20px #f9ca24;
+                animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            ">${item.number}</div>
+        `;
+
+        const duration = gameSettings.difficulty === 'hard' ? 1500 : 3000;
+
+        setTimeout(() => {
+            i++;
+            showNext();
+        }, duration);
+    };
+
+    showNext();
+};
+
+window.startLociRecall = function () {
+    const overlay = document.getElementById('loci-overlay');
+    overlay.innerHTML = ''; // Clear numbers
+
+    const controls = document.getElementById('loci-controls');
+    controls.innerHTML = `
+        <div class="question-label">Điền số tương ứng vào vị trí đang nhấp nháy</div>
+        <input type="number" id="loci-input" class="input-field" style="max-width: 150px; display:inline-block;">
+        <button class="submit-btn" onclick="checkLociAnswer()">Kiểm tra</button>
+        <div id="loci-feedback" style="margin-top:0.5rem; height: 1.5rem;"></div>
+    `;
+
+    currentGameData.step = 0;
+    highlightLociPoint(0);
+};
+
+function highlightLociPoint(index) {
+    if (index >= currentGameData.sequence.length) {
+        finishLociGame();
+        return;
+    }
+
+    const item = currentGameData.sequence[index];
+    const overlay = document.getElementById('loci-overlay');
+    overlay.innerHTML = `
+        <div style="
+            position: absolute; 
+            left: ${item.x}%; top: ${item.y}%; 
+            width: 50px; height: 50px;
+            border: 3px solid #f9ca24;
+            border-radius: 50%;
+            background: rgba(249, 202, 36, 0.3);
+            animation: pulse 1s infinite;
+        "></div>
+    `;
+
+    const input = document.getElementById('loci-input');
+    input.value = '';
+    input.focus();
+}
+
+window.checkLociAnswer = function () {
+    const input = document.getElementById('loci-input');
+    const feedback = document.getElementById('loci-feedback');
+    const userNum = parseInt(input.value);
+    const correctNum = currentGameData.sequence[currentGameData.step].number;
+
+    if (userNum === correctNum) {
+        feedback.textContent = '✅ Chính xác!';
+        feedback.style.color = '#10b981';
+        handleCorrect(20);
+        currentGameData.step++;
+        setTimeout(() => highlightLociPoint(currentGameData.step), 500);
+    } else {
+        feedback.textContent = `❌ Sai rồi! Là số ${correctNum}`;
+        feedback.style.color = '#ef4444';
+        handleWrong();
+        currentGameData.step++;
+        setTimeout(() => highlightLociPoint(currentGameData.step), 1500);
+    }
+};
+
+function finishLociGame() {
+    document.getElementById('game-container').innerHTML = `
+        <div style="text-align: center; margin-top: 2rem;">
+            <h2>🎉 Hoàn Thành!</h2>
+            <p>Bạn đã hoàn thành lượt ghi nhớ Lâu Đài.</p>
+            <button class="submit-btn" onclick="startLociCastleGame()">Chơi Lại</button>
+        </div>
+    `;
+    gameScore += 50; // Bonus
+    updateGameStats();
 }
 
 function nextImageToNumberQuestion() {
@@ -110,7 +275,11 @@ function startFlashcardGame() { alert('Game đang bảo trì! Vui lòng quay l�
 
 // Game 19: Type Number from Image
 function startTypeNumberGame() {
-    startTimer(180, () => {
+    let timeLimit = 180;
+    if (gameSettings.difficulty === 'hard') timeLimit = 90;
+    if (gameSettings.difficulty === 'easy') timeLimit = 360;
+
+    startTimer(timeLimit, () => {
         stopGame();
     });
     nextTypeNumberQuestion();
@@ -176,7 +345,11 @@ window.checkTypeNumber = function (correctNum) {
 
 // Game 20: Type Name from Number
 function startTypeNameGame() {
-    startTimer(180, () => {
+    let timeLimit = 180;
+    if (gameSettings.difficulty === 'hard') timeLimit = 90;
+    if (gameSettings.difficulty === 'easy') timeLimit = 360;
+
+    startTimer(timeLimit, () => {
         stopGame();
     });
     nextTypeNameQuestion();
@@ -516,11 +689,16 @@ function next52CardsQuestion() {
     `;
 
     // Hide cards after 5 seconds
+    // Hide cards after time based on difficulty
+    let previewTime = 5000;
+    if (gameSettings.difficulty === 'hard') previewTime = 3000;
+    if (gameSettings.difficulty === 'easy') previewTime = 8000;
+
     setTimeout(() => {
         document.getElementById('cards-display').innerHTML = '';
         document.getElementById('cards-input-section').style.display = 'block';
         document.getElementById('cards-input').focus();
-    }, 5000);
+    }, previewTime);
 }
 
 window.check52CardsAnswer = function () {
