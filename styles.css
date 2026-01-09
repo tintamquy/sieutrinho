@@ -1847,12 +1847,115 @@ body {
         font-size: 16px !important;
     }
     
+    /* Mobile Optimization & Game Area Improvements */
+    .container {
+        padding: 1rem;
+        width: 100%;
+    }
+
+    .title-3d {
+        font-size: 2.5rem;
+    }
+
+    .game-card, .quick-game-card {
+        padding: 1rem;
+    }
+
+    .question-label {
+        font-size: 1.1rem;
+    }
+    
+    .question-image {
+        max-width: 100%;
+        height: auto;
+        max-height: 250px;
+    }
+
+    /* Clearer Game Area on Mobile */
+    .game-container {
+        background: rgba(15, 23, 42, 0.85); /* Darker background for contrast */
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        padding: 1.5rem;
+        border-radius: 16px;
+    }
+    
+    .answers-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+        gap: 0.8rem;
+    }
+    
+    .answer-option {
+        padding: 1.5rem 1rem;
+    }
+    
+    .answer-number {
+        font-size: 2rem;
+    }
+    
+    /* Input fields larger on mobile */
+    .input-field {
+        font-size: 1.5rem;
+        padding: 0.8rem;
+    }
+    
+    .submit-btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 1.1rem;
+    }
+    
+    /* Result text */
+    .result-value {
+        font-size: 1.8rem;
+    }
+    
+    /* Force high contrast for certain elements */
+    .game-header {
+        background: rgba(0, 0, 0, 0.5);
+        padding: 0.5rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+    }
+    
     /* Override for larger displays */
     @media (min-width: 481px) {
         .input-field {
             font-size: 1.5rem !important;
         }
     }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.game-container, .game-results {
+    animation: fadeIn 0.4s ease-out;
+}
+
+/* Specific Game Tweaks */
+.palace-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.palace-room {
+    position: relative;
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 1;
+}
+
+.palace-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /* Achievement Image Container Styles */

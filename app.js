@@ -64,7 +64,7 @@ function updateRank() {
     if (rankEl) {
         rankEl.textContent = `${rank.emoji} ${rank.name}`;
         rankEl.className = `rank-badge ${rank.class}`;
-        
+
         // Check for rank up - show big celebration only at end or pause
         if (previousRank && rank.minScore > previousRank.minScore) {
             playSound('levelup');
@@ -87,12 +87,12 @@ function showEncouragement(isCorrect) {
     // Only show small corner message, no big overlays during gameplay
     const messages = isCorrect ? encouragementMessages.correct : encouragementMessages.wrong;
     const message = messages[Math.floor(Math.random() * messages.length)];
-    
+
     // Create small fireworks particles (subtle)
     if (isCorrect) {
         createSubtleFireworks();
     }
-    
+
     // Create small corner message (non-intrusive)
     const messageDiv = document.createElement('div');
     messageDiv.className = 'encouragement-message';
@@ -100,9 +100,9 @@ function showEncouragement(isCorrect) {
         <span class="encouragement-emoji">${message.emoji}</span>
         <span class="encouragement-text">${message.text}</span>
     `;
-    
+
     document.body.appendChild(messageDiv);
-    
+
     // Auto remove after animation
     setTimeout(() => {
         messageDiv.remove();
@@ -114,7 +114,7 @@ function createSubtleFireworks() {
     const colors = ['#ec4899', '#8b5cf6', '#f9ca24'];
     const centerX = window.innerWidth - 100;
     const centerY = 100;
-    
+
     // Create small subtle particles
     for (let i = 0; i < 5; i++) {
         const angle = (Math.PI * 2 * i) / 5;
@@ -122,7 +122,7 @@ function createSubtleFireworks() {
         const x = centerX + Math.cos(angle) * distance;
         const y = centerY + Math.sin(angle) * distance;
         const color = colors[Math.floor(Math.random() * colors.length)];
-        
+
         const particle = document.createElement('div');
         particle.className = 'firework-particle';
         particle.style.left = x + 'px';
@@ -133,7 +133,7 @@ function createSubtleFireworks() {
         particle.style.boxShadow = `0 0 5px ${color}`;
         particle.style.animationDuration = '0.8s';
         particle.style.animationDelay = (Math.random() * 0.2) + 's';
-        
+
         document.body.appendChild(particle);
         setTimeout(() => particle.remove(), 1000);
     }
@@ -143,7 +143,7 @@ function createFireworks() {
     const colors = ['#ec4899', '#8b5cf6', '#6366f1', '#f9ca24', '#4ecdc4', '#ff6b6b'];
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight / 3;
-    
+
     // Create multiple firework bursts
     for (let i = 0; i < 3; i++) {
         setTimeout(() => {
@@ -154,19 +154,19 @@ function createFireworks() {
                 const x = centerX + Math.cos(angle) * distance;
                 const y = centerY + Math.sin(angle) * distance;
                 const color = colors[Math.floor(Math.random() * colors.length)];
-                
+
                 const particle = document.createElement('div');
                 particle.className = 'firework-particle';
                 particle.style.left = x + 'px';
                 particle.style.top = y + 'px';
                 particle.style.backgroundColor = color;
                 particle.style.boxShadow = `0 0 10px ${color}`;
-                
+
                 // Random delay for each particle
                 particle.style.animationDelay = (Math.random() * 0.3) + 's';
-                
+
                 document.body.appendChild(particle);
-                
+
                 setTimeout(() => particle.remove(), 1800);
             }
         }, i * 200);
@@ -391,6 +391,22 @@ const games = [
         desc: 'Game loci với các ảnh đã gắn số sẵn',
         category: 'palace',
         func: typeof startLociCastleGame !== 'undefined' ? startLociCastleGame : null
+    },
+    {
+        id: 'cards-memory',
+        title: '52 Lá Bài',
+        icon: '🃏',
+        desc: 'Ghi nhớ thứ tự 52 lá bài tây',
+        category: 'advanced',
+        func: typeof start52CardsMemoryGame !== 'undefined' ? start52CardsMemoryGame : null
+    },
+    {
+        id: 'random-words',
+        title: 'Từ Ngẫu Nhiên',
+        icon: '📝',
+        desc: 'Ghi nhớ danh sách các từ ngẫu nhiên',
+        category: 'advanced',
+        func: typeof startRandomWordsGame !== 'undefined' ? startRandomWordsGame : null
     }
 ].filter(game => game.func !== null); // Filter out games with null functions
 
@@ -403,7 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
             loadScores();
             renderGames();
             setupEventListeners();
-            
+
             // Debug: Check if games are loaded
             console.log('Games loaded:', games.length);
             console.log('Game functions:', games.map(g => ({ id: g.id, hasFunc: typeof g.func === 'function' })));
@@ -430,24 +446,24 @@ document.addEventListener('DOMContentLoaded', () => {
 function init3DBackground() {
     const container = document.getElementById('background-3d');
     if (!container || !window.THREE) return;
-    
+
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    
+
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     container.appendChild(renderer.domElement);
-    
+
     // Add floating particles
     const particles = new THREE.BufferGeometry();
     const particleCount = 100;
     const positions = new Float32Array(particleCount * 3);
-    
+
     for (let i = 0; i < particleCount * 3; i++) {
         positions[i] = (Math.random() - 0.5) * 100;
     }
-    
+
     particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     const material = new THREE.PointsMaterial({
         color: 0xffffff,
@@ -455,21 +471,21 @@ function init3DBackground() {
         transparent: true,
         opacity: 0.6
     });
-    
+
     const particleSystem = new THREE.Points(particles, material);
     scene.add(particleSystem);
-    
+
     camera.position.z = 50;
-    
+
     function animate() {
         requestAnimationFrame(animate);
         particleSystem.rotation.y += 0.001;
         particleSystem.rotation.x += 0.0005;
         renderer.render(scene, camera);
     }
-    
+
     animate();
-    
+
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
@@ -504,23 +520,23 @@ function updateScoreDisplay() {
 function renderQuickMenu() {
     const quickMenu = document.getElementById('game-quick-menu');
     if (!quickMenu) return;
-    
+
     // Featured games - only the most important/representative ones
     const featuredGameIds = [
-        'binary-digits',      // New binary digits game - put first
-        'image-to-number',    // Basic game
-        'number-to-image',    // Basic game
-        'flashcard',          // Basic game
-        'memory-palace',      // Palace game
-        'speed-challenge',    // Intermediate
-        'sequence-memory',    // Advanced
-        'all-codes-master'    // Advanced
+        'number-memory',      // Random Numbers - Highlighted
+        'binary-digits',
+        'image-to-number',
+        'cards-memory',
+        'random-words',
+        'memory-palace-az',
+        'speed-challenge',
+        'all-codes-master'
     ];
-    
+
     const featuredGames = featuredGameIds
         .map(id => games.find(g => g.id === id))
         .filter(g => g && g.func && typeof g.func === 'function');
-    
+
     quickMenu.innerHTML = featuredGames.map(game => {
         const category = gameCategories[game.category] || gameCategories.beginner;
         return `
@@ -530,7 +546,7 @@ function renderQuickMenu() {
             </div>
         `;
     }).join('');
-    
+
     // Add click listeners
     quickMenu.querySelectorAll('.quick-game-card').forEach(card => {
         card.addEventListener('click', () => {
@@ -549,16 +565,16 @@ function renderGames() {
         console.error('Games grid not found!');
         return;
     }
-    
+
     if (!games || games.length === 0) {
         console.error('No games defined!');
         grid.innerHTML = '<div style="text-align: center; color: white;">Không tìm thấy game nào</div>';
         return;
     }
-    
+
     // Render quick menu first
     renderQuickMenu();
-    
+
     // Group games by category
     const gamesByCategory = {};
     games.forEach(game => {
@@ -570,18 +586,18 @@ function renderGames() {
             gamesByCategory[category].push(game);
         }
     });
-    
+
     // Sort categories by order
     const sortedCategories = Object.keys(gameCategories).sort((a, b) => {
         return (gameCategories[a].order || 999) - (gameCategories[b].order || 999);
     });
-    
+
     // Render by categories in order
     let html = '';
     sortedCategories.forEach(categoryKey => {
         const category = gameCategories[categoryKey];
         const categoryGames = gamesByCategory[categoryKey] || [];
-        
+
         if (categoryGames.length > 0) {
             html += `
                 <div class="category-section">
@@ -602,9 +618,9 @@ function renderGames() {
             `;
         }
     });
-    
+
     grid.innerHTML = html;
-    
+
     // Add click listeners
     document.querySelectorAll('.game-card').forEach(card => {
         card.addEventListener('click', () => {
@@ -626,20 +642,20 @@ function setupEventListeners() {
         stopGame();
         showHomepage();
     });
-    
+
     const toggleRef = document.getElementById('toggle-reference');
     if (toggleRef) {
         toggleRef.addEventListener('click', () => {
             const refSection = document.getElementById('reference-section');
             if (refSection) {
                 refSection.classList.toggle('hidden');
-                toggleRef.textContent = refSection.classList.contains('hidden') 
-                    ? '📖 Xem Bảng Tham Khảo Tất Cả Mã' 
+                toggleRef.textContent = refSection.classList.contains('hidden')
+                    ? '📖 Xem Bảng Tham Khảo Tất Cả Mã'
                     : '❌ Đóng Bảng Tham Khảo';
             }
         });
     }
-    
+
     const shareAchievementBtn = document.getElementById('share-achievement-btn');
     if (shareAchievementBtn) {
         shareAchievementBtn.addEventListener('click', () => {
@@ -652,7 +668,7 @@ function setupEventListeners() {
 function renderReferenceSection() {
     const grid = document.getElementById('reference-grid');
     if (!grid) return;
-    
+
     const allCodes = getAllCodes();
     grid.innerHTML = allCodes.map(code => {
         const imagePath = getImagePath(code);
@@ -679,13 +695,13 @@ function startGame(game) {
     try {
         document.getElementById('homepage').classList.remove('active');
         document.getElementById('game-screen').classList.add('active');
-        
+
         // Reset stats
         gameScore = 0;
         correctCount = 0;
         wrongCount = 0;
         updateGameStats();
-        
+
         // Check if it's a Memory Palace game and show room selection
         const memoryPalaceGames = ['memory-palace-az', 'memory-palace-advanced'];
         if (memoryPalaceGames.includes(game.id) && typeof showLociRoomSelection === 'function') {
@@ -696,7 +712,7 @@ function startGame(game) {
                 if (game.func && typeof game.func === 'function') {
                     // Override getRandomLociRoom temporarily
                     const originalGetRandom = window.getRandomLociRoom;
-                    window.getRandomLociRoom = function() { return selectedRoom; };
+                    window.getRandomLociRoom = function () { return selectedRoom; };
                     game.func();
                     // Restore after a short delay
                     setTimeout(() => {
@@ -706,7 +722,7 @@ function startGame(game) {
             });
             return;
         }
-        
+
         // Start game normally
         currentGame = game;
         if (game.func && typeof game.func === 'function') {
@@ -736,29 +752,29 @@ function stopGame() {
         clearInterval(gameTimer);
         gameTimer = null;
     }
-    
+
     // Save scores
     if (gameScore > highScore) {
         highScore = gameScore;
     }
     totalScore += gameScore;
     saveScores();
-    
+
     // Show results if game was played
     if (currentGame && (correctCount > 0 || wrongCount > 0)) {
         showGameResults();
     }
-    
+
     currentGame = null;
 }
 
 // Show game results
 function showGameResults() {
     const container = document.getElementById('game-container');
-    const accuracy = correctCount + wrongCount > 0 
-        ? Math.round((correctCount / (correctCount + wrongCount)) * 100) 
+    const accuracy = correctCount + wrongCount > 0
+        ? Math.round((correctCount / (correctCount + wrongCount)) * 100)
         : 0;
-    
+
     container.innerHTML = `
         <div class="game-results">
             <h2 style="text-align: center; font-size: 3rem; color: #ffffff; margin-bottom: 2rem; text-shadow: 3px 3px 8px rgba(0,0,0,0.8);">
@@ -827,29 +843,30 @@ function showGameResults() {
             </div>
         </div>
     `;
-    
+
     // Reset results
     gameResults = { correct: [], wrong: [], questions: [] };
 }
 
 // Generate and share achievement image
+// Generate and share achievement image - Improved
 window.generateAchievementImage = async function generateAchievementImage() {
     const shareBtn = document.getElementById('share-achievement-btn');
     if (shareBtn) {
         shareBtn.disabled = true;
         shareBtn.textContent = '⏳ Đang tạo hình...';
     }
-    
+
     try {
         // Update achievement container with current stats
         const achievementContainer = document.getElementById('achievement-container');
         const highScoreEl = document.getElementById('achievement-high-score');
         const totalScoreEl = document.getElementById('achievement-total-score');
         const rankEl = document.getElementById('achievement-rank');
-        
+
         if (highScoreEl) highScoreEl.textContent = highScore;
         if (totalScoreEl) totalScoreEl.textContent = totalScore.toLocaleString('vi-VN');
-        
+
         // Get rank info
         const rank = getRank(totalScore);
         if (rankEl) {
@@ -857,47 +874,45 @@ window.generateAchievementImage = async function generateAchievementImage() {
             rankEl.className = `rank-badge ${rank.class}`;
             rankEl.style.display = 'inline-block';
         }
-        
+
         // Show container temporarily for screenshot
-        if (achievementContainer) {
-            achievementContainer.style.display = 'block';
-            achievementContainer.style.position = 'absolute';
-            achievementContainer.style.left = '-9999px';
-        }
-        
+        // Clone it to ensure clean capture environment
+        const cloneContainer = achievementContainer.cloneNode(true);
+        cloneContainer.style.display = 'block';
+        cloneContainer.style.position = 'absolute';
+        cloneContainer.style.top = '0';
+        cloneContainer.style.left = '-9999px';
+        cloneContainer.style.width = '1200px'; // Fixed high-res width
+        cloneContainer.style.background = 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)';
+        cloneContainer.style.padding = '40px';
+        cloneContainer.style.borderRadius = '20px';
+        document.body.appendChild(cloneContainer);
+
         // Wait a bit for rendering
         await new Promise(resolve => setTimeout(resolve, 100));
-        
+
         // Create canvas from achievement container
-        const canvas = await html2canvas(achievementContainer, {
+        const canvas = await html2canvas(cloneContainer, {
             backgroundColor: null,
-            scale: 2,
+            scale: window.innerWidth < 768 ? 1.5 : 2,
             logging: false,
             useCORS: true,
             allowTaint: true,
             width: 1200,
             height: 630
         });
-        
-        // Hide container again
-        if (achievementContainer) {
-            achievementContainer.style.display = 'none';
-        }
-        
+
+        // Clean up
+        document.body.removeChild(cloneContainer);
+
         // Convert canvas to blob
         canvas.toBlob(async (blob) => {
             if (!blob) {
-                alert('Không thể tạo hình ảnh. Vui lòng thử lại.');
-                if (shareBtn) {
-                    shareBtn.disabled = false;
-                    shareBtn.textContent = '📸 Tạo Ảnh Khoe Thành Tích';
-                }
-                return;
+                throw new Error('Blob creation failed');
             }
-            
+
             const file = new File([blob], 'thanh-tich-sieu-tri-nho.png', { type: 'image/png' });
-            const url = URL.createObjectURL(blob);
-            
+
             // Try Web Share API first (mobile)
             if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
                 try {
@@ -906,127 +921,134 @@ window.generateAchievementImage = async function generateAchievementImage() {
                         text: `Tôi đã đạt ${highScore} điểm cao nhất và ${totalScore.toLocaleString('vi-VN')} tổng điểm! ${rank.emoji} ${rank.name}`,
                         files: [file]
                     });
-                    if (shareBtn) {
-                        shareBtn.disabled = false;
-                        shareBtn.textContent = '📸 Tạo Ảnh Khoe Thành Tích';
-                    }
-                    URL.revokeObjectURL(url);
+                    resetShareBtn();
                     return;
                 } catch (err) {
                     console.log('Web Share API failed, falling back to download');
                 }
             }
-            
+
             // Fallback: Download image
+            const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
             link.download = 'thanh-tich-sieu-tri-nho.png';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
+
             // Show success message
             setTimeout(() => {
                 alert('✅ Đã tạo hình ảnh thành tích! Bạn có thể chia sẻ hình ảnh này trên mạng xã hội.');
                 URL.revokeObjectURL(url);
             }, 100);
-            
-            if (shareBtn) {
-                shareBtn.disabled = false;
-                shareBtn.textContent = '📸 Tạo Ảnh Khoe Thành Tích';
-            }
+
+            resetShareBtn();
         }, 'image/png');
     } catch (error) {
         console.error('Error creating achievement image:', error);
         alert('Có lỗi xảy ra khi tạo hình ảnh. Vui lòng thử lại.');
+        resetShareBtn();
+    }
+
+    function resetShareBtn() {
         if (shareBtn) {
             shareBtn.disabled = false;
             shareBtn.textContent = '📸 Tạo Ảnh Khoe Thành Tích';
-        }
-        // Make sure to hide container on error
-        const achievementContainer = document.getElementById('achievement-container');
-        if (achievementContainer) {
-            achievementContainer.style.display = 'none';
         }
     }
 };
 
 // Share game result as image
+// Share game result as image - Improved for Mobile
 window.shareGameResult = async function shareGameResult() {
     const resultsContainer = document.querySelector('.game-results');
-    if (!resultsContainer) return;
-    
+    if (!resultsContainer) {
+        console.error('Results container not found');
+        return;
+    }
+
     const shareBtn = document.getElementById('share-result-btn');
     if (shareBtn) {
         shareBtn.disabled = true;
         shareBtn.textContent = '⏳ Đang tạo hình...';
     }
-    
+
     try {
-        // Create a canvas from the results container
-        const canvas = await html2canvas(resultsContainer, {
+        // Clone the container to a clean "screenshot" area to ensure visibility and contrast
+        const cloneContainer = document.createElement('div');
+        cloneContainer.innerHTML = resultsContainer.innerHTML;
+        cloneContainer.style.position = 'absolute';
+        cloneContainer.style.top = '0';
+        cloneContainer.style.left = '-9999px';
+        cloneContainer.style.width = '600px'; // Fixed width for consistent look
+        cloneContainer.style.padding = '2rem';
+        cloneContainer.style.background = '#0f172a'; // Dark background
+        cloneContainer.style.color = '#fff';
+        cloneContainer.style.borderRadius = '20px';
+        cloneContainer.style.fontFamily = 'sans-serif';
+        document.body.appendChild(cloneContainer);
+
+        // Wait a moment for DOM
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        // Create canvas
+        const canvas = await html2canvas(cloneContainer, {
             backgroundColor: '#0f172a',
-            scale: 2,
+            scale: window.innerWidth < 768 ? 1.5 : 2, // Reduce scale on mobile
             logging: false,
             useCORS: true,
             allowTaint: true
         });
-        
+
+        // Clean up
+        document.body.removeChild(cloneContainer);
+
         // Convert canvas to blob
         canvas.toBlob(async (blob) => {
             if (!blob) {
-                alert('Không thể tạo hình ảnh. Vui lòng thử lại.');
-                if (shareBtn) {
-                    shareBtn.disabled = false;
-                    shareBtn.textContent = '📸 Chia Sẻ Kết Quả';
-                }
-                return;
+                throw new Error('Blob creation failed');
             }
-            
+
             const file = new File([blob], 'ket-qua-game.png', { type: 'image/png' });
-            const url = URL.createObjectURL(blob);
-            
-            // Try Web Share API first (mobile)
+
+            // Try Web Share API (Mobile)
             if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
                 try {
                     await navigator.share({
                         title: 'Kết quả game Siêu Trí Nhớ',
-                        text: `Tôi đã đạt ${gameScore} điểm với độ chính xác ${Math.round((correctCount / (correctCount + wrongCount)) * 100)}%! 🎉`,
+                        text: `Tôi đã đạt ${gameScore} điểm! Bạn có làm được không? 🧠`,
                         files: [file]
                     });
-                    if (shareBtn) {
-                        shareBtn.disabled = false;
-                        shareBtn.textContent = '📸 Chia Sẻ Kết Quả';
-                    }
-                    URL.revokeObjectURL(url);
+                    resetShareBtn();
                     return;
                 } catch (err) {
-                    console.log('Web Share API failed, falling back to download');
+                    console.log('Web Share API cancelled or failed:', err);
                 }
             }
-            
-            // Fallback: Download image
+
+            // Fallback: Download (PC)
+            const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = 'ket-qua-game.png';
+            link.download = `sieu-tri-nho-score-${gameScore}.png`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
-            // Show success message
-            setTimeout(() => {
-                alert('✅ Đã lưu hình ảnh! Bạn có thể chia sẻ hình ảnh này trên mạng xã hội.');
-                URL.revokeObjectURL(url);
-            }, 100);
-            
-            if (shareBtn) {
-                shareBtn.disabled = false;
-                shareBtn.textContent = '📸 Chia Sẻ Kết Quả';
-            }
+
+            setTimeout(() => URL.revokeObjectURL(url), 100);
+
+            resetShareBtn();
+            alert('✅ Đã lưu ảnh! Hãy chia sẻ với bạn bè nhé!');
         }, 'image/png');
+
     } catch (error) {
-        console.error('Error creating image:', error);
-        alert('Có lỗi xảy ra khi tạo hình ảnh. Vui lòng thử lại.');
+        console.error('Error in shareGameResult:', error);
+        alert('Không thể tạo ảnh. Vui lòng thử chụp màn hình thủ công.');
+        resetShareBtn();
+    }
+
+    function resetShareBtn() {
         if (shareBtn) {
             shareBtn.disabled = false;
             shareBtn.textContent = '📸 Chia Sẻ Kết Quả';
@@ -1055,17 +1077,17 @@ function updateGameStats() {
 function startTimer(seconds, onComplete) {
     let timeLeft = seconds;
     document.getElementById('timer').textContent = timeLeft;
-    
+
     if (gameTimer) clearInterval(gameTimer);
-    
+
     gameTimer = setInterval(() => {
         timeLeft--;
         document.getElementById('timer').textContent = timeLeft;
-        
+
         if (timeLeft <= 10) {
             document.getElementById('timer').parentElement.classList.add('timer-warning');
         }
-        
+
         if (timeLeft <= 0) {
             clearInterval(gameTimer);
             if (onComplete) onComplete();
@@ -1086,7 +1108,7 @@ function stopTimer() {
 function playSound(type) {
     try {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        
+
         if (type === 'correct') {
             // Success sound - cheerful ascending tones
             const frequencies = [523.25, 659.25, 783.99, 987.77]; // C5, E5, G5, B5
@@ -1140,12 +1162,12 @@ function showReward(points) {
     const overlay = document.getElementById('reward-overlay');
     const pointsEl = overlay.querySelector('.reward-points');
     const iconEl = overlay.querySelector('.reward-icon');
-    
+
     pointsEl.textContent = `+${points}`;
     iconEl.textContent = '⭐';
-    
+
     overlay.classList.remove('hidden');
-    
+
     setTimeout(() => {
         overlay.classList.add('hidden');
     }, 1500);
@@ -1161,7 +1183,7 @@ function handleCorrect(points = 10) {
     playSound('correct');
     showReward(points);
     showEncouragement(true);
-    
+
     // Special encouragement for streaks
     if (correctCount % 5 === 0) {
         setTimeout(() => {
@@ -1177,38 +1199,38 @@ let selectedLociRoom = null;
 function showLociRoomSelection(onSelect) {
     const letterRooms = getLetterLociRooms();
     const container = document.getElementById('game-container');
-    
+
     container.innerHTML = `
         <div class="loci-selection-container">
             <div class="loci-selection-title">🏰 Chọn phòng trong Cung Điện (theo thứ tự A-B-C-D...)</div>
             <div class="loci-rooms-grid">
                 ${letterRooms.map(room => {
-                    const letter = room.match(/^([A-Z]) - /)[1];
-                    const name = room.replace(/^[A-Z] - /, '').replace('.jpg', '');
-                    return `
+        const letter = room.match(/^([A-Z]) - /)[1];
+        const name = room.replace(/^[A-Z] - /, '').replace('.jpg', '');
+        return `
                         <div class="loci-room-option" data-room="${room}">
                             <img src="loci/${room}" alt="${name}">
                             <div class="room-letter">${letter}</div>
                             <div class="room-name">${name}</div>
                         </div>
                     `;
-                }).join('')}
+    }).join('')}
             </div>
         </div>
     `;
-    
+
     // Add click handlers
     container.querySelectorAll('.loci-room-option').forEach(option => {
-        option.addEventListener('click', function() {
+        option.addEventListener('click', function () {
             // Remove previous selection
             container.querySelectorAll('.loci-room-option').forEach(opt => {
                 opt.classList.remove('selected');
             });
-            
+
             // Select this room
             this.classList.add('selected');
             selectedLociRoom = this.dataset.room;
-            
+
             // Call callback after short delay for visual feedback
             setTimeout(() => {
                 if (onSelect) onSelect(selectedLociRoom);
@@ -1226,17 +1248,17 @@ function restartCurrentGame() {
         wrongCount = 0;
         updateGameStats();
         gameResults = { correct: [], wrong: [], questions: [] };
-        
+
         // Stop any running timers
         if (gameTimer) {
             clearInterval(gameTimer);
             gameTimer = null;
         }
-        
+
         // Ensure we're on game screen
         document.getElementById('homepage').classList.remove('active');
         document.getElementById('game-screen').classList.add('active');
-        
+
         // Restart the game
         currentGame.func();
     } else {
@@ -1253,7 +1275,7 @@ function handleWrong(question = null, userAnswer = null, correctAnswer = null, i
     updateGameStats();
     playSound('wrong');
     showEncouragement(false);
-    
+
     if (question && userAnswer && correctAnswer) {
         trackWrongAnswer(question, userAnswer, correctAnswer, image);
     }
@@ -1266,16 +1288,16 @@ function getRandomOptions(correctNum, count = 4) {
     const available = imageFiles
         .map(item => item.num)
         .filter(num => num !== correctNum);
-    
+
     const shuffled = available.sort(() => Math.random() - 0.5);
-    
+
     for (const num of shuffled) {
         if (!used.has(num) && options.length < count) {
             options.push(num);
             used.add(num);
         }
     }
-    
+
     // If we still need more options (for special codes), add them
     if (options.length < count) {
         const specialCodes = ['Jb', 'Jc', 'Jr', 'Jt', 'Kb', 'Kc', 'Kr', 'Kt', 'Qb', 'Qc', 'Qr', 'Qt'];
@@ -1286,7 +1308,7 @@ function getRandomOptions(correctNum, count = 4) {
             }
         }
     }
-    
+
     return options.sort(() => Math.random() - 0.5);
 }
 
