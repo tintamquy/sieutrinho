@@ -693,7 +693,21 @@ let gameSettings = {
 };
 
 // Start game
-function startGame(game) {
+function startGame(gameIdOrObject) {
+    // Handle both gameId (string) and game object
+    let game;
+    if (typeof gameIdOrObject === 'string') {
+        game = games.find(g => g.id === gameIdOrObject);
+    } else {
+        game = gameIdOrObject;
+    }
+
+    if (!game) {
+        console.error('Game not found:', gameIdOrObject);
+        alert('Không tìm thấy game này!');
+        return;
+    }
+
     // Check if game supports difficulty (most do)
     showDifficultyModal(game);
 }
