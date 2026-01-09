@@ -560,80 +560,78 @@ function renderQuickMenu() {
 }
 
 // Render games into tabs
+// Render games into tabs
 function renderGames() {
-    console.error('Games grid not found!');
-    return;
-}
+    const basicContainer = document.getElementById('games-grid-basic');
+    const trainingContainer = document.getElementById('games-grid-training');
+    const competitionContainer = document.getElementById('games-grid-competition');
 
-if (!games || games.length === 0) {
-    console.error('No games defined!');
-    grid.innerHTML = '<div style="text-align: center; color: white;">Không tìm thấy game nào</div>';
-    return;
-}
+    // Clear containers
+    if (basicContainer) basicContainer.innerHTML = '';
+    if (trainingContainer) trainingContainer.innerHTML = '';
+    if (competitionContainer) competitionContainer.innerHTML = '';
 
-// Render quick menu first
-renderQuickMenu();
-
-// Group games by category
-const gamesByCategory = {};
-games.forEach(game => {
-    if (game.func && typeof game.func === 'function') {
-        const category = game.category || 'beginner';
-        if (!gamesByCategory[category]) {
-            gamesByCategory[category] = [];
-        }
-        gamesByCategory[category].push(game);
+    if (!basicContainer || !trainingContainer || !competitionContainer) {
+        console.error('Tab containers not found');
+        return;
     }
-});
 
-// Sort categories by order
-const sortedCategories = Object.keys(gameCategories).sort((a, b) => {
-    return (gameCategories[a].order || 999) - (gameCategories[b].order || 999);
-});
+    // Define categories by ID
+    const categories = {
+        'basic': ['image-to-number', 'number-to-image', 'basic-review', 'flashcard', 'chinese-radicals', 'chinese-radicals-by-day'],
+        'training': ['type-number', 'type-name', 'cards-memory', 'memory-palace', 'memory-palace-advanced', 'memory-palace-az', 'loci-castle'],
+        'competition': ['number-memory', 'binary-digits', 'speed-numbers', 'random-words', 'rapid-fire', 'all-codes-master']
+    };
 
-// Render by categories in order
-let html = '';
-sortedCategories.forEach(categoryKey => {
-    const category = gameCategories[categoryKey];
-    const categoryGames = gamesByCategory[categoryKey] || [];
+    games.forEach(game => {
+        if (!game.func || typeof game.func !== 'function') return;
 
-    if (categoryGames.length > 0) {
-        html += `
-                <div class="category-section">
-                    <div class="category-header" style="border-left: 5px solid ${category.color};">
-                        <h2 class="category-title">${category.name}</h2>
-                        <p class="category-desc">${category.desc}</p>
-                    </div>
-                    <div class="category-games">
-                        ${categoryGames.map(game => `
-                            <div class="game-card" data-game-id="${game.id}" style="border-top: 3px solid ${category.color};">
-                                <div class="game-icon">${game.icon}</div>
-                                <div class="game-title">${game.title}</div>
-                                <div class="game-desc">${game.desc}</div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
+        let targetId = 'games-grid-training'; // Default
+
+        // Determine category based on ID mapping
+        if (categories.basic.includes(game.id) || game.category === 'basic') targetId = 'games-grid-basic';
+        else if (categories.competition.includes(game.id) || game.category === 'advanced') targetId = 'games-grid-competition';
+        else if (categories.training.includes(game.id)) targetId = 'games-grid-training';
+        else if (game.category === 'palace') targetId = 'games-grid-training'; // Palaces go to training
+
+        const targetContainer = document.getElementById(targetId);
+
+        if (targetContainer) {
+            const card = document.createElement('div');
+            card.className = 'game-card';
+            card.innerHTML = `
+                <div class="game-icon">${game.icon}</div>
+                <h3 class="game-title">${game.title}</h3>
+                <div class="game-desc">${game.desc}</div>
             `;
-    }
-});
-
-grid.innerHTML = html;
-
-// Add click listeners
-document.querySelectorAll('.game-card').forEach(card => {
-    card.addEventListener('click', () => {
-        const gameId = card.dataset.gameId;
-        const game = games.find(g => g.id === gameId);
-        if (game && game.func && typeof game.func === 'function') {
-            startGame(game);
-        } else {
-            console.error('Game function not found for:', gameId);
-            alert('Game này chưa sẵn sàng. Vui lòng thử lại sau.');
+            card.onclick = () => startGame(game.id);
+            targetContainer.appendChild(card);
         }
     });
-});
 
+    // Render Quick Menu as well (Featured)
+    renderQuickMenu();
+}
+
+// Switch Tab Logic
+window.switchTab = function (tabName) {
+    // Hide all tabs
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+    // Show selected
+    const selectedTab = document.getElementById(`tab-${tabName}`);
+    if (selectedTab) selectedTab.classList.add('active');
+
+    // Highlight button
+    const btns = document.querySelectorAll('.tab-btn');
+    btns.forEach(btn => {
+        const onclick = btn.getAttribute('onclick');
+        if (onclick && onclick.includes(tabName)) {
+            btn.classList.add('active');
+        }
+    });
+}
 
 // Setup event listeners
 function setupEventListeners() {
