@@ -249,15 +249,47 @@ window.startLociPhase1 = function () {
 
 function nextImageToNumberQuestion() {
     if (!isGameActive()) return;
+
     const correctNum = getRandomNumber();
-    // ...
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+
+    // FIX: Define container
+    const container = document.getElementById('game-container');
+
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Hình ảnh này là số nào?</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                    <div style="font-size: 1.1rem; margin-top: 0.5rem; opacity: 0.9;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+
     container.querySelectorAll('.answer-option').forEach(option => {
         option.addEventListener('click', function () {
             if (!isGameActive()) return;
-            // ... logic
-            setTimeout(() => {
-                if (isGameActive()) nextImageToNumberQuestion();
-            }, 1500);
+
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => {
+                    if (isGameActive()) nextImageToNumberQuestion();
+                }, 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong(null, this.dataset.answer, correctNum);
+                setTimeout(() => {
+                    if (isGameActive()) nextImageToNumberQuestion();
+                }, 1500);
+            }
         });
     });
 }
