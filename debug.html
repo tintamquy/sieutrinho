@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Game Debug Test</title>
+</head>
+
+<body>
+    <h1>Testing Game Functions</h1>
+    <div id="output"></div>
+
+    <script src="data.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="games.js"></script>
+    <script src="app.js"></script>
+
+    <script>
+        const output = document.getElementById('output');
+
+        // Wait for everything to load
+        setTimeout(() => {
+            output.innerHTML += '<h2>Debug Info:</h2>';
+            output.innerHTML += `<p>Games array length: ${games ? games.length : 'undefined'}</p>`;
+            output.innerHTML += `<p>First game: ${games && games[0] ? games[0].title : 'undefined'}</p>`;
+            output.innerHTML += `<p>First game func type: ${games && games[0] && games[0].func ? typeof games[0].func : 'undefined'}</p>`;
+
+            // Try to find startImageToNumberGame
+            output.innerHTML += `<p>startImageToNumberGame exists: ${typeof startImageToNumberGame !== 'undefined'}</p>`;
+            output.innerHTML += `<p>gameSettings exists: ${typeof gameSettings !== 'undefined'}</p>`;
+            output.innerHTML += `<p>startTimer exists: ${typeof startTimer !== 'undefined'}</p>`;
+
+            // List all games
+            if (games) {
+                output.innerHTML += '<h3>All Games:</h3><ul>';
+                games.forEach(g => {
+                    output.innerHTML += `<li>${g.id}: ${g.title} - func: ${typeof g.func}</li>`;
+                });
+                output.innerHTML += '</ul>';
+            }
+        }, 500);
+    </script>
+</body>
+
+</html>

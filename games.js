@@ -264,9 +264,86 @@ function nextBasicReviewQuestion() {
     });
 }
 
-// Basic stubs for missing games (to be implemented)
-function startNumberToImageGame() { alert('Game đang bảo trì! Vui lòng quay lại sau.'); showHomepage(); }
-function startFlashcardGame() { alert('Game đang bảo trì! Vui lòng quay lại sau.'); showHomepage(); }
+// Game 2: Number to Image - Basic implementation
+function startNumberToImageGame() {
+    gameResults = { correct: [], wrong: [], questions: [] };
+    let timeLimit = 120;
+    if (gameSettings.difficulty === 'hard') timeLimit = 60;
+    if (gameSettings.difficulty === 'easy') timeLimit = 300;
+    startTimer(timeLimit, () => { stopGame(); });
+    nextNumberToImageQuestion();
+}
+
+function nextNumberToImageQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Số này tương ứng với hình ảnh nào?</div>
+            <div class="question-text">${correctNum}</div>
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <img src="${getImagePath(num)}" alt="${getName(num)}" class="answer-image">
+                    <div style="font-size: 1.1rem; opacity: 0.8; margin-top: 0.5rem;">${getName(num)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function () {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(10);
+                setTimeout(() => nextNumberToImageQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextNumberToImageQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game 3: Flashcard - Basic implementation
+function startFlashcardGame() {
+    gameResults = { correct: [], wrong: [], questions: [] };
+    startTimer(180, () => { stopGame(); });
+    nextFlashcardQuestion();
+}
+
+function nextFlashcardQuestion() {
+    const correctNum = getRandomNumber();
+    const imagePath = getImagePath(correctNum);
+    const name = getName(correctNum);
+
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Flashcard: Click để lật thẻ</div>
+            <div class="flashcard-container" onclick="this.querySelector('.flashcard').classList.toggle('flipped')">
+                <div class="flashcard">
+                    <div class="flashcard-face flashcard-front">
+                        <img src="${imagePath}" alt="${name}" class="flashcard-image">
+                    </div>
+                    <div class="flashcard-face flashcard-back">
+                        <div class="flashcard-text">${correctNum}</div>
+                        <div style="font-size: 1.5rem; margin-top: 1rem; opacity: 0.8;">${name}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 2rem; display: flex; gap: 1rem; justify-content: center;">
+            <button class="submit-btn" style="background: #10b981;" onclick="handleCorrect(5); nextFlashcardQuestion();">Đã nhớ ✓</button>
+            <button class="submit-btn" style="background: #ef4444;" onclick="handleWrong(); nextFlashcardQuestion();">Chưa nhớ ✗</button>
+        </div>
+    `;
+}
 
 
 // ==========================================
@@ -483,10 +560,159 @@ function nextDoubleChallengeQuestion() {
 }
 
 
-// Stubs
-function startSpeedChallengeGame() { alert('Game đang bảo trì! Vui lòng quay lại sau.'); showHomepage(); }
-function startReverseChallengeGame() { alert('Game đang bảo trì! Vui lòng quay lại sau.'); showHomepage(); }
-function startMatchPairsGame() { alert('Game đang bảo trì! Vui lòng quay lại sau.'); showHomepage(); }
+// Game: Speed Challenge
+function startSpeedChallengeGame() {
+    gameResults = { correct: [], wrong: [], questions: [] };
+    startTimer(90, () => { stopGame(); });
+    nextSpeedChallengeQuestion();
+}
+
+function nextSpeedChallengeQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+    const imagePath = getImagePath(correctNum);
+
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Thử thách tốc độ! Nhanh lên!</div>
+            <img src="${imagePath}" alt="${getName(correctNum)}" class="question-image" style="max-width: 250px;">
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <div class="answer-number">${num}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function () {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(20);
+                setTimeout(() => nextSpeedChallengeQuestion(), 500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextSpeedChallengeQuestion(), 500);
+            }
+        });
+    });
+}
+
+// Game: Reverse Challenge
+function startReverseChallengeGame() {
+    gameResults = { correct: [], wrong: [], questions: [] };
+    startTimer(180, () => { stopGame(); });
+    nextReverseChallengeQuestion();
+}
+
+function nextReverseChallengeQuestion() {
+    const correctNum = getRandomNumber();
+    const options = getRandomOptions(correctNum, 4);
+
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Thử thách ngược: Chọn hình ảnh cho số này</div>
+            <div class="question-text">${correctNum}</div>
+        </div>
+        <div class="answers-grid">
+            ${options.map(num => `
+                <div class="answer-option" data-answer="${num}" data-correct="${num === correctNum}">
+                    <img src="${getImagePath(num)}" alt="${getName(num)}" class="answer-image">
+                </div>
+            `).join('')}
+        </div>
+    `;
+
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function () {
+            const isCorrect = this.dataset.correct === 'true';
+            if (isCorrect) {
+                this.classList.add('correct');
+                handleCorrect(15);
+                setTimeout(() => nextReverseChallengeQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextReverseChallengeQuestion(), 1500);
+            }
+        });
+    });
+}
+
+// Game: Match Pairs
+function startMatchPairsGame() {
+    gameResults = { correct: [], wrong: [], questions: [] };
+    startTimer(240, () => { stopGame(); });
+    renderMatchPairsGame();
+}
+
+function renderMatchPairsGame() {
+    const numbers = [];
+    for (let i = 0; i < 6; i++) {
+        const num = getRandomNumber();
+        numbers.push({ type: 'number', value: num, matched: false });
+        numbers.push({ type: 'image', value: num, matched: false });
+    }
+
+    const shuffled = numbers.sort(() => Math.random() - 0.5);
+
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Ghép cặp: Tìm các cặp số-hình ảnh tương ứng</div>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; max-width: 600px; margin: 0 auto;">
+            ${shuffled.map((item, index) => `
+                <div class="answer-option match-card" data-index="${index}" data-value="${item.value}" data-type="${item.type}" style="min-height: 100px; display: flex; align-items: center; justify-content: center;">
+                    ${item.type === 'number' ?
+            `<div class="answer-number" style="font-size: 1.8rem;">${item.value}</div>` :
+            `<img src="${getImagePath(item.value)}" style="max-height: 80px; border-radius: 8px;">`
+        }
+                </div>
+            `).join('')}
+        </div>
+        <div id="match-feedback" style="text-align: center; margin-top: 1rem; font-size: 1.3rem;"></div>
+    `;
+
+    let selected = null;
+    container.querySelectorAll('.match-card').forEach(card => {
+        card.addEventListener('click', function () {
+            if (this.classList.contains('matched')) return;
+
+            if (!selected) {
+                selected = this;
+                this.style.border = '3px solid #f9ca24';
+            } else {
+                const v1 = selected.dataset.value;
+                const v2 = this.dataset.value;
+                const t1 = selected.dataset.type;
+                const t2 = this.dataset.type;
+
+                if (v1 === v2 && t1 !== t2) {
+                    selected.classList.add('matched', 'correct');
+                    this.classList.add('matched', 'correct');
+                    handleCorrect(15);
+                } else {
+                    selected.classList.add('wrong');
+                    this.classList.add('wrong');
+                    handleWrong();
+                    setTimeout(() => {
+                        selected.classList.remove('wrong');
+                        this.classList.remove('wrong');
+                    }, 500);
+                }
+                selected.style.border = '';
+                selected = null;
+            }
+        });
+    });
+}
 
 // ==========================================
 // 3. ADVANCED GAMES
@@ -1048,9 +1274,122 @@ window.checkRandomWordsAnswer = function () {
     }
 };
 
-// Stubs for remaining
-function startSequenceMemoryGame() { alert('Game đang bảo trì! Vui lòng quay lại sau.'); showHomepage(); }
-function startSpecialCodesGame() { alert('Game đang bảo trì! Vui lòng quay lại sau.'); showHomepage(); }
+// Stubs for games that need full implementation later
+function startSequenceMemoryGame() {
+    gameResults = { correct: [], wrong: [], questions: [] };
+    startTimer(180, () => { stopGame(); });
+    nextSequenceMemoryQuestion();
+}
+
+function nextSequenceMemoryQuestion() {
+    const length = 3 + Math.floor(Math.random() * 4);
+    const sequence = [];
+    for (let i = 0; i < length; i++) {
+        sequence.push(getRandomNumber());
+    }
+
+    currentQuestion = { correct: sequence.join(','), type: 'sequence' };
+
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Nhớ thứ tự ${length} mã (5 giây)</div>
+            <div id="seq-display" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin: 2rem 0;">
+                ${sequence.map((num, i) => `
+                    <div style="background: linear-gradient(135deg, #667eea, #764ba2); padding: 1.5rem; border-radius: 15px; text-align: center; min-width: 80px;">
+                        <div style="font-size: 0.9rem; opacity: 0.7; margin-bottom: 0.5rem;">#${i + 1}</div>
+                        <div style="font-size: 2rem; font-weight: 900; color: #f9ca24;">${num}</div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+        <div id="seq-input-section" style="display: none;">
+            <div class="question-label">Điền lại thứ tự các mã (phân cách bằng dấu phẩy)</div>
+            <div class="input-game-container">
+                <input type="text" id="seq-input" class="input-field" placeholder="VD: 01,23,45">
+                <button class="submit-btn" onclick="checkSequenceAnswer()">Kiểm tra</button>
+            </div>
+            <div id="seq-feedback" style="text-align: center; margin-top: 1rem; font-size: 1.5rem; font-weight: bold;"></div>
+        </div>
+    `;
+
+    setTimeout(() => {
+        document.getElementById('seq-display').innerHTML = '<div style="font-size: 2rem; color: rgba(255,255,255,0.3);">???</div>';
+        document.getElementById('seq-input-section').style.display = 'block';
+        document.getElementById('seq-input').focus();
+    }, 5000);
+}
+
+window.checkSequenceAnswer = function () {
+    const input = document.getElementById('seq-input');
+    const feedback = document.getElementById('seq-feedback');
+    const userAnswer = input.value.trim().replace(/\s+/g, '');
+    const correctAnswer = currentQuestion.correct;
+
+    if (userAnswer === correctAnswer) {
+        feedback.textContent = '✅ Đúng rồi!';
+        feedback.style.color = '#10b981';
+        handleCorrect(20);
+        setTimeout(() => nextSequenceMemoryQuestion(), 1500);
+    } else {
+        feedback.textContent = `❌ Sai rồi! Đáp án: ${correctAnswer}`;
+        feedback.style.color = '#ef4444';
+        handleWrong();
+        setTimeout(() => nextSequenceMemoryQuestion(), 3000);
+    }
+};
+
+function startSpecialCodesGame() {
+    gameResults = { correct: [], wrong: [], questions: [] };
+    startTimer(180, () => { stopGame(); });
+    nextSpecialCodesQuestion();
+}
+
+function nextSpecialCodesQuestion() {
+    const specialCodes = getAllCodes().filter(c => c.length > 2 || isNaN(c));
+    if (specialCodes.length === 0) {
+        // Fallback to regular codes if no special codes exist
+        nextAllCodesQuestion();
+        return;
+    }
+
+    const correctCode = specialCodes[Math.floor(Math.random() * specialCodes.length)];
+    const options = [correctCode];
+    const available = specialCodes.filter(c => c !== correctCode);
+    options.push(...available.sort(() => Math.random() - 0.5).slice(0, 3));
+    const shuffledOptions = options.sort(() => Math.random() - 0.5);
+    const imagePath = getImagePath(correctCode);
+
+    const container = document.getElementById('game-container');
+    container.innerHTML = `
+        <div class="question-container">
+            <div class="question-label">Mã đặc biệt: Hình này là mã nào?</div>
+            <img src="${imagePath}" alt="${getName(correctCode)}" class="question-image">
+        </div>
+        <div class="answers-grid">
+            ${shuffledOptions.map(code => `
+                <div class="answer-option" data-correct="${code === correctCode}">
+                    <div class="answer-number">${code}</div>
+                    <div style="font-size: 1rem; margin-top: 0.5rem; opacity: 0.8;">${getName(code)}</div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+
+    container.querySelectorAll('.answer-option').forEach(option => {
+        option.addEventListener('click', function () {
+            if (this.dataset.correct === 'true') {
+                this.classList.add('correct');
+                handleCorrect(15);
+                setTimeout(() => nextSpecialCodesQuestion(), 1500);
+            } else {
+                this.classList.add('wrong');
+                handleWrong();
+                setTimeout(() => nextSpecialCodesQuestion(), 1500);
+            }
+        });
+    });
+}
 
 // ==========================================
 // 4. PALACE GAMES & OTHERS
@@ -1111,11 +1450,8 @@ function startMemoryPalaceAZGame() {
     });
 }
 
-function startMemoryPalaceGame() { alert('Game đang bảo trì! Vui lòng quay lại sau.'); showHomepage(); }
-function startMemoryPalaceAdvancedGame() { alert('Game đang bảo trì! Vui lòng quay lại sau.'); showHomepage(); }
-function startChineseRadicalsGame() { alert('Game đang bảo trì! Vui lòng quay lại sau.'); showHomepage(); }
-function startChineseRadicalsByDayGame() { alert('Game đang bảo trì! Vui lòng quay lại sau.'); showHomepage(); }
-function startLociCastleGame() { alert('Game đang bảo trì! Vui lòng quay lại sau.'); showHomepage(); }
+// Memory Palace games are placeholder - to be fully implemented
+// Note: startLociCastleGame is implemented above (line 26)
 
 // Memory Challenge (Extra)
 function startMemoryChallengeGame() {
