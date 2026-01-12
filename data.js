@@ -35,7 +35,7 @@ const imageFiles = [
     { num: '25', name: 'Nhân Sâm', file: '25 - Nhân Sâm.jpg' },
     { num: '26', name: 'Nhẫn Bạc', file: '26 - Nhẫn Bạc.jpg' },
     { num: '27', name: 'Nổ Pháo', file: '27 - Nổ Pháo.jpg' },
-    { num: '28', name: 'Nghiệm Hút', file: '28 - Nghiệm Hút.jpg' },
+    { num: '28', name: 'Nghiện Hút', file: '28 - Nghiện Hút.jpg' },
     { num: '29', name: 'Người Già', file: '29 - Người Già.jpg' },
     { num: '30', name: 'Móng Chân', file: '30 - Móng Chân.jpg' },
     { num: '31', name: 'Máy Tính', file: '31 - Máy Tính.jpg' },
@@ -229,7 +229,7 @@ function getAllLociFiles() {
         { file: 'Loci-81-99.jpg', folder: 'loci-gan-so', numbers: generateRange(81, 99), type: 'castle-range', name: 'Loci 81-99' },
         { file: 'Loci-Jc-Kt.jpg', folder: 'loci-gan-so', numbers: ['Jc', 'Jr', 'Jt', 'Kb', 'Kc', 'Kr', 'Kt'], type: 'castle-special', name: 'Loci J-K Đặc Biệt' }
     ];
-    
+
     // Helper function to generate number range
     function generateRange(start, end) {
         const range = [];
@@ -238,7 +238,7 @@ function getAllLociFiles() {
         }
         return range;
     }
-    
+
     return {
         castle: castleLoci,
         ranges: ['00-20.jpg', '21-40.jpg', '41-60.jpg'], // Original range files
@@ -257,18 +257,18 @@ function getRandomNumbers(count, exclude = []) {
     const available = imageFiles
         .map(item => item.num)
         .filter(num => !exclude.includes(num));
-    
+
     const used = new Set(exclude);
     const result = [];
     const shuffled = available.sort(() => Math.random() - 0.5);
-    
+
     for (const num of shuffled) {
         if (!used.has(num) && result.length < count) {
             result.push(num);
             used.add(num);
         }
     }
-    
+
     return result;
 }
 

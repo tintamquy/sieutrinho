@@ -183,6 +183,76 @@
             </div>
         </div>
     </div>
+    </div>
+
+    <!-- Multiplayer Entry Screen -->
+    <div id="multiplayer-screen" class="screen">
+        <div class="container">
+            <h1 class="title-3d">⚔️ ĐẤU TRƯỜNG</h1>
+            <p class="subtitle">Thách đấu trí nhớ cùng bạn bè</p>
+
+            <div class="multiplayer-menu">
+                <input type="text" id="player-name-input" class="input-field" placeholder="Nhập tên của bạn"
+                    maxlength="15">
+
+                <div class="menu-actions">
+                    <button class="menu-btn create-btn" onclick="Multiplayer.createRoom()">
+                        <span class="icon">👑</span> Tạo Phòng
+                    </button>
+                    <button class="menu-btn join-btn" onclick="Multiplayer.showJoinInput()">
+                        <span class="icon">🚀</span> Vào Phòng
+                    </button>
+                </div>
+
+                <div id="join-room-input" class="hidden">
+                    <input type="text" id="room-id-input" class="input-field" placeholder="Nhập Mã Phòng (vd: 123456)"
+                        style="margin-top: 1rem;">
+                    <button class="menu-btn" onclick="Multiplayer.joinRoom()"
+                        style="margin-top: 0.5rem; background: var(--success);">
+                        Vào Ngay
+                    </button>
+                </div>
+            </div>
+
+            <button class="btn-back" onclick="showHomepage()">⬅ Quay lại</button>
+        </div>
+    </div>
+
+    <!-- Multiplayer Room Lobby -->
+    <div id="lobby-screen" class="screen">
+        <div class="container">
+            <h2 class="title-3d" style="font-size: 2rem;">PHÒNG CHỜ</h2>
+            <div class="room-code-display">
+                Mã Phòng: <span id="current-room-id" class="highlight-code">...</span>
+                <button class="copy-btn" onclick="Multiplayer.copyRoomId()">📋</button>
+            </div>
+
+            <div class="players-list" id="players-list">
+                <!-- Players will be populated here -->
+                <div class="player-card waiting">Đang đợi người chơi khác...</div>
+            </div>
+
+            <div class="chat-container">
+                <div class="chat-messages" id="chat-messages">
+                    <div class="system-msg">Chào mừng vào phòng chat!</div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="Chat chi đó đi..."
+                        onkeypress="Multiplayer.handleChatKey(event)">
+                    <button onclick="Multiplayer.sendChat()">Gửi</button>
+                </div>
+            </div>
+
+            <div class="lobby-actions">
+                <button id="start-battle-btn" class="menu-btn" onclick="Multiplayer.startBattle()" disabled>
+                    ⏳ Chờ đối thủ...
+                </button>
+                <button class="btn-back" onclick="Multiplayer.leaveRoom()" style="background: var(--error);">
+                    Thoát Phòng
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Game Screen -->
     <div id="game-screen" class="screen">
@@ -234,6 +304,7 @@
 
     <script src="data.js"></script>
     <script src="games.js"></script>
+    <script src="multiplayer.js"></script>
     <script src="binary-digits-game.js"></script>
     <script src="app.js"></script>
 </body>
