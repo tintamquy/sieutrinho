@@ -951,104 +951,241 @@ window.check52CardsAnswer = function () {
     }
 };
 
-// Game 25: Binary Number Memory (Mapped to startBinaryDigitsGame)
+// Game 25: Binary Digits (Memorad Style)
 function startBinaryDigitsGame() {
-    gameResults = { correct: [], wrong: [], questions: [] };
-    startTimer(300, () => {
-        stopGame();
+    // Game Settings
+    const totalRows = 25; // 25 rows
+    const colsPerRow = 30; // 30 digits per row
+    const groupSize = 3; // Group digits by 3 for readability
+
+    // Generate random binary grid
+    const binaryGrid = [];
+    for (let r = 0; r < totalRows; r++) {
+        const row = [];
+        for (let c = 0; c < colsPerRow; c++) {
+            row.push(Math.random() > 0.5 ? 1 : 0);
+        }
+        binaryGrid.push(row);
+    }
+
+    // Store game state
+    currentGameData = {
+        grid: binaryGrid,
+        rows: totalRows,
+        cols: colsPerRow,
+        group: groupSize,
+        phase: 'memorization' // 'memorization', 'recall', 'result'
+    };
+
+    // Time settings based on difficulty
+    let memoTime = 300; // 5 mins default
+    if (gameSettings.difficulty === 'hard') memoTime = 180; // 3 mins - Standard Competition
+    if (gameSettings.difficulty === 'easy') memoTime = 600; // 10 mins
+
+    startTimer(memoTime, () => {
+        finishBinaryMemorization();
     });
-    nextBinaryQuestion();
+
+    renderBinaryGrid(true);
 }
 
-function nextBinaryQuestion() {
-    const bitLength = 4 + Math.floor(Math.random() * 5);
-    let binaryString = '';
-    for (let i = 0; i < bitLength; i++) {
-        binaryString += Math.random() > 0.5 ? '1' : '0';
-    }
-
-    const decimalValue = parseInt(binaryString, 2);
-    currentQuestion = { correct: binaryString, decimal: decimalValue, type: 'binary' };
-
-    const questionType = Math.random() > 0.5 ? 'binary-to-decimal' : 'decimal-to-binary';
-
+function renderBinaryGrid(showValues) {
     const container = document.getElementById('game-container');
+    const { grid, rows, cols, group } = currentGameData;
 
-    if (questionType === 'binary-to-decimal') {
-        container.innerHTML = `
-            <div class="question-container">
-                <div class="question-label">Nhớ số nhị phân này (${bitLength} bits, 3 giây để xem)</div>
-                <div id="binary-display" style="text-align: center; margin: 2rem 0;">
-                    <div style="font-size: 3rem; font-weight: 900; color: #f9ca24; text-shadow: 2px 2px 8px rgba(0,0,0,0.8); font-family: 'Courier New', monospace; letter-spacing: 0.2em;">
-                        ${binaryString}
-                    </div>
-                </div>
-                <div id="binary-input-section" style="display: none;">
-                    <div class="question-label" style="margin-top: 2rem;">Số nhị phân này bằng bao nhiêu trong hệ thập phân?</div>
-                    <div class="input-game-container">
-                        <input type="number" id="binary-input" class="input-field" placeholder="Nhập số thập phân" autofocus>
-                        <button class="submit-btn" onclick="checkBinaryAnswer('decimal')">Kiểm tra</button>
-                    </div>
-                    <div id="binary-feedback" style="text-align: center; margin-top: 1rem; font-size: 1.5rem; font-weight: bold;"></div>
-                </div>
+    let html = `
+        <div class="question-container" style="max-width: 1000px; margin: 0 auto;">
+            <div class="question-label">
+                ${showValues ? 'Giai đoạn Ghi Nhớ: Hãy nhớ các số nhị phân' : 'Giai đoạn Hồi Tưởng: Điền lại các số đã nhớ'}
             </div>
-        `;
+            ${showValues ?
+            `<button class="submit-btn" onclick="finishBinaryMemorization()" style="margin-bottom: 1rem;">Đã nhớ xong (Chuyển sang điền)</button>` :
+            `<button class="submit-btn" onclick="checkBinaryGrid()" style="margin-bottom: 1rem;">Nộp bài</button>`
+        }
+            
+            <div class="binary-grid-container">
+    `;
 
-        setTimeout(() => {
-            document.getElementById('binary-display').innerHTML = '<div style="font-size: 2rem; color: rgba(255,255,255,0.3);">???</div>';
-            document.getElementById('binary-input-section').style.display = 'block';
-            document.getElementById('binary-input').focus();
-        }, 3000);
-    } else {
-        container.innerHTML = `
-            <div class="question-container">
-                <div class="question-label">Chuyển số thập phân này sang nhị phân (${bitLength} bits)</div>
-                <div style="text-align: center; margin: 2rem 0;">
-                    <div style="font-size: 4rem; font-weight: 900; color: #f9ca24; text-shadow: 2px 2px 8px rgba(0,0,0,0.8);">
-                        ${decimalValue}
+    for (let r = 0; r < rows; r++) {
+        html += `<div class="binary-row">`;
+        html += `<div class="binary-row-label">${r + 1}</div>`;
+
+        for (let c = 0; c < cols; c++) {
+            if (c > 0 && c % group === 0) {
+                html += `<div class="binary-group-spacer"></div>`;
+            }
+
+            const val = grid[r][c];
+            if (showValues) {
+                html += `<div class="binary-cell ${val === 1 ? 'one' : 'zero'}">${val}</div>`;
+            } else {
+                html += `
+                    <div class="binary-cell input">
+                        <input type="text" maxlength="1" class="binary-input-cell" 
+                            data-row="${r}" data-col="${c}"
+                            onfocus="this.select()"
+                            oninput="handleBinaryInput(this, ${r}, ${c})"
+                            onkeydown="handleBinaryNavigation(event, ${r}, ${c})">
                     </div>
-                </div>
-                <div class="input-game-container">
-                    <input type="text" id="binary-input" class="input-field" placeholder="Nhập số nhị phân (ví dụ: 1010)" autofocus style="font-family: 'Courier New', monospace;">
-                    <button class="submit-btn" onclick="checkBinaryAnswer('binary')">Kiểm tra</button>
-                </div>
-                <div id="binary-feedback" style="text-align: center; margin-top: 1rem; font-size: 1.5rem; font-weight: bold;"></div>
-            </div>
-        `;
+                `;
+            }
+        }
+        html += `</div>`; // End row
+    }
+
+    html += `   </div>
+        </div>
+    `;
+
+    container.innerHTML = html;
+}
+
+window.finishBinaryMemorization = function () {
+    currentGameData.phase = 'recall';
+    // Recall time usually longer, e.g., 10-15 mins. Let's set 15 mins.
+    let recallTime = 900;
+    startTimer(recallTime, () => {
+        checkBinaryGrid();
+    });
+    renderBinaryGrid(false);
+}
+
+window.handleBinaryInput = function (input, r, c) {
+    // Only allow 0 or 1
+    const val = input.value;
+    if (val !== '0' && val !== '1') {
+        input.value = '';
+        return;
+    }
+
+    // Auto-move to next cell
+    if (val.length === 1) {
+        const nextInput = document.querySelector(`.binary-input-cell[data-row="${r}"][data-col="${c + 1}"]`);
+        if (nextInput) {
+            nextInput.focus();
+        } else {
+            // Check next row
+            const nextRowInput = document.querySelector(`.binary-input-cell[data-row="${r + 1}"][data-col="${0}"]`);
+            if (nextRowInput) nextRowInput.focus();
+        }
     }
 }
 
-window.checkBinaryAnswer = function (mode) {
-    const input = document.getElementById('binary-input');
-    const feedback = document.getElementById('binary-feedback');
-    if (!input || !feedback) return;
+window.handleBinaryNavigation = function (event, r, c) {
+    if (event.key === 'ArrowRight') {
+        const next = document.querySelector(`.binary-input-cell[data-row="${r}"][data-col="${c + 1}"]`);
+        if (next) next.focus();
+    } else if (event.key === 'ArrowLeft') {
+        const prev = document.querySelector(`.binary-input-cell[data-row="${r}"][data-col="${c - 1}"]`);
+        if (prev) prev.focus();
+    } else if (event.key === 'ArrowDown') {
+        const down = document.querySelector(`.binary-input-cell[data-row="${r + 1}"][data-col="${c}"]`);
+        if (down) down.focus();
+    } else if (event.key === 'ArrowUp') {
+        const up = document.querySelector(`.binary-input-cell[data-row="${r - 1}"][data-col="${c}"]`);
+        if (up) up.focus();
+    } else if (event.key === 'Backspace' && event.target.value === '') {
+        // Move back on backspace if empty
+        const prev = document.querySelector(`.binary-input-cell[data-row="${r}"][data-col="${c - 1}"]`);
+        if (prev) prev.focus();
+    }
+}
 
-    let isCorrect = false;
+window.checkBinaryGrid = function () {
+    stopGame(); // Stop timer
+    const { grid, rows, cols, group } = currentGameData;
+    let score = 0;
+    let total = 0;
+    let correctRows = 0;
+    let userInputs = [];
 
-    if (mode === 'decimal') {
-        const userAnswer = parseInt(input.value);
-        isCorrect = userAnswer === currentQuestion.decimal;
-    } else {
-        const userAnswer = input.value.trim();
-        isCorrect = userAnswer === currentQuestion.correct;
+    // Harvest inputs
+    const inputs = document.querySelectorAll('.binary-input-cell');
+    inputs.forEach(input => {
+        const r = parseInt(input.dataset.row);
+        const c = parseInt(input.dataset.col);
+        if (!userInputs[r]) userInputs[r] = [];
+        userInputs[r][c] = input.value;
+    });
+
+    // Calculate score
+    for (let r = 0; r < rows; r++) {
+        let rowCorrect = true;
+        for (let c = 0; c < cols; c++) {
+            total++;
+            const correctVal = grid[r][c].toString();
+            const userVal = userInputs[r] ? userInputs[r][c] : '';
+
+            if (correctVal === userVal) {
+                score++;
+            } else {
+                rowCorrect = false;
+            }
+        }
+        if (rowCorrect) correctRows++;
     }
 
-    if (isCorrect) {
-        feedback.textContent = '✅ Đúng rồi!';
-        feedback.style.color = '#10b981';
-        handleCorrect(25);
-        input.disabled = true;
-        setTimeout(() => nextBinaryQuestion(), 1500);
-    } else {
-        const correctAnswer = mode === 'decimal' ? currentQuestion.decimal : currentQuestion.correct;
-        feedback.textContent = `❌ Sai rồi! Đáp án đúng: ${correctAnswer}`;
-        feedback.style.color = '#ef4444';
-        handleWrong();
-        input.value = '';
-        input.focus();
-        setTimeout(() => nextBinaryQuestion(), 3000);
+    // Render results (Show grid with highlights)
+    const container = document.getElementById('game-container');
+    let html = `
+        <div class="question-container" style="max-width: 1000px; margin: 0 auto;">
+            <div class="question-label">Kết quả: ${score}/${total} số đúng (${correctRows} hàng đúng)</div>
+             <div class="game-results" style="margin-bottom: 1rem;">
+                <div class="results-stats">
+                    <div class="stat-box nice">
+                        <div class="stat-label">Điểm số</div>
+                        <div class="stat-value">${score}</div>
+                    </div>
+                     <div class="stat-box">
+                        <div class="stat-label">Hàng đúng</div>
+                        <div class="stat-value">${correctRows}</div>
+                    </div>
+                </div>
+                <button class="submit-btn" onclick="showHomepage()">Về trang chủ</button>
+            </div>
+            
+            <div class="binary-grid-container">
+    `;
+
+    for (let r = 0; r < rows; r++) {
+        html += `<div class="binary-row">`;
+        html += `<div class="binary-row-label">${r + 1}</div>`;
+
+        for (let c = 0; c < cols; c++) {
+            if (c > 0 && c % group === 0) {
+                html += `<div class="binary-group-spacer"></div>`;
+            }
+
+            const correctVal = grid[r][c].toString();
+            const userVal = userInputs[r] ? userInputs[r][c] : '';
+            const isCorrect = correctVal === userVal;
+            const className = isCorrect ? 'correct' : 'wrong';
+
+            // Show user input, or correct value if empty/wrong? 
+            // Standard: Show user input with color. If wrong, maybe hover to see correct?
+            // Let's show user input. If empty, show nothing but mark wrong.
+            const displayVal = userVal !== '' ? userVal : '_';
+
+            html += `<div class="binary-cell ${className}" title="Đáp án: ${correctVal}">${displayVal}</div>`;
+        }
+        html += `</div>`; // End row
     }
-};
+    html += `</div></div>`;
+
+    container.innerHTML = html;
+
+    // Save high score
+    if (score > 0) {
+        // Using existing handleCorrect logic might be tricky here since it expects incremental updates.
+        // Instead we manually add score
+        gameScore = score;
+        updateGameStats();
+        saveScore('binary-digits', score);
+    }
+}
+// Old binary function replaced above
+// (Removed unused function)
+
 
 // Game 26: Random Number Sequence Memory (Mapped to startNumberMemoryGame)
 function startNumberMemoryGame() {
