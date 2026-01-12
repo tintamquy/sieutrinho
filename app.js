@@ -864,12 +864,22 @@ function stopGame() {
     totalScore += gameScore;
     saveScores();
 
-    // Show results if game was played
-    if (currentGame && (correctCount > 0 || wrongCount > 0)) {
+    // Show results if game was played (even if score is 0, to prevent loop)
+    // Only skip if user manually exited via "Back" button (handled elsewhere)
+    if (currentGame) {
         showGameResults();
+        // Do NOT set currentGame to null immediately here, 
+        // as we need it for "Restart" logic. 
+        // But we mark it as "finished" to prevent question loops.
+        currentGame.finished = true;
     }
+}
 
-    currentGame = null;
+// Check if game is active before proceeding to next question
+window.isGameActive = function () {
+    // If timer is gone or game is marked finished, stop.
+    if (!gameTimer && (!currentGame || currentGame.finished)) return false;
+    return true;
 }
 
 // Show game results
@@ -880,8 +890,8 @@ function showGameResults() {
         : 0;
 
     container.innerHTML = `
-        <div class="game-results">
-            <h2 style="text-align: center; font-size: 3rem; color: #ffffff; margin-bottom: 2rem; text-shadow: 3px 3px 8px rgba(0,0,0,0.8);">
+        <div class="game-results" id="game-results-panel">
+            <h2 style="text-align: center; font-size: 2.5rem; color: #ffffff; margin-bottom: 2rem; text-shadow: 3px 3px 8px rgba(0,0,0,0.8);">
                 🎉 Kết Quả Game
             </h2>
             
@@ -910,11 +920,11 @@ function showGameResults() {
             
             ${wrongCount > 0 ? `
                 <div class="wrong-answers-section">
-                    <h3 style="text-align: center; font-size: 2rem; color: #ffffff; margin: 2rem 0 1rem; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">
+                    <h3 style="text-align: center; font-size: 1.5rem; color: #ffffff; margin: 2rem 0 1rem; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">
                         📝 Ôn Lại Những Câu Sai
                     </h3>
                     <div class="wrong-answers-list">
-                        ${gameResults.wrong.map(item => `
+                        ${gameResults.wrong.slice(0, 10).map(item => `
                             <div class="wrong-answer-item">
                                 <div class="wrong-question">
                                     ${item.question || 'Câu hỏi'}
@@ -929,27 +939,27 @@ function showGameResults() {
                     </div>
                 </div>
             ` : `
-                <div style="text-align: center; font-size: 2rem; color: #10b981; margin: 2rem 0; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">
+                <div style="text-align: center; font-size: 1.5rem; color: #10b981; margin: 2rem 0; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">
                     🎉 Hoàn hảo! Bạn không sai câu nào!
                 </div>
             `}
             
-            <div style="text-align: center; margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                <button class="btn-back" id="share-result-btn" onclick="shareGameResult()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-size: 1.2rem; padding: 1rem 2rem;">
+            <div style="text-align: center; margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; padding-bottom: 2rem;">
+                <button class="btn-back" id="share-result-btn" onclick="shareGameResult()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
                     📸 Chia Sẻ Kết Quả
                 </button>
-                <button class="btn-back" onclick="restartCurrentGame()" style="background: var(--success); font-size: 1.2rem; padding: 1rem 2rem;">
+                <button class="btn-back" onclick="restartCurrentGame()" style="background: var(--success);">
                     🔄 Chơi Lại
                 </button>
-                <button class="btn-back" onclick="showHomepage()" style="background: var(--primary); font-size: 1.2rem; padding: 1rem 2rem;">
+                <button class="btn-back" onclick="showHomepage()" style="background: var(--primary);">
                     🏠 Về Trang Chủ
                 </button>
             </div>
         </div>
     `;
 
-    // Reset results
-    gameResults = { correct: [], wrong: [], questions: [] };
+    // Reset results logic BUT keep data for display until restart
+    // gameResults = { correct: [], wrong: [], questions: [] }; 
 }
 
 // Generate and share achievement image
@@ -1063,15 +1073,8 @@ window.generateAchievementImage = async function generateAchievementImage() {
     }
 };
 
-// Share game result as image
-// Share game result as image - Improved for Mobile
+// Share game result as image - FIXED
 window.shareGameResult = async function shareGameResult() {
-    const resultsContainer = document.querySelector('.game-results');
-    if (!resultsContainer) {
-        console.error('Results container not found');
-        return;
-    }
-
     const shareBtn = document.getElementById('share-result-btn');
     if (shareBtn) {
         shareBtn.disabled = true;
@@ -1079,76 +1082,87 @@ window.shareGameResult = async function shareGameResult() {
     }
 
     try {
-        // Clone the container to a clean "screenshot" area to ensure visibility and contrast
+        // Create a dedicated off-screen container for rendering
+        // This ensures consistent look regardless of screen size
         const cloneContainer = document.createElement('div');
-        cloneContainer.innerHTML = resultsContainer.innerHTML;
-        cloneContainer.style.position = 'absolute';
+        cloneContainer.style.position = 'fixed';
+        cloneContainer.style.left = '-10000px'; // Move off-screen
         cloneContainer.style.top = '0';
-        cloneContainer.style.left = '-9999px';
-        cloneContainer.style.width = '600px'; // Fixed width for consistent look
-        cloneContainer.style.padding = '2rem';
-        cloneContainer.style.background = '#0f172a'; // Dark background
+        cloneContainer.style.width = '600px'; // Standard width
+        cloneContainer.style.backgroundColor = '#1e293b'; // Matches theme
         cloneContainer.style.color = '#fff';
+        cloneContainer.style.padding = '40px';
         cloneContainer.style.borderRadius = '20px';
-        cloneContainer.style.fontFamily = 'sans-serif';
+        cloneContainer.style.fontFamily = 'Arial, sans-serif';
+        cloneContainer.style.zIndex = '99999';
+
+        // Reconstruct content explicitly to avoid CSS issues
+        const accuracy = correctCount + wrongCount > 0
+            ? Math.round((correctCount / (correctCount + wrongCount)) * 100)
+            : 0;
+
+        cloneContainer.innerHTML = `
+            <h1 style="text-align: center; font-size: 32px; color: #fff; margin-bottom: 20px;">🎉 Kết Quả Siêu Trí Nhớ</h1>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+                <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.2);">
+                    <div style="font-size: 40px; margin-bottom: 10px;">⭐</div>
+                    <div style="font-size: 16px; color: #ccc;">Điểm Số</div>
+                    <div style="font-size: 36px; font-weight: bold; color: #f9ca24;">${gameScore}</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.2);">
+                    <div style="font-size: 40px; margin-bottom: 10px;">📊</div>
+                    <div style="font-size: 16px; color: #ccc;">Độ Chính Xác</div>
+                    <div style="font-size: 36px; font-weight: bold; color: #fff;">${accuracy}%</div>
+                </div>
+            </div>
+            <div style="text-align: center; font-size: 18px; color: #fff; margin-top: 20px; opacity: 0.8;">
+                sieutrinho.com
+            </div>
+        `;
+
         document.body.appendChild(cloneContainer);
 
-        // Wait a moment for DOM
-        await new Promise(resolve => setTimeout(resolve, 100));
+        // Wait for DOM to handle styles
+        await new Promise(resolve => setTimeout(resolve, 500));
 
-        // Create canvas
         const canvas = await html2canvas(cloneContainer, {
             backgroundColor: '#0f172a',
-            scale: window.innerWidth < 768 ? 1.5 : 2, // Reduce scale on mobile
+            scale: 2, // High res
             logging: false,
             useCORS: true,
             allowTaint: true
         });
 
-        // Clean up
         document.body.removeChild(cloneContainer);
 
-        // Convert canvas to blob
         canvas.toBlob(async (blob) => {
-            if (!blob) {
-                throw new Error('Blob creation failed');
-            }
+            if (!blob) throw new Error('Blob failed');
 
             const file = new File([blob], 'ket-qua-game.png', { type: 'image/png' });
 
-            // Try Web Share API (Mobile)
             if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
                 try {
                     await navigator.share({
-                        title: 'Kết quả game Siêu Trí Nhớ',
-                        text: `Tôi đã đạt ${gameScore} điểm! Bạn có làm được không? 🧠`,
+                        title: 'Kết quả Siêu Trí Nhớ',
+                        text: `Tôi đạt ${gameScore} điểm! #SieuTriNho`,
                         files: [file]
                     });
-                    resetShareBtn();
-                    return;
-                } catch (err) {
-                    console.log('Web Share API cancelled or failed:', err);
-                }
+                } catch (e) { console.log('Share canceled'); }
+            } else {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'ket-qua.png';
+                a.click();
+                URL.revokeObjectURL(url);
+                alert('Đã tải ảnh về máy!');
             }
-
-            // Fallback: Download (PC)
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `sieu-tri-nho-score-${gameScore}.png`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            setTimeout(() => URL.revokeObjectURL(url), 100);
-
             resetShareBtn();
-            alert('✅ Đã lưu ảnh! Hãy chia sẻ với bạn bè nhé!');
-        }, 'image/png');
+        });
 
     } catch (error) {
-        console.error('Error in shareGameResult:', error);
-        alert('Không thể tạo ảnh. Vui lòng thử chụp màn hình thủ công.');
+        console.error('Snapshot error:', error);
+        alert('Lỗi tạo ảnh: ' + error.message);
         resetShareBtn();
     }
 
