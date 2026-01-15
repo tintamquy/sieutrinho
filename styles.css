@@ -3460,3 +3460,75 @@ body {
         font-size: 0.9rem;
     }
 }
+
+
+/* ===== ULTRA COMPACT MOBILE UI ===== */
+@media (max-width: 768px) {
+    /* Ultra compact header - single row layout */
+    .game-header {
+        padding: 0.4rem 0.6rem;
+        margin-bottom: 0.5rem;
+        gap: 0.4rem;
+        flex-direction: row;
+        align-items: center;
+    }
+    
+    /* Tiny back button */
+    .btn-back {
+        padding: 0.4rem 0.7rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+    
+    /* Ultra compact stats - smaller everything */
+    .game-stats {
+        gap: 0.3rem;
+        flex-wrap: wrap;
+        flex: 1;
+        justify-content: flex-end;
+    }
+    
+    .stat-item {
+        padding: 0.25rem 0.45rem;
+        font-size: 0.7rem;
+        border-radius: 6px;
+        min-width: auto;
+    }
+    
+    .stat-icon {
+        font-size: 0.85rem;
+        margin-right: 0.15rem;
+    }
+    
+    /* Hide difficulty badge on mobile to save space */
+    #difficulty-badge {
+        display: none !important;
+    }
+}
+
+/* Extra compact for very small screens */
+@media (max-width: 480px) {
+    .game-header {
+        padding: 0.3rem 0.5rem;
+        margin-bottom: 0.4rem;
+    }
+    
+    .btn-back {
+        padding: 0.35rem 0.6rem;
+        font-size: 0.7rem;
+    }
+    
+    .stat-item {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.65rem;
+    }
+    
+    .stat-icon {
+        font-size: 0.8rem;
+    }
+    
+    /* Make stats even more compact */
+    .game-stats {
+        gap: 0.25rem;
+    }
+}

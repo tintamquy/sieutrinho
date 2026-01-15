@@ -364,7 +364,7 @@ const paoData = {
     '68': { person: 'Anh Bách Việt Mỹ', action: 'Chào điều lệnh', object: 'Bác Hồ' },
     '69': { person: 'Bob Marley', action: 'Ôm', object: 'Bình Ga' },
     '70': { person: 'bạn Phong', action: 'Nhảy dù cùng', object: 'Phi Công' },
-    '71': { person: 'Cô Phán thảo', action: 'Hóa trang thành', object: 'Phù Thủy' },
+    '71': { person: 'Cô Phán thảo', action: 'Dán bùa giấy', object: 'Phù Thủy' },
     '72': { person: 'chú Phú', action: 'Khoan cắt bê tông', object: 'Phá Nhà' },
     '73': { person: 'Pele', action: 'Sút bóng vào', object: 'Phát Minh' },
     '74': { person: 'Cát Phượng', action: 'Vỗ phấn phủ mặt', object: 'Phấn Rôm' },
