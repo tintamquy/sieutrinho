@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAO System - Game Luyện Tập</title>
+    <link rel="stylesheet" href="pao-games.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Orbitron:wght@600;700;900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="logo">🧠 PAO Memory System</h1>
+            <div class="nav-buttons">
+                <button class="nav-btn active" data-game="menu">Menu</button>
+                <button class="nav-btn" data-game="flashcard">Flash Card</button>
+                <button class="nav-btn" data-game="speedquiz">Speed Quiz</button>
+                <button class="nav-btn" data-game="reverse">Reverse</button>
+                <button class="nav-btn" data-game="match">Memory Match</button>
+                <button class="nav-btn" data-game="chain">Chain</button>
+            </div>
+        </header>
+
+        <!-- Main Menu -->
+        <div id="menu-screen" class="screen active">
+            <div class="menu-container">
+                <h2 class="menu-title">Chọn Game Luyện Tập</h2>
+                <div class="game-cards">
+                    <div class="game-card" data-game="flashcard">
+                        <div class="card-icon">🎴</div>
+                        <h3>Flash Card</h3>
+                        <p>Học và ôn tập từng mã PAO một cách trực quan</p>
+                    </div>
+                    <div class="game-card" data-game="speedquiz">
+                        <div class="card-icon">⚡</div>
+                        <h3>Speed Quiz</h3>
+                        <p>Trả lời nhanh: Số → Person/Action/Object</p>
+                    </div>
+                    <div class="game-card" data-game="reverse">
+                        <div class="card-icon">🔄</div>
+                        <h3>Reverse Quiz</h3>
+                        <p>Đoán ngược lại: PAO → Số</p>
+                    </div>
+                    <div class="game-card" data-game="match">
+                        <div class="card-icon">🎯</div>
+                        <h3>Memory Match</h3>
+                        <p>Ghép đôi số với PAO tương ứng</p>
+                    </div>
+                    <div class="game-card" data-game="chain">
+                        <div class="card-icon">⛓️</div>
+                        <h3>Chain Challenge</h3>
+                        <p>Ghi nhớ chuỗi số dài với PAO</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flash Card Game -->
+        <div id="flashcard-screen" class="screen">
+            <div class="game-container">
+                <div class="game-header">
+                    <h2>🎴 Flash Card</h2>
+                    <div class="progress-info">
+                        <span id="fc-progress">0 / 100</span>
+                    </div>
+                </div>
+                <div class="flashcard-container">
+                    <div class="flashcard" id="flashcard">
+                        <div class="card-front">
+                            <div class="card-number">--</div>
+                        </div>
+                        <div class="card-back">
+                            <div class="pao-info">
+                                <div class="pao-item">
+                                    <span class="pao-label">Person:</span>
+                                    <span class="pao-value" id="fc-person">--</span>
+                                </div>
+                                <div class="pao-item">
+                                    <span class="pao-label">Action:</span>
+                                    <span class="pao-value" id="fc-action">--</span>
+                                </div>
+                                <div class="pao-item">
+                                    <span class="pao-label">Object:</span>
+                                    <span class="pao-value" id="fc-object">--</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-controls">
+                    <button class="btn btn-primary" id="fc-flip">Lật Thẻ</button>
+                    <button class="btn btn-secondary" id="fc-next">Thẻ Tiếp →</button>
+                    <button class="btn btn-secondary" id="fc-prev">← Thẻ Trước</button>
+                    <button class="btn btn-accent" id="fc-random">🎲 Ngẫu Nhiên</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Speed Quiz Game -->
+        <div id="speedquiz-screen" class="screen">
+            <div class="game-container">
+                <div class="game-header">
+                    <h2>⚡ Speed Quiz</h2>
+                    <div class="stats">
+                        <span class="stat">⏱️ <span id="sq-timer">0.0</span>s</span>
+                        <span class="stat">✓ <span id="sq-score">0</span></span>
+                        <span class="stat">✗ <span id="sq-wrong">0</span></span>
+                    </div>
+                </div>
+                <div class="quiz-container">
+                    <div class="question-box">
+                        <div class="question-number" id="sq-number">--</div>
+                        <div class="question-text">Số này có PAO là gì?</div>
+                    </div>
+                    <div class="quiz-options" id="sq-options">
+                        <!-- Options will be generated here -->
+                    </div>
+                </div>
+                <div class="game-controls">
+                    <button class="btn btn-primary" id="sq-start">Bắt Đầu</button>
+                    <button class="btn btn-secondary" id="sq-stop" style="display:none;">Dừng</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reverse Quiz Game -->
+        <div id="reverse-screen" class="screen">
+            <div class="game-container">
+                <div class="game-header">
+                    <h2>🔄 Reverse Quiz</h2>
+                    <div class="stats">
+                        <span class="stat">⏱️ <span id="rq-timer">0.0</span>s</span>
+                        <span class="stat">✓ <span id="rq-score">0</span></span>
+                        <span class="stat">✗ <span id="rq-wrong">0</span></span>
+                    </div>
+                </div>
+                <div class="quiz-container">
+                    <div class="question-box reverse">
+                        <div id="rq-type-label" class="type-label">Person</div>
+                        <div class="question-text large" id="rq-pao-value">--</div>
+                        <div class="question-hint">Số nào có PAO này?</div>
+                    </div>
+                    <div class="number-input-container">
+                        <input type="text" id="rq-input" class="number-input" placeholder="Nhập số (00-99)"
+                            maxlength="2" />
+                        <button class="btn btn-primary" id="rq-submit">Kiểm Tra</button>
+                    </div>
+                </div>
+                <div class="game-controls">
+                    <button class="btn btn-primary" id="rq-start">Bắt Đầu</button>
+                    <button class="btn btn-secondary" id="rq-stop" style="display:none;">Dừng</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Memory Match Game -->
+        <div id="match-screen" class="screen">
+            <div class="game-container">
+                <div class="game-header">
+                    <h2>🎯 Memory Match</h2>
+                    <div class="stats">
+                        <span class="stat">⏱️ <span id="mm-timer">0</span>s</span>
+                        <span class="stat">Cặp: <span id="mm-matched">0</span>/<span id="mm-total">6</span></span>
+                        <span class="stat">Lượt: <span id="mm-moves">0</span></span>
+                    </div>
+                </div>
+                <div class="match-grid" id="match-grid">
+                    <!-- Cards will be generated here -->
+                </div>
+                <div class="game-controls">
+                    <button class="btn btn-primary" id="mm-start">Chơi Mới</button>
+                    <select class="difficulty-select" id="mm-difficulty">
+                        <option value="6">Dễ (6 cặp)</option>
+                        <option value="8">Trung Bình (8 cặp)</option>
+                        <option value="12">Khó (12 cặp)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chain Challenge Game -->
+        <div id="chain-screen" class="screen">
+            <div class="game-container">
+                <div class="game-header">
+                    <h2>⛓️ Chain Challenge</h2>
+                    <div class="stats">
+                        <span class="stat">Level: <span id="cc-level">1</span></span>
+                        <span class="stat">Điểm: <span id="cc-score">0</span></span>
+                    </div>
+                </div>
+                <div class="chain-container">
+                    <div id="cc-memorize-phase" class="phase-container">
+                        <div class="phase-title">Ghi nhớ chuỗi số này:</div>
+                        <div class="number-chain" id="cc-number-display">------</div>
+                        <div class="countdown" id="cc-countdown">5</div>
+                        <button class="btn btn-primary" id="cc-start-memorize">Bắt Đầu Ghi Nhớ</button>
+                    </div>
+                    <div id="cc-recall-phase" class="phase-container" style="display:none;">
+                        <div class="phase-title">Viết lại PAO cho từng cặp số:</div>
+                        <div class="recall-grid" id="cc-recall-grid">
+                            <!-- Will be generated dynamically -->
+                        </div>
+                        <button class="btn btn-primary" id="cc-check-answer">Kiểm Tra Đáp Án</button>
+                    </div>
+                    <div id="cc-result-phase" class="phase-container" style="display:none;">
+                        <div class="result-message" id="cc-result-message"></div>
+                        <div class="result-detail" id="cc-result-detail"></div>
+                        <button class="btn btn-primary" id="cc-next-level">Level Tiếp →</button>
+                        <button class="btn btn-secondary" id="cc-restart">Chơi Lại</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="pao-data.js"></script>
+    <script src="pao-games.js"></script>
+</body>
+
+</html>
