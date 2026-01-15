@@ -1,5 +1,5 @@
-MY PAO SYSTEM,,,
-Số Mã Hóa,P (Person),A (Action),O (Object)
+Số Mã Hóa,MY PAO SYSTEM,,
+,P (Person),A (Action),O (Object)
 00,Con Cao,Vuốt Ve,Con Chó
 01,Bố Chí,Cưỡi phi nước đại,Con Trâu
 02,U Cẩm,Nhổ Lông,Con Nhím
@@ -57,7 +57,7 @@ Số Mã Hóa,P (Person),A (Action),O (Object)
 54,ca sĩ Siu black,Ngửi,Sầu Riêng
 55,chị Sợi,Gọt vỏ,Su Su
 56,Pak Hang SEO,Lướt sóng,Sóng Biển
-57,em Sỏi địa chính,Sạc,Sạc Pin
+57,em Sỏi địa chính,Sạc điện,Sạc Pin
 58,Em Sơn hà nội,Nhai,Su Hào
 59,Cô Sen lao công,Lau sàn,Sàn Gỗ
 60,Bạn Bích Bác Sĩ,Kẹp nhíp,Bọ Cạp
@@ -100,7 +100,7 @@ Số Mã Hóa,P (Person),A (Action),O (Object)
 97,Chú Liệu,Mở cửa,Giải Phóng
 98,Em Leng,Quay phim,Máy Ghi Hình
 99,Anh Lực,Trải phẳng,Ga Giường
-Jc,Bác sĩ Gấm,Cắm điện,Giắc Cắm
+Jc,Bác sĩ Gấm,rút dây,Giắc Cắm
 Jr,Stive Jobs,Chạm nhẹ đầu ngón,Iphone
 Jt,Jack 5 Củ ca sĩ,Hét,Inh Tai
 Jb,Võ Nguyên Giáp,Phóng tên lửa,Người Khổng Lồ

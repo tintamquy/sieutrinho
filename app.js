@@ -728,11 +728,39 @@ function setupEventListeners() {
     if (toggleRef) {
         toggleRef.addEventListener('click', () => {
             const refSection = document.getElementById('reference-section');
+            const paoSection = document.getElementById('pao-table-section');
             if (refSection) {
                 refSection.classList.toggle('hidden');
+                // Hide PAO table when showing reference
+                if (!refSection.classList.contains('hidden') && paoSection) {
+                    paoSection.classList.add('hidden');
+                }
                 toggleRef.textContent = refSection.classList.contains('hidden')
                     ? '📖 Xem Bảng Tham Khảo Tất Cả Mã'
                     : '❌ Đóng Bảng Tham Khảo';
+            }
+        });
+    }
+
+    const togglePao = document.getElementById('toggle-pao-table');
+    if (togglePao) {
+        togglePao.addEventListener('click', () => {
+            const paoSection = document.getElementById('pao-table-section');
+            const refSection = document.getElementById('reference-section');
+            if (paoSection) {
+                paoSection.classList.toggle('hidden');
+                // Hide reference when showing PAO
+                if (!paoSection.classList.contains('hidden') && refSection) {
+                    refSection.classList.add('hidden');
+                }
+                togglePao.textContent = paoSection.classList.contains('hidden')
+                    ? '🧩 Xem Bảng PAO'
+                    : '❌ Đóng Bảng PAO';
+
+                // Render PAO table if showing
+                if (!paoSection.classList.contains('hidden')) {
+                    renderPAOTable();
+                }
             }
         });
     }
@@ -759,6 +787,45 @@ function renderReferenceSection() {
                 <img src="${imagePath}" alt="${name}" class="reference-image">
                 <div class="reference-code">${code}</div>
                 <div class="reference-name">${name}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Render PAO table
+function renderPAOTable() {
+    const grid = document.getElementById('pao-table-grid');
+    if (!grid) return;
+
+    // Get all PAO codes in order (00-99, then special codes)
+    const numericCodes = [];
+    for (let i = 0; i <= 99; i++) {
+        numericCodes.push(String(i).padStart(2, '0'));
+    }
+    const specialCodes = ['JC', 'JR', 'JT', 'JB', 'QC', 'QR', 'QT', 'QB', 'KC', 'KR', 'KT', 'KB'];
+    const allCodes = [...numericCodes, ...specialCodes];
+
+    grid.innerHTML = allCodes.map(code => {
+        const pao = getPAO(code);
+        if (!pao) return '';
+
+        return `
+            <div class="pao-table-item">
+                <div class="pao-code">${code}</div>
+                <div class="pao-details">
+                    <div class="pao-row">
+                        <span class="pao-label">👤 Person:</span>
+                        <span class="pao-value">${pao.person}</span>
+                    </div>
+                    <div class="pao-row">
+                        <span class="pao-label">⚡ Action:</span>
+                        <span class="pao-value">${pao.action}</span>
+                    </div>
+                    <div class="pao-row">
+                        <span class="pao-label">🎯 Object:</span>
+                        <span class="pao-value">${pao.object}</span>
+                    </div>
+                </div>
             </div>
         `;
     }).join('');

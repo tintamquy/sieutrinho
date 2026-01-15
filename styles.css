@@ -3239,3 +3239,77 @@ body {
     background: rgba(249, 202, 36, 0.3);
     border-color: rgba(249, 202, 36, 0.8);
 }
+
+
+/* ===== PAO TABLE STYLES ===== */
+.pao-table-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+.pao-table-item {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 1.5rem;
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
+}
+
+.pao-table-item:hover {
+    transform: translateY(-5px);
+    border-color: rgba(102, 126, 234, 0.6);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+}
+
+.pao-code {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #f9ca24;
+    text-align: center;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+.pao-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.pao-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.pao-label {
+    font-weight: 700;
+    color: #94a3b8;
+    min-width: 80px;
+    font-size: 0.9rem;
+}
+
+.pao-value {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+    .pao-table-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .pao-table-item {
+        padding: 1rem;
+    }
+    
+    .pao-code {
+        font-size: 1.5rem;
+    }
+}
