@@ -133,16 +133,15 @@ function startPAOSpeedQuiz() {
             window.PAOGames.speedQuiz.currentTimer = null;
         }
 
-        const data = getRandomPAONumeric();
+        const data = getRandomPAO(); // Include ALL codes (00-99 + special codes)
         const types = ['person', 'action', 'object'];
         const selectedType = types[Math.floor(Math.random() * types.length)];
         const correctAnswer = data[selectedType];
 
-        // Get wrong answers
-        const allAnswers = Object.values(paoData).map(p => p[selectedType]);
+        // Generate wrong answers
         const wrongAnswers = [];
         while (wrongAnswers.length < 3) {
-            const random = allAnswers[Math.floor(Math.random() * allAnswers.length)];
+            const random = getRandomPAO()[selectedType];
             if (random !== correctAnswer && !wrongAnswers.includes(random)) {
                 wrongAnswers.push(random);
             }
@@ -158,7 +157,7 @@ function startPAOSpeedQuiz() {
                     <div class="pao-question-text">Số này có [${typeLabel}] là gì?</div>
                     <div class="pao-timer-bar"><div class="pao-timer-fill" id="pao-timer-fill"></div></div>
                 </div>
-                <div class="pao-options-grid">
+                <div class="pao-options-grid pao-grid-2x2">
                     ${options.map((opt, index) => `
                         <button class="pao-option-btn" data-index="${index}" data-answer="${opt.replace(/'/g, '&#39;')}" onclick="PAOGames.speedQuiz.checkAnswer('${opt.replace(/'/g, "\\'")}', '${correctAnswer.replace(/'/g, "\\'")}')">
                             <span class="option-number">${index + 1}</span> ${opt}

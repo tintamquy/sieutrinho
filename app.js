@@ -1018,6 +1018,25 @@ function stopGame() {
         clearKeyboardShortcuts();
     }
 
+    // Stop PAO games if playing (fix audio leak)
+    if (window.PAOGames) {
+        if (window.PAOGames.speedQuiz && typeof window.PAOGames.speedQuiz.stop === 'function') {
+            window.PAOGames.speedQuiz.stop();
+        }
+        if (window.PAOGames.ultimateSpeed && typeof window.PAOGames.ultimateSpeed.stop === 'function') {
+            window.PAOGames.ultimateSpeed.stop();
+        }
+        if (window.PAOGames.marathon && typeof window.PAOGames.marathon.stop === 'function') {
+            window.PAOGames.marathon.stop();
+        }
+        if (window.PAOGames.survival && typeof window.PAOGames.survival.stop === 'function') {
+            window.PAOGames.survival.stop();
+        }
+        if (window.PAOGames.comboStreak && typeof window.PAOGames.comboStreak.stop === 'function') {
+            window.PAOGames.comboStreak.stop();
+        }
+    }
+
     // Save scores
     if (gameScore > highScore) {
         highScore = gameScore;

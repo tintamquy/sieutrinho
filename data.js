@@ -301,7 +301,7 @@ const paoData = {
     '05': { person: 'Chị Cát', action: 'Vật Ngã', object: 'Cá Sấu' },
     '06': { person: 'em Cúc', action: 'Đập', object: 'Cái Búa' },
     '07': { person: 'anh Chung dạy English', action: 'Viết', object: 'Cục Phấn' },
-    '08': { person: 'Cháu Châu', action: 'Tắm', object: 'Con Heo' },
+    '08': { person: 'Cháu Châu', action: 'Mổ bụng', object: 'Con Heo' },
     '09': { person: 'Bạn Cường Quý', action: 'Dẫm lên', object: 'Con Gián' },
     '10': { person: 'Bố Thịnh', action: 'Ấp', object: 'Tổ Chim' },
     '11': { person: 'Cháu Tôn', action: 'Gãi', object: 'Tinh Tinh' },
