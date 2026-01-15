@@ -16,9 +16,13 @@ function setupKeyboardShortcuts(options, correctAnswer, checkAnswerCallback) {
         if (['1', '2', '3', '4'].includes(key)) {
             const index = parseInt(key) - 1;
             if (index < options.length) {
-                event.preventDefault();
-                const answer = options[index];
-                checkAnswerCallback(answer, correctAnswer);
+                // Check if PAO option buttons still exist and are enabled
+                const buttons = document.querySelectorAll('.pao-option-btn');
+                if (buttons.length > 0 && !buttons[0].disabled) {
+                    event.preventDefault();
+                    const answer = options[index];
+                    checkAnswerCallback(answer, correctAnswer);
+                }
             }
         }
     };

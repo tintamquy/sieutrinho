@@ -946,6 +946,11 @@ function stopGame() {
     }
     stopElapsedTimer(); // Stop elapsed timer
 
+    // Clear keyboard shortcuts if they exist
+    if (typeof clearKeyboardShortcuts === 'function') {
+        clearKeyboardShortcuts();
+    }
+
     // Save scores
     if (gameScore > highScore) {
         highScore = gameScore;
