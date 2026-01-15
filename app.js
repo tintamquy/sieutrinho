@@ -747,11 +747,13 @@ function setupEventListeners() {
         togglePao.addEventListener('click', () => {
             const paoSection = document.getElementById('pao-table-section');
             const refSection = document.getElementById('reference-section');
+            const excelSection = document.getElementById('pao-excel-section');
             if (paoSection) {
                 paoSection.classList.toggle('hidden');
-                // Hide reference when showing PAO
-                if (!paoSection.classList.contains('hidden') && refSection) {
-                    refSection.classList.add('hidden');
+                // Hide others when showing PAO
+                if (!paoSection.classList.contains('hidden')) {
+                    if (refSection) refSection.classList.add('hidden');
+                    if (excelSection) excelSection.classList.add('hidden');
                 }
                 togglePao.textContent = paoSection.classList.contains('hidden')
                     ? '🧩 Xem Bảng PAO'
@@ -760,6 +762,31 @@ function setupEventListeners() {
                 // Render PAO table if showing
                 if (!paoSection.classList.contains('hidden')) {
                     renderPAOTable();
+                }
+            }
+        });
+    }
+
+    const toggleExcel = document.getElementById('toggle-pao-excel');
+    if (toggleExcel) {
+        toggleExcel.addEventListener('click', () => {
+            const excelSection = document.getElementById('pao-excel-section');
+            const refSection = document.getElementById('reference-section');
+            const paoSection = document.getElementById('pao-table-section');
+            if (excelSection) {
+                excelSection.classList.toggle('hidden');
+                // Hide others when showing Excel
+                if (!excelSection.classList.contains('hidden')) {
+                    if (refSection) refSection.classList.add('hidden');
+                    if (paoSection) paoSection.classList.add('hidden');
+                }
+                toggleExcel.textContent = excelSection.classList.contains('hidden')
+                    ? '📊 Xem PAO Bảng'
+                    : '❌ Đóng PAO Bảng';
+
+                // Render Excel table if showing
+                if (!excelSection.classList.contains('hidden')) {
+                    renderPAOExcelTable();
                 }
             }
         });
