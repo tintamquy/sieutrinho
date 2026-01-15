@@ -290,3 +290,168 @@ function getName(num) {
 // Initialize on load
 initMemoryData();
 
+// ===== PAO SYSTEM DATA =====
+// Person-Action-Object Memory System
+const paoData = {
+    '00': { person: 'Con Cao', action: 'Vuốt Ve', object: 'Con Chó' },
+    '01': { person: 'Bố Chí', action: 'Cưỡi phi nước đại', object: 'Con Trâu' },
+    '02': { person: 'U Cẩm', action: 'Nhổ Lông', object: 'Con Nhím' },
+    '03': { person: 'chị Chanh', action: 'Nướng', object: 'Con Mực' },
+    '04': { person: 'Cháu Chi', action: 'Thôi Miên', object: 'Con Rắn' },
+    '05': { person: 'Chị Cát', action: 'Vật Ngã', object: ' Cá Sấu' },
+    '06': { person: 'em Cúc', action: 'Đập', object: 'Cái Búa' },
+    '07': { person: 'anh Chung dạy English', action: 'Viết', object: 'Cục Phấn' },
+    '08': { person: 'Cháu Châu', action: 'Tắm', object: 'Con Heo' },
+    '09': { person: 'Bạn Cường Quý', action: 'Dẫm lên', object: 'Con Gián' },
+    '10': { person: 'Bố Thịnh', action: 'Ấp', object: 'Tổ Chim' },
+    '11': { person: 'Cháu Tôn', action: 'Gãi', object: 'Tinh Tinh' },
+    '12': { person: 'Giám Đốc Tâm', action: 'Nằm đè', object: 'Tấm Nệm' },
+    '13': { person: 'chị Trang', action: 'Cạy cửa', object: 'Thang Máy' },
+    '14': { person: 'chị Thùy', action: 'Đổ đầy', object: 'Túi Rác' },
+    '15': { person: 'chú Thái', action: 'khuấy', object: 'Thùng Sơn' },
+    '16': { person: 'anh Tuấn The Zei', action: 'Đeo', object: 'Túi Balo' },
+    '17': { person: 'em Thành kỹ thuật', action: 'Bịt tai', object: 'Tai Phone' },
+    '18': { person: 'Thế Anh kỹ sư', action: 'giật còi', object: 'Tàu Hỏa' },
+    '19': { person: 'ông Trương', action: 'Húc', object: 'Tê Giác' },
+    '20': { person: 'Con Ngọc', action: 'Hứng từng giọt', object: 'Nước Cất' },
+    '21': { person: 'anh Nam', action: 'Bay ra khỏi', object: 'Nhà Tù' },
+    '22': { person: 'cháu Nhất', action: 'Bắn tơ', object: 'Người Nhện' },
+    '23': { person: 'chị Nương', action: 'Chấm', object: 'Nước Mắm' },
+    '24': { person: 'cậu Nguyên', action: 'Hái', object: 'Nấm Rơm' },
+    '25': { person: 'chị Kim Nhung', action: 'Ngậm mãi', object: 'Nhân Sâm' },
+    '26': { person: 'chị Nga đồng tu', action: 'Dâng', object: 'Nhẫn Bạc' },
+    '27': { person: 'cháu Ninh', action: 'Ném', object: 'Nổ Pháo' },
+    '28': { person: 'anh Ngôn', action: 'Tiêm', object: 'Nghiện Hút' },
+    '29': { person: 'Chú Nghiêm toản', action: 'Đẩy xe lăn', object: 'Người Già' },
+    '30': { person: 'bá Mạo', action: 'bấm cắt', object: 'Móng Chân' },
+    '31': { person: 'anh Minh công ty', action: 'Xoay ốc', object: 'Máy Tính' },
+    '32': { person: 'bà Mưu', action: 'ngoáy tai', object: 'Màng Nhĩ' },
+    '33': { person: 'em Mạnh đồng tu', action: 'Moi', object: 'Móc Mắt' },
+    '34': { person: 'Mẹ Xuân', action: 'Che', object: 'Mưa Rào' },
+    '35': { person: 'anh May', action: 'Uốn cong', object: 'Móc Sắt' },
+    '36': { person: 'Cháu Mai', action: 'Lái', object: 'Máy Bay' },
+    '37': { person: 'ông Món', action: 'xả súng', object: 'Ma Phia' },
+    '38': { person: 'bạn My', action: 'Liếm', object: 'Màn Hình' },
+    '39': { person: 'Tam Mao TV', action: 'Chui', object: 'Máy Giặt' },
+    '40': { person: 'Cháu Đễ (chồng Dung)', action: 'Cưa qua lại', object: 'Răng Cưa' },
+    '41': { person: 'Bá Đông', action: 'Đan', object: 'Rổ Tre' },
+    '42': { person: 'anh Dương', action: 'Nhồi', object: 'Ruột Non' },
+    '43': { person: 'Cô Duy', action: 'Rắc đều', object: 'Rắc Muối' },
+    '44': { person: 'cháu Dũng', action: 'Đu', object: 'Ròng Rọc' },
+    '45': { person: 'Bác Dị', action: 'Múa', object: 'Rồng Sắt' },
+    '46': { person: 'anh Đăng', action: 'Lắp Ráp', object: 'Rô Bốt' },
+    '47': { person: 'em Đoàn', action: 'giăng lưới', object: 'Rô Phi' },
+    '48': { person: 'Cháu Dung', action: 'Buộc', object: 'Rau Hẹ' },
+    '49': { person: 'Anh Đạt', action: 'Vặn Ga', object: 'Rồ Ga' },
+    '50': { person: 'Snoop Dog', action: 'Hút', object: 'Sữa Chua' },
+    '51': { person: 'chị Sinh', action: 'Quất Roi', object: 'Sư Tử' },
+    '52': { person: 'Đoàn Văn Sáng', action: 'Hôn má', object: 'Sọ Người' },
+    '53': { person: 'Stephen Hawking', action: 'Khâu', object: 'Sứt Môi' },
+    '54': { person: 'ca sĩ Siu black', action: 'Ngửi', object: 'Sầu Riêng' },
+    '55': { person: 'chị Sợi', action: 'Gọt vỏ', object: 'Su Su' },
+    '56': { person: 'Pak Hang SEO', action: 'Lướt sóng', object: 'Sóng Biển' },
+    '57': { person: 'em Sỏi địa chính', action: 'Sạc', object: 'Sạc Pin' },
+    '58': { person: 'Em Sơn hà nội', action: 'Nhai', object: 'Su Hào' },
+    '59': { person: 'Cô Sen lao công', action: 'Lau sàn', object: 'Sàn Gỗ' },
+    '60': { person: 'Bạn Bích Bác Sĩ', action: 'Kẹp nhíp', object: 'Bọ Cạp' },
+    '61': { person: 'chị Biên', action: 'Xỏ lỗ', object: 'Bông Tai' },
+    '62': { person: 'Bác Bản ở chùa', action: 'luộc', object: 'Bắp Ngô' },
+    '63': { person: 'Anh Bảo', action: 'đuổi bắt', object: 'Bóng Ma' },
+    '64': { person: 'Big Daddy', action: 'Úp rổ', object: 'Bóng Rổ' },
+    '65': { person: 'Xuân Bắc', action: 'Bắt mạch', object: 'Bác Sĩ' },
+    '66': { person: 'Vợ Bình', action: 'Bơm phồng', object: 'Bong Bóng' },
+    '67': { person: 'Bill Gate', action: 'Gõ 10 ngón', object: 'Bàn Phím' },
+    '68': { person: 'Anh Bách Việt Mỹ', action: 'Chào điều lệnh', object: 'Bác Hồ' },
+    '69': { person: 'Bob Marley', action: 'Ôm', object: 'Bình Ga' },
+    '70': { person: 'bạn Phong', action: 'Nhảy dù cùng', object: 'Phi Công' },
+    '71': { person: 'Cô Phán thảo', action: 'Hóa trang thành', object: 'Phù Thủy' },
+    '72': { person: 'chú Phú', action: 'Khoan cắt bê tông', object: 'Phá Nhà' },
+    '73': { person: 'Pele', action: 'Sút bóng vào', object: 'Phát Minh' },
+    '74': { person: 'Cát Phượng', action: 'Vỗ phấn phủ mặt', object: 'Phấn Rôm' },
+    '75': { person: 'anh Phúc giám đốc', action: 'Xếp chân kiết già', object: 'Pháp Sư' },
+    '76': { person: 'Bá Phương', action: 'Đếm', object: 'Phong Bì' },
+    '77': { person: 'Phước Thịnh', action: 'Lạy 5 vóc', object: 'Phật Pháp' },
+    '78': { person: 'em Phi', action: 'châm lửa', object: 'Phóng Hỏa' },
+    '79': { person: 'Rapper Pháo', action: 'Hót xẻng', object: 'Phân Gà' },
+    '80': { person: 'cháu Hải', action: 'Vươn cổ', object: 'Hươu Cao Cổ' },
+    '81': { person: 'anh Hùng Liên', action: 'Chảy nước mắt', object: 'Hành Tây' },
+    '82': { person: 'chị Huyền', action: 'nếm', object: 'Hạt Nêm' },
+    '83': { person: 'Hoàng', action: 'Ói', object: 'Hộc Máu' },
+    '84': { person: 'anh Hợp hàng xóm', action: 'Leo qua tường', object: 'Hàng Rào' },
+    '85': { person: 'bà Hiên', action: 'Đào', object: 'Hố Sâu' },
+    '86': { person: 'anh Huy', action: 'Choàng Mặc', object: 'Hoàng Bào' },
+    '87': { person: 'sếp Hạnh', action: 'Nhặt từng cánh', object: 'Hoa Phượng' },
+    '88': { person: 'em Hường', action: 'Xịt khử mùi', object: 'Hôi Hám' },
+    '89': { person: 'bà Hiệp', action: 'Sàng', object: 'Hạt Gạo' },
+    '90': { person: 'Cháu Loa', action: 'bóp cổ', object: 'Gà Chọi' },
+    '91': { person: 'Em Linh', action: 'Đấm bằng', object: 'Găng Tay' },
+    '92': { person: 'anh Lanh', action: 'Biến dài', object: 'Gậy Như Ý' },
+    '93': { person: 'bạn Loan', action: 'câu bằng', object: 'Giun Móc' },
+    '94': { person: 'Mùi A Lưu', action: 'Trà sát', object: 'Giấy Ráp' },
+    '95': { person: 'Em Long', action: 'tựa lưng', object: 'Ghế Sofa' },
+    '96': { person: 'Gì Liên', action: 'quạt ba tiêu', object: 'Gió Bão' },
+    '97': { person: 'Chú Liệu', action: 'Mở cửa', object: 'Giải Phóng' },
+    '98': { person: 'Em Leng', action: 'Quay phim', object: 'Ghi Hình' },
+    '99': { person: 'Anh Lực', action: 'Trải phẳng', object: 'Ga Giường' },
+    // Special codes
+    'JC': { person: 'Bác sĩ Gấm', action: 'Cắm điện', object: 'Jắc Cắm' },
+    'JR': { person: 'Stive Jobs', action: 'Chạm nhẹ đầu ngón', object: 'Iphone Red' },
+    'JT': { person: 'Jack 5 Củ ca sĩ', action: 'Hét', object: 'Inh Tai' },
+    'JB': { person: 'Võ Nguyên Giáp', action: 'Phóng tên lửa', object: 'Jack Black' },
+    'QC': { person: 'Chị Quế', action: 'tâng bằng đùi', object: 'Quả Cầu' },
+    'QR': { person: 'anh Quý', action: 'khoét', object: 'Quả Rứa' },
+    'QT': { person: 'anh Quang', action: 'Cắn', object: 'Quả Táo' },
+    'QB': { person: 'Quỳnh anh', action: 'nghiền xay nát', object: 'Quả Bơ' },
+    'KC': { person: 'Khoa xuka', action: 'bật nguồn', object: 'K Cộng' },
+    'KR': { person: 'Khoát', action: 'Cài', object: 'Kính Râm' },
+    'KT': { person: 'Bác Khoan', action: 'quấn', object: 'Khăn Tắm' },
+    'KB': { person: 'thầy Kiên', action: 'Dò bằng máy', object: 'Kho Báu' }
+};
+
+// PAO Helper Functions
+function getPAO(code) {
+    const normalized = code.toUpperCase();
+    return paoData[normalized] || null;
+}
+
+function getRandomPAO() {
+    const codes = Object.keys(paoData);
+    const randomCode = codes[Math.floor(Math.random() * codes.length)];
+    return { code: randomCode, ...paoData[randomCode] };
+}
+
+function getRandomPAONumeric() {
+    const numericCodes = Object.keys(paoData).filter(code => /^\d{2}$/.test(code));
+    const randomCode = numericCodes[Math.floor(Math.random() * numericCodes.length)];
+    return { code: randomCode, ...paoData[randomCode] };
+}
+
+function getAllPAOCodes() {
+    return Object.keys(paoData);
+}
+
+function parseNumbersToPAO(numberString) {
+    // Parse string of numbers into PAO pairs
+    // e.g., "152637" -> [{code: "15", person: ..., action: ..., object: ...}, ...]
+    if (numberString.length % 2 !== 0) {
+        numberString = '0' + numberString; // Pad with 0 if odd
+    }
+
+    const pairs = [];
+    for (let i = 0; i < numberString.length; i += 2) {
+        const code = numberString.substr(i, 2);
+        const pao = getPAO(code);
+        if (pao) {
+            pairs.push({ code, ...pao });
+        }
+    }
+    return pairs;
+}
+
+function generateRandomNumberString(length) {
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += Math.floor(Math.random() * 10);
+    }
+    return result;
+}

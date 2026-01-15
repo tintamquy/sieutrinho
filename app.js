@@ -205,6 +205,12 @@ const gameCategories = {
         desc: 'Game học bộ thủ tiếng Trung',
         color: '#dc2626',
         order: 5
+    },
+    pao: {
+        name: '🧩 PAO System',
+        desc: 'Person-Action-Object Memory System',
+        color: '#667eea',
+        order: 6
     }
 };
 
@@ -407,6 +413,79 @@ const games = [
         desc: 'Ghi nhớ danh sách các từ ngẫu nhiên',
         category: 'advanced',
         func: typeof startRandomWordsGame !== 'undefined' ? startRandomWordsGame : null
+    },
+    // PAO SYSTEM GAMES
+    {
+        id: 'pao-flashcard',
+        title: 'PAO Flash Card',
+        icon: '🎴',
+        desc: 'Học từng mã PAO (Person-Action-Object)',
+        category: 'pao',
+        func: typeof startPAOFlashCard !== 'undefined' ? startPAOFlashCard : null
+    },
+    {
+        id: 'pao-speed-quiz',
+        title: 'PAO Speed Quiz',
+        icon: '⚡',
+        desc: 'Trả lời nhanh: Số → PAO',
+        category: 'pao',
+        func: typeof startPAOSpeedQuiz !== 'undefined' ? startPAOSpeedQuiz : null
+    },
+    {
+        id: 'pao-reverse-quiz',
+        title: 'PAO Reverse',
+        icon: '🔄',
+        desc: 'Đoán ngược: PAO → Số',
+        category: 'pao',
+        func: typeof startPAOReverseQuiz !== 'undefined' ? startPAOReverseQuiz : null
+    },
+    {
+        id: 'pao-memory-match',
+        title: 'PAO Memory Match',
+        icon: '🎯',
+        desc: 'Ghép đôi số với PAO',
+        category: 'pao',
+        func: typeof startPAOMemoryMatch !== 'undefined' ? startPAOMemoryMatch : null
+    },
+    {
+        id: 'pao-chain-challenge',
+        title: 'PAO Chain Challenge',
+        icon: '⛓️',
+        desc: 'Ghi nhớ chuỗi số dài bằng PAO',
+        category: 'pao',
+        func: typeof startPAOChainChallenge !== 'undefined' ? startPAOChainChallenge : null
+    },
+    {
+        id: 'pao-ultimate-speed',
+        title: 'Ultimate Speed Test',
+        icon: '⚡🔥',
+        desc: 'Trả lời trong 3 giây - Cực khó!',
+        category: 'pao',
+        func: typeof startPAOUltimateSpeed !== 'undefined' ? startPAOUltimateSpeed : null
+    },
+    {
+        id: 'pao-marathon',
+        title: 'Marathon Mode',
+        icon: '🏃‍♂️',
+        desc: '100 câu hỏi liên tục - 10 phút',
+        category: 'pao',
+        func: typeof startPAOMarathon !== 'undefined' ? startPAOMarathon : null
+    },
+    {
+        id: 'pao-survival',
+        title: 'Survival Mode',
+        icon: '💀',
+        desc: '3 mạng - Sai là mất mạng!',
+        category: 'pao',
+        func: typeof startPAOSurvival !== 'undefined' ? startPAOSurvival : null
+    },
+    {
+        id: 'pao-combo-streak',
+        title: 'Combo Streak',
+        icon: '🔥',
+        desc: 'Combo càng cao càng nhân điểm!',
+        category: 'pao',
+        func: typeof startPAOComboStreak !== 'undefined' ? startPAOComboStreak : null
     }
 ].filter(game => game.func !== null); // Filter out games with null functions
 
@@ -565,11 +644,13 @@ function renderGames() {
     const basicContainer = document.getElementById('games-grid-basic');
     const trainingContainer = document.getElementById('games-grid-training');
     const competitionContainer = document.getElementById('games-grid-competition');
+    const paoContainer = document.getElementById('games-grid-pao');
 
     // Clear containers
     if (basicContainer) basicContainer.innerHTML = '';
     if (trainingContainer) trainingContainer.innerHTML = '';
     if (competitionContainer) competitionContainer.innerHTML = '';
+    if (paoContainer) paoContainer.innerHTML = '';
 
     if (!basicContainer || !trainingContainer || !competitionContainer) {
         console.error('Tab containers not found');
@@ -593,6 +674,7 @@ function renderGames() {
         else if (categories.competition.includes(game.id) || game.category === 'advanced') targetId = 'games-grid-competition';
         else if (categories.training.includes(game.id)) targetId = 'games-grid-training';
         else if (game.category === 'palace') targetId = 'games-grid-training'; // Palaces go to training
+        else if (game.category === 'pao') targetId = 'games-grid-pao'; // PAO games go to PAO tab
 
         const targetContainer = document.getElementById(targetId);
 

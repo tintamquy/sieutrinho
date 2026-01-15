@@ -102,6 +102,7 @@
                 <button class="tab-btn active" onclick="switchTab('basic')">🌱 Cơ Bản</button>
                 <button class="tab-btn" onclick="switchTab('training')">🏋️ Luyện Tập</button>
                 <button class="tab-btn" onclick="switchTab('competition')">🏆 Thi Đấu</button>
+                <button class="tab-btn" onclick="switchTab('pao')">🧩 PAO System</button>
             </div>
 
             <!-- Tab Contents -->
@@ -120,6 +121,12 @@
             <div id="tab-competition" class="tab-content">
                 <div class="compact-grid" id="games-grid-competition">
                     <!-- Advanced/Championship Games populated here -->
+                </div>
+            </div>
+
+            <div id="tab-pao" class="tab-content">
+                <div class="compact-grid" id="games-grid-pao">
+                    <!-- PAO Games populated here -->
                 </div>
             </div>
 
@@ -306,6 +313,7 @@
     <script src="games.js"></script>
     <script src="multiplayer.js"></script>
     <script src="binary-digits-game.js"></script>
+    <script src="pao-games-logic.js"></script>
     <script src="app.js"></script>
 </body>
 
