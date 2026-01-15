@@ -3219,3 +3219,23 @@ body {
         font-size: 0.85rem;
     }
 }
+
+
+/* Keyboard Shortcuts - Option Number Display */
+.option-number {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    color: #f9ca24;
+    font-weight: 900;
+    font-size: 0.9rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 8px;
+    margin-right: 0.5rem;
+    border: 2px solid rgba(249, 202, 36, 0.4);
+    box-shadow: 0 2px 8px rgba(249, 202, 36, 0.3);
+}
+
+.pao-option-btn:hover .option-number {
+    background: rgba(249, 202, 36, 0.3);
+    border-color: rgba(249, 202, 36, 0.8);
+}

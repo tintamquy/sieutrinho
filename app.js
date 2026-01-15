@@ -792,15 +792,9 @@ function startGame(gameIdOrObject) {
         return;
     }
 
-    // PAO games skip difficulty selection - play immediately
-    if (game.category === 'pao') {
-        gameSettings.difficulty = 'medium'; // Default
-        startActualGame(game.id);
-        return;
-    }
-
-    // Check if game supports difficulty (most do)
-    showDifficultyModal(game);
+    // Skip difficulty selection for ALL games - just play with medium difficulty
+    gameSettings.difficulty = 'medium'; // Default for all
+    startActualGame(game.id);
 }
 
 function startActualGame(gameId) {

@@ -1,6 +1,39 @@
 // ===== PAO GAMES LOGIC =====
 // Tích hợp vào app chính sieutrinho
 
+// Global keyboard shortcuts handler for multiple choice (1,2,3,4 keys)
+let currentKeyboardHandler = null;
+
+function setupKeyboardShortcuts(options, correctAnswer, checkAnswerCallback) {
+    // Remove previous handler if exists
+    if (currentKeyboardHandler) {
+        document.removeEventListener('keydown', currentKeyboardHandler);
+    }
+
+    // Create new handler
+    currentKeyboardHandler = function (event) {
+        const key = event.key;
+        if (['1', '2', '3', '4'].includes(key)) {
+            const index = parseInt(key) - 1;
+            if (index < options.length) {
+                event.preventDefault();
+                const answer = options[index];
+                checkAnswerCallback(answer, correctAnswer);
+            }
+        }
+    };
+
+    // Add listener
+    document.addEventListener('keydown', currentKeyboardHandler);
+}
+
+function clearKeyboardShortcuts() {
+    if (currentKeyboardHandler) {
+        document.removeEventListener('keydown', currentKeyboardHandler);
+        currentKeyboardHandler = null;
+    }
+}
+
 // PAO Game 1: Flash Card
 function startPAOFlashCard() {
     let currentIndex = 0;
@@ -88,7 +121,13 @@ function startPAOSpeedQuiz() {
     }
 
     function nextQuestion() {
-        if (!isPlaying) return;
+        if (!isPlaying) return; // Check if game is still playing
+
+        // Clear any existing question timer to prevent duplicates
+        if (window.PAOGames.speedQuiz.currentTimer) {
+            clearInterval(window.PAOGames.speedQuiz.currentTimer);
+            window.PAOGames.speedQuiz.currentTimer = null;
+        }
 
         const data = getRandomPAONumeric();
         const types = ['person', 'action', 'object'];
@@ -116,12 +155,17 @@ function startPAOSpeedQuiz() {
                     <div class="pao-timer-bar"><div class="pao-timer-fill" id="pao-timer-fill"></div></div>
                 </div>
                 <div class="pao-options-grid">
-                    ${options.map(opt => `
-                        <button class="pao-option-btn" onclick="PAOGames.speedQuiz.checkAnswer('${opt.replace(/'/g, "\\'")}', '${correctAnswer.replace(/'/g, "\\'")}')">${opt}</button>
+                    ${options.map((opt, index) => `
+                        <button class="pao-option-btn" data-index="${index}" data-answer="${opt.replace(/'/g, '&#39;')}" onclick="PAOGames.speedQuiz.checkAnswer('${opt.replace(/'/g, "\\'")}', '${correctAnswer.replace(/'/g, "\\'")}')">
+                            <span class="option-number">${index + 1}</span> ${opt}
+                        </button>
                     `).join('')}
                 </div>
             </div>
         `;
+
+        // Setup keyboard shortcuts for 1,2,3,4
+        setupKeyboardShortcuts(options, correctAnswer, publicAPI.checkAnswer);
 
         // Start countdown timer
         let timeLeft = timeLimit * 1000;
@@ -134,11 +178,14 @@ function startPAOSpeedQuiz() {
 
             if (elapsed >= timeLimit * 1000) {
                 clearInterval(timerBar);
+                if (!isPlaying) return; // Don't continue if game stopped
                 wrong++;
                 wrongCount++;
                 updateGameStats();
                 playSound('wrong');
-                setTimeout(nextQuestion, 1000);
+                setTimeout(() => {
+                    if (isPlaying) nextQuestion(); // Check again before calling
+                }, 1000);
             }
         }, 50);
 
@@ -148,10 +195,23 @@ function startPAOSpeedQuiz() {
     const publicAPI = {
         start: startGame,
         currentTimer: null,
+        stop: () => {
+            isPlaying = false;
+            clearKeyboardShortcuts(); // Remove keyboard listener
+            if (publicAPI.currentTimer) {
+                clearInterval(publicAPI.currentTimer);
+                publicAPI.currentTimer = null;
+            }
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        },
         checkAnswer: (selected, correct) => {
             if (!isPlaying) return;
 
             clearInterval(publicAPI.currentTimer);
+            publicAPI.currentTimer = null;
             const buttons = document.querySelectorAll('.pao-option-btn');
             buttons.forEach(btn => btn.disabled = true);
 
@@ -169,7 +229,9 @@ function startPAOSpeedQuiz() {
 
             gameScore = score;
             updateGameStats();
-            setTimeout(nextQuestion, 1500);
+            setTimeout(() => {
+                if (isPlaying) nextQuestion(); // Check before calling
+            }, 1500);
         }
     };
 
