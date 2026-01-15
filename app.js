@@ -1405,22 +1405,19 @@ function stopTimer() {
 // Start elapsed timer
 function startElapsedTimer() {
     elapsedSeconds = 0;
-    let milliseconds = 0;
+    let startTime = Date.now();
     document.getElementById('elapsed-timer').textContent = '0.0';
 
     if (elapsedTimer) clearInterval(elapsedTimer);
 
     elapsedTimer = setInterval(() => {
-        milliseconds += 100;
-        const totalSeconds = (milliseconds / 1000).toFixed(1);
+        const elapsed = Date.now() - startTime;
+        const totalSeconds = (elapsed / 1000).toFixed(1);
         document.getElementById('elapsed-timer').textContent = totalSeconds;
-
-        if (milliseconds >= 1000) {
-            elapsedSeconds++;
-            milliseconds = 0;
-        }
+        elapsedSeconds = Math.floor(elapsed / 1000);
     }, 100);
 }
+
 
 
 // Stop elapsed timer
