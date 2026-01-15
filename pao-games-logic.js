@@ -592,7 +592,7 @@ function startPAOUltimateSpeed() {
     window.PAOGames.ultimateSpeed = publicAPI;
 
     nextQuestion();
-    startGameTimer(180); // 3 minutes total
+    // Note: Game has its own 3-second timer per question
 }
 
 // PAO Game 7: Marathon Mode (NEW)
@@ -680,7 +680,7 @@ function startPAOMarathon() {
     window.PAOGames.marathon = publicAPI;
 
     nextQuestion();
-    startGameTimer(600); // 10 minutes
+    // Note: Marathon tracks total time internally
 }
 
 // PAO Game 8: Survival Mode (NEW)
@@ -845,5 +845,5 @@ function startPAOComboStreak() {
     window.PAOGames.comboStreak = publicAPI;
 
     nextQuestion();
-    startGameTimer(180); // 3 minutes
+    // Note: Combo Streak has per-question timer
 }
