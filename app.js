@@ -1,6 +1,8 @@
 // Main Application Controller
 let currentGame = null;
 let gameTimer = null;
+let elapsedTimer = null;
+let elapsedSeconds = 0;
 let gameScore = 0;
 let correctCount = 0;
 let wrongCount = 0;
@@ -790,6 +792,13 @@ function startGame(gameIdOrObject) {
         return;
     }
 
+    // PAO games skip difficulty selection - play immediately
+    if (game.category === 'pao') {
+        gameSettings.difficulty = 'medium'; // Default
+        startActualGame(game.id);
+        return;
+    }
+
     // Check if game supports difficulty (most do)
     showDifficultyModal(game);
 }
@@ -801,6 +810,9 @@ function startActualGame(gameId) {
 
         document.getElementById('homepage').classList.remove('active');
         document.getElementById('game-screen').classList.add('active');
+
+        // Start elapsed timer for PAO games
+        startElapsedTimer();
 
         // Reset stats
         gameScore = 0;
@@ -938,6 +950,7 @@ function stopGame() {
         clearInterval(gameTimer);
         gameTimer = null;
     }
+    stopElapsedTimer(); // Stop elapsed timer
 
     // Save scores
     if (gameScore > highScore) {
@@ -1302,6 +1315,27 @@ function stopTimer() {
         gameTimer = null;
     }
     document.getElementById('timer').parentElement.classList.remove('timer-warning');
+}
+
+// Start elapsed timer
+function startElapsedTimer() {
+    elapsedSeconds = 0;
+    document.getElementById('elapsed-timer').textContent = 0;
+
+    if (elapsedTimer) clearInterval(elapsedTimer);
+
+    elapsedTimer = setInterval(() => {
+        elapsedSeconds++;
+        document.getElementById('elapsed-timer').textContent = elapsedSeconds;
+    }, 1000);
+}
+
+// Stop elapsed timer
+function stopElapsedTimer() {
+    if (elapsedTimer) {
+        clearInterval(elapsedTimer);
+        elapsedTimer = null;
+    }
 }
 
 // Play sound using Web Audio API
