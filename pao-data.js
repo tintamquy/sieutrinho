@@ -93,7 +93,7 @@ const PAO_DATA = {
         { code: '88', person: 'em Hường', action: 'Xịt khử mùi', object: 'Miệng Hôi Hám' },
         { code: '89', person: 'bà Hiệp', action: 'Sàng', object: 'Hạt Gạo' },
         { code: '90', person: 'Cháu Loa', action: 'bóp cổ', object: 'Gà Chọi' },
-        { code: '91', person: 'anh Lập', action: 'Đấm bằng', object: 'Găng Tay' },
+        { code: '91', person: 'Em Linh', action: 'Đấm bằng', object: 'Găng Tay' },
         { code: '92', person: 'anh Lanh', action: 'Biến dài', object: 'Gậy Như Ý' },
         { code: '93', person: 'bạn Loan', action: 'câu bằng', object: 'Giun Móc' },
         { code: '94', person: 'Mùi A Lưu', action: 'Trà sát', object: 'Giấy Giáp' },
