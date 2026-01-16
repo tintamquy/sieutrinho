@@ -951,6 +951,16 @@ function startActualGame(gameId) {
 
         // Start game normally
         currentGame = game;
+
+        // Cleanup PAO flashcard keyboard handler if exists
+        if (window.PAOGames && window.PAOGames.flashCard && window.PAOGames.flashCard.cleanup) {
+            window.PAOGames.flashCard.cleanup();
+        }
+        // Cleanup other keyboard shortcuts
+        if (typeof clearKeyboardShortcuts === 'function') {
+            clearKeyboardShortcuts();
+        }
+
         if (game.func && typeof game.func === 'function') {
             game.func();
         } else {

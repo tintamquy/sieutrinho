@@ -90,8 +90,46 @@ function startPAOFlashCard() {
         random: () => {
             currentIndex = Math.floor(Math.random() * allCodes.length);
             loadCard(currentIndex);
+        },
+        cleanup: () => {
+            if (publicAPI.keyboardHandler) {
+                document.removeEventListener('keydown', publicAPI.keyboardHandler);
+                publicAPI.keyboardHandler = null;
+            }
+        },
+        keyboardHandler: null
+    };
+
+    // Setup keyboard controls for Flashcard
+    publicAPI.keyboardHandler = function (event) {
+        // Ignore if user is typing in an input field
+        if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+            return;
+        }
+
+        switch (event.key) {
+            case ' ':           // Space
+            case 'Enter':       // Enter
+                event.preventDefault();
+                publicAPI.flip();
+                break;
+            case 'ArrowLeft':   // Left arrow
+                event.preventDefault();
+                publicAPI.prev();
+                break;
+            case 'ArrowRight':  // Right arrow
+                event.preventDefault();
+                publicAPI.next();
+                break;
+            case 'r':           // R key
+            case 'R':
+                event.preventDefault();
+                publicAPI.random();
+                break;
         }
     };
+
+    document.addEventListener('keydown', publicAPI.keyboardHandler);
 
     window.PAOGames = window.PAOGames || {};
     window.PAOGames.flashCard = publicAPI;
