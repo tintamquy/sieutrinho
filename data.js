@@ -384,7 +384,7 @@ const paoData = {
     '88': { person: 'em Hường', action: 'Xịt khử mùi', object: 'Miệng Hôi Hám' },
     '89': { person: 'bà Hiệp', action: 'Sàng', object: 'Hạt Gạo' },
     '90': { person: 'Cháu Loa', action: 'bóp cổ', object: 'Gà Chọi' },
-    '91': { person: 'Em Linh', action: 'Đấm bằng', object: 'Găng Tay' },
+    '91': { person: 'anh Lập', action: 'Đấm bằng', object: 'Găng Tay' },
     '92': { person: 'anh Lanh', action: 'Biến dài', object: 'Gậy Như Ý' },
     '93': { person: 'bạn Loan', action: 'câu bằng', object: 'Giun Móc' },
     '94': { person: 'Mùi A Lưu', action: 'Trà sát', object: 'Giấy Giáp' },
