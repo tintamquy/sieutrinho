@@ -442,6 +442,22 @@ const games = [
         func: typeof startAlphabetSystemFlashcard !== 'undefined' ? startAlphabetSystemFlashcard : null
     },
     {
+        id: 'major-system-speed-quiz',
+        title: 'Major System Speed Quiz',
+        icon: '⚡',
+        desc: 'Trắc nghiệm nhanh Major System',
+        category: 'training',
+        func: typeof startMajorSystemSpeedQuiz !== 'undefined' ? startMajorSystemSpeedQuiz : null
+    },
+    {
+        id: 'alphabet-system-speed-quiz',
+        title: 'Alphabet System Speed Quiz',
+        icon: '🚀',
+        desc: 'Trắc nghiệm nhanh Alphabet System',
+        category: 'training',
+        func: typeof startAlphabetSystemSpeedQuiz !== 'undefined' ? startAlphabetSystemSpeedQuiz : null
+    },
+    {
         id: 'pao-speed-quiz',
         title: 'PAO Speed Quiz',
         icon: '⚡',
@@ -777,7 +793,16 @@ function setupEventListeners() {
 
                 // Render PAO table if showing
                 if (!paoSection.classList.contains('hidden')) {
-                    renderPAOTable();
+                    // Auto-render all tabs on first open
+                    if (document.getElementById('pao-table-grid').innerHTML === '') {
+                        renderPAOTable();
+                    }
+                    if (document.getElementById('major-table-grid').innerHTML === '') {
+                        renderMajorSystemTable();
+                    }
+                    if (document.getElementById('alphabet-table-grid').innerHTML === '') {
+                        renderAlphabetSystemTable();
+                    }
                 }
             }
         });
