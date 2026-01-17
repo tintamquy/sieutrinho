@@ -302,7 +302,7 @@ const paoData = {
     '06': { person: 'em Cúc', action: 'Đập', object: 'Cái Búa' },
     '07': { person: 'anh Chung dạy English', action: 'Viết', object: 'Cục Phấn' },
     '08': { person: 'Cháu Châu', action: 'Mổ bụng', object: 'Con Heo' },
-    '09': { person: 'Bạn Cường Quý', action: 'Dẫm lên', object: 'Con Gián' },
+    '09': { person: 'anh Cương béo', action: 'Dẫm lên', object: 'Con Gián' },
     '10': { person: 'Bố Thịnh', action: 'Ấp', object: 'Tổ Chim' },
     '11': { person: 'Cháu Tôn', action: 'Gãi', object: 'Tinh Tinh' },
     '12': { person: 'Giám Đốc Tâm', action: 'Nằm đè', object: 'Tấm Nệm' },
@@ -403,7 +403,7 @@ const paoData = {
     'QB': { person: 'Quỳnh anh', action: 'nghiền xay nát', object: 'Quả Bơ' },
     'KC': { person: 'Khoa xuka', action: 'bật nguồn', object: 'Đầu TV K+' },
     'KR': { person: 'Khoát', action: 'Cài', object: 'Kính Râm' },
-    'KT': { person: 'Bác Khoan', action: 'quấn', object: 'Khăn Tắm' },
+    'KT': { person: 'Anh Khoái', action: 'quấn', object: 'Khăn Tắm' },
     'KB': { person: 'thầy Kiên', action: 'Dò bằng máy', object: 'Kho Báu' }
 };
 

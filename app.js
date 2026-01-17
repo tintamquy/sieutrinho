@@ -426,6 +426,22 @@ const games = [
         func: typeof startPAOFlashCard !== 'undefined' ? startPAOFlashCard : null
     },
     {
+        id: 'major-system-flashcard',
+        title: 'Major System Flash Card',
+        icon: '🔢',
+        desc: 'Học Major System (0-9 → Ký tự + Hình ảnh)',
+        category: 'beginner',
+        func: typeof startMajorSystemFlashcard !== 'undefined' ? startMajorSystemFlashcard : null
+    },
+    {
+        id: 'alphabet-system-flashcard',
+        title: 'Alphabet System Flash Card',
+        icon: '🔤',
+        desc: 'Học Alphabet System (A-Z → Số + Hình ảnh)',
+        category: 'beginner',
+        func: typeof startAlphabetSystemFlashcard !== 'undefined' ? startAlphabetSystemFlashcard : null
+    },
+    {
         id: 'pao-speed-quiz',
         title: 'PAO Speed Quiz',
         icon: '⚡',
@@ -955,6 +971,14 @@ function startActualGame(gameId) {
         // Cleanup PAO flashcard keyboard handler if exists
         if (window.PAOGames && window.PAOGames.flashCard && window.PAOGames.flashCard.cleanup) {
             window.PAOGames.flashCard.cleanup();
+        }
+        // Cleanup Major System flashcard
+        if (window.MajorFlashCard && window.MajorFlashCard.cleanup) {
+            window.MajorFlashCard.cleanup();
+        }
+        // Cleanup Alphabet System flashcard
+        if (window.AlphabetFlashCard && window.AlphabetFlashCard.cleanup) {
+            window.AlphabetFlashCard.cleanup();
         }
         // Cleanup other keyboard shortcuts
         if (typeof clearKeyboardShortcuts === 'function') {

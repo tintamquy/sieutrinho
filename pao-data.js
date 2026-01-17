@@ -11,7 +11,7 @@ const PAO_DATA = {
         { code: '06', person: 'em Cúc', action: 'Đập', object: 'Cái Búa' },
         { code: '07', person: 'anh Chung dạy English', action: 'Viết', object: 'Cục Phấn' },
         { code: '08', person: 'Cháu Châu', action: 'Mổ bụng', object: 'Con Heo' },
-        { code: '09', person: 'Bạn Cường Quý', action: 'Dẫm lên', object: 'Con Gián' },
+        { code: '09', person: 'anh Cương béo', action: 'Dẫm lên', object: 'Con Gián' },
         { code: '10', person: 'Bố Thịnh', action: 'Ấp', object: 'Tổ Chim' },
         { code: '11', person: 'Cháu Tôn', action: 'Gãi', object: 'Tinh Tinh' },
         { code: '12', person: 'Giám Đốc Tâm', action: 'Nằm đè', object: 'Tấm Nệm' },
@@ -116,7 +116,7 @@ const PAO_DATA = {
         { code: 'QB', person: 'Quỳnh anh', action: 'nghiền xay nát', object: 'Quả Bơ' },
         { code: 'KC', person: 'Khoa xuka', action: 'bật nguồn', object: 'Đầu TV K+' },
         { code: 'KR', person: 'Khoát', action: 'Cài', object: 'Kính Râm' },
-        { code: 'KT', person: 'Bác Khoan', action: 'quấn', object: 'Khăn Tắm' },
+        { code: 'KT', person: 'Anh Khoái', action: 'quấn', object: 'Khăn Tắm' },
         { code: 'KB', person: 'thầy Kiên', action: 'Dò bằng máy', object: 'Kho Báu' },
     ],
 
