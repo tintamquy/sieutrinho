@@ -874,6 +874,81 @@ function renderPAOTable() {
     }).join('');
 }
 
+// Render Major System Table
+function renderMajorSystemTable() {
+    const grid = document.getElementById('major-table-grid');
+    if (!grid) return;
+
+    const allItems = MAJOR_SYSTEM_DATA.rawData;
+
+    grid.innerHTML = allItems.map(item => {
+        return `
+            <div class="system-table-item">
+                <div class="system-number">${item.number}</div>
+                <div class="system-details">
+                    <div class="system-row">
+                        <span class="system-label">🔤 Ký tự:</span>
+                        <span class="system-value">${item.character}</span>
+                    </div>
+                    <div class="system-row">
+                        <span class="system-label">🖼️ Hình ảnh:</span>
+                        <span class="system-value">${item.image}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Render Alphabet System Table
+function renderAlphabetSystemTable() {
+    const grid = document.getElementById('alphabet-table-grid');
+    if (!grid) return;
+
+    const allItems = ALPHABET_SYSTEM_DATA.rawData;
+
+    grid.innerHTML = allItems.map(item => {
+        return `
+            <div class="system-table-item">
+                <div class="system-character">${item.character}</div>
+                <div class="system-details">
+                    <div class="system-row">
+                        <span class="system-label">🔢 Số:</span>
+                        <span class="system-value">${item.number}</span>
+                    </div>
+                    <div class="system-row">
+                        <span class="system-label">🖼️ Hình ảnh:</span>
+                        <span class="system-value">${item.image}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+// Switch System Tab
+window.switchSystemTab = function (system) {
+    // Update tab buttons
+    document.querySelectorAll('.system-tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.system === system);
+    });
+
+    // Update tab contents
+    document.querySelectorAll('.system-tab-content').forEach(content => {
+        content.classList.remove('active');
+    });
+    document.getElementById(`system-tab-${system}`).classList.add('active');
+
+    // Render appropriate table if not already rendered
+    if (system === 'pao' && document.getElementById('pao-table-grid').innerHTML === '') {
+        renderPAOTable();
+    } else if (system === 'major' && document.getElementById('major-table-grid').innerHTML === '') {
+        renderMajorSystemTable();
+    } else if (system === 'alphabet' && document.getElementById('alphabet-table-grid').innerHTML === '') {
+        renderAlphabetSystemTable();
+    }
+}
+
 // Show homepage
 function showHomepage() {
     document.getElementById('homepage').classList.add('active');

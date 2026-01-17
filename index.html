@@ -205,11 +205,49 @@
 
             <div id="pao-table-section" class="reference-section hidden">
                 <h2
-                    style="text-align: center; color: #ffffff; font-size: 2rem; margin-bottom: 1.5rem; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">
-                    🧩 Bảng PAO System (Person-Action-Object)
+                    style="text-align: center; color: #ffffff; font-size: 2rem; margin-bottom: 1rem; text-shadow: 2px 2px 6px rgba(0,0,0,0.8);">
+                    🧩 Bảng Hệ Thống Ghi Nhớ
                 </h2>
-                <div id="pao-table-grid" class="pao-table-grid">
-                    <!-- Will be populated by JavaScript -->
+
+                <!-- System Tabs -->
+                <div class="system-tabs"
+                    style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                    <button class="system-tab-btn active" onclick="switchSystemTab('pao')" data-system="pao">
+                        🎴 PAO System
+                    </button>
+                    <button class="system-tab-btn" onclick="switchSystemTab('major')" data-system="major">
+                        🔢 Major System
+                    </button>
+                    <button class="system-tab-btn" onclick="switchSystemTab('alphabet')" data-system="alphabet">
+                        🔤 Alphabet System
+                    </button>
+                </div>
+
+                <!-- PAO System Table -->
+                <div id="system-tab-pao" class="system-tab-content active">
+                    <h3 style="text-align: center; color: #f9ca24; margin-bottom: 1rem;">Person-Action-Object (00-99 +
+                        Special)</h3>
+                    <div id="pao-table-grid" class="pao-table-grid">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Major System Table -->
+                <div id="system-tab-major" class="system-tab-content">
+                    <h3 style="text-align: center; color: #f9ca24; margin-bottom: 1rem;">Number → Character + Image
+                        (0-9)</h3>
+                    <div id="major-table-grid" class="major-table-grid">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Alphabet System Table -->
+                <div id="system-tab-alphabet" class="system-tab-content">
+                    <h3 style="text-align: center; color: #f9ca24; margin-bottom: 1rem;">Character → Number + Image
+                        (A-Z)</h3>
+                    <div id="alphabet-table-grid" class="alphabet-table-grid">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
                 </div>
             </div>
 
