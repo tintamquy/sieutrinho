@@ -793,14 +793,18 @@ function setupEventListeners() {
 
                 // Render PAO table if showing
                 if (!paoSection.classList.contains('hidden')) {
-                    // Auto-render all tabs on first open
-                    if (document.getElementById('pao-table-grid').innerHTML === '') {
+                    // Auto-render all tabs on first open (check if grid has actual content, not just comments)
+                    const paoGrid = document.getElementById('pao-table-grid');
+                    const majorGrid = document.getElementById('major-table-grid');
+                    const alphabetGrid = document.getElementById('alphabet-table-grid');
+
+                    if (paoGrid && paoGrid.children.length === 0) {
                         renderPAOTable();
                     }
-                    if (document.getElementById('major-table-grid').innerHTML === '') {
+                    if (majorGrid && majorGrid.children.length === 0) {
                         renderMajorSystemTable();
                     }
-                    if (document.getElementById('alphabet-table-grid').innerHTML === '') {
+                    if (alphabetGrid && alphabetGrid.children.length === 0) {
                         renderAlphabetSystemTable();
                     }
                 }
