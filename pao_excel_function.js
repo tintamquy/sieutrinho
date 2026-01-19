@@ -20,6 +20,7 @@ function renderPAOExcelTable() {
                 <th>👤 Person</th>
                 <th>⚡ Action</th>
                 <th>🎯 Object</th>
+                <th>📖 Story</th>
             </tr>
         </thead>
         <tbody>
@@ -34,6 +35,7 @@ function renderPAOExcelTable() {
                     <td>${pao.person}</td>
                     <td>${pao.action}</td>
                     <td>${pao.object}</td>
+                    <td style="text-align: left; max-width: 400px; white-space: normal; line-height: 1.4;">${pao.story || ''}</td>
                 </tr>
             `;
         }

@@ -897,6 +897,9 @@ function renderPAOTable() {
                         <span class="pao-label">🎯 Object:</span>
                         <span class="pao-value">${pao.object}</span>
                     </div>
+                    <div class="pao-row" style="margin-top: 0.5rem; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.5rem;">
+                        <span class="pao-value" style="font-style: italic; color: #a5b4fc; font-size: 0.9em;">📖 ${pao.story || ''}</span>
+                    </div>
                 </div>
             </div>
         `;
@@ -923,6 +926,9 @@ function renderMajorSystemTable() {
                         <span class="system-label">🖼️ Hình ảnh:</span>
                         <span class="system-value">${item.image}</span>
                     </div>
+                    <div class="system-row" style="margin-top: 0.5rem; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.5rem;">
+                        <span class="system-value" style="font-style: italic; color: #a5b4fc; font-size: 0.9em;">📖 ${item.story || ''}</span>
+                    </div>
                 </div>
             </div>
         `;
@@ -948,6 +954,9 @@ function renderAlphabetSystemTable() {
                     <div class="system-row">
                         <span class="system-label">🖼️ Hình ảnh:</span>
                         <span class="system-value">${item.image}</span>
+                    </div>
+                    <div class="system-row" style="margin-top: 0.5rem; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.5rem;">
+                        <span class="system-value" style="font-style: italic; color: #a5b4fc; font-size: 0.9em;">📖 ${item.story || ''}</span>
                     </div>
                 </div>
             </div>
