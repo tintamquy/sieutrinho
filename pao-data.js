@@ -35,7 +35,7 @@ const PAO_DATA = {
                 person: "Cháu Chi",
                 action: "Mắt bắn tia thôi miên",
                 object: "Con Rắn",
-                story: "Cháu Chi thổi sáo nghệ thuật để Thôi Miên một Con Rắn hổ mang chúa đang múa."
+                story: "Cháu Chi thổi sáo nghệ thuật để Mắt bắn tia thôi miên một Con Rắn hổ mang chúa đang múa."
         },
         {
                 code: "05",
@@ -119,7 +119,7 @@ const PAO_DATA = {
                 person: "anh Tuấn The Zei",
                 action: "Đeo trước ngực",
                 object: "Túi Balo",
-                story: "Anh Tuấn The Zei đang loay hoay Đeo ngược cái Túi Balo to tướng trước ngực."
+                story: "Anh Tuấn The Zei đang loay hoay Đeo trước ngực ngược cái Túi Balo to tướng trước ngực."
         },
         {
                 code: "17",
@@ -147,7 +147,7 @@ const PAO_DATA = {
                 person: "Con Ngọc",
                 action: "Dâng lên như người hầu",
                 object: "Nước Cất",
-                story: "Con Ngọc kiên nhẫn cầm cốc pha lê Hứng từng giọt tinh khiết của Nước Cất."
+                story: "Con Ngọc kiên nhẫn cầm cốc pha lê Dâng lên như người hầu tinh khiết của Nước Cất."
         },
         {
                 code: "21",
@@ -189,7 +189,7 @@ const PAO_DATA = {
                 person: "chị Nga đồng tu",
                 action: "đeo vào ngón áp út",
                 object: "Nhẫn Bạc",
-                story: "Chị Nga đồng tu trân trọng quỳ xuống dùng hai tay Dâng lên một chiếc Nhẫn Bạc sáng chói."
+                story: "Chị Nga đồng tu trân trọng quỳ xuống dùng hai tay đeo vào ngón áp út lên một chiếc Nhẫn Bạc sáng chói."
         },
         {
                 code: "27",
@@ -245,7 +245,7 @@ const PAO_DATA = {
                 person: "Mẹ Xuân",
                 action: "Che phủ lên",
                 object: "Mưa Rào",
-                story: "Mẹ Xuân lấy thân mình làm ô Che chắn cho đàn con khỏi cơn Mưa Rào tầm tã."
+                story: "Mẹ Xuân lấy thân mình làm ô Che phủ lên chắn cho đàn con khỏi cơn Mưa Rào tầm tã."
         },
         {
                 code: "35",
@@ -385,7 +385,7 @@ const PAO_DATA = {
                 person: "Bác Sửu thủ thư",
                 action: "chạm mũi Ngửi",
                 object: "Sầu Riêng",
-                story: "Bác Sửu thủ thư nhăn mặt bịt mũi khi cúi xuống Ngửi quả Sầu Riêng nặng mùi."
+                story: "Bác Sửu thủ thư nhăn mặt bịt mũi khi cúi xuống chạm mũi Ngửi quả Sầu Riêng nặng mùi."
         },
         {
                 code: "55",
@@ -406,7 +406,7 @@ const PAO_DATA = {
                 person: "em Sỏi địa chính",
                 action: "Cắm dây Sạc điện",
                 object: "Sạc Pin",
-                story: "Em Sỏi địa chính tìm ổ cắm để Sạc điện nạp năng lượng cho cục Sạc Pin dự phòng."
+                story: "Em Sỏi địa chính tìm ổ cắm để Cắm dây Sạc điện nạp năng lượng cho cục Sạc Pin dự phòng."
         },
         {
                 code: "58",
@@ -434,21 +434,21 @@ const PAO_DATA = {
                 person: "chị Biên",
                 action: "Xỏ lỗ đeo",
                 object: "Bông Tai",
-                story: "Chị Biên rùng mình nhắm mắt khi tự tay Xỏ lỗ tai để đeo chiếc Bông Tai mới."
+                story: "Chị Biên rùng mình nhắm mắt khi tự tay Xỏ lỗ đeo tai để đeo chiếc Bông Tai mới."
         },
         {
                 code: "62",
                 person: "Bác Bản ở chùa",
                 action: "dìm luộc",
                 object: "Bắp Ngô",
-                story: "Bác Bản ở chùa đang nhóm lửa đun nước sôi sùng sục để luộc nồi Bắp Ngô nếp."
+                story: "Bác Bản ở chùa đang nhóm lửa đun nước sôi sùng sục để dìm luộc nồi Bắp Ngô nếp."
         },
         {
                 code: "63",
                 person: "Anh Bảo",
                 action: "vồ nhưu vồ ếch",
                 object: "Bóng Ma",
-                story: "Anh Bảo cầm máy hút bụi Ghostbusters chạy khắp nhà đuổi bắt con Bóng Ma đang bay."
+                story: "Anh Bảo cầm máy hút bụi Ghostbusters chạy khắp nhà vồ nhưu vồ ếch con Bóng Ma đang bay."
         },
         {
                 code: "64",
@@ -483,7 +483,7 @@ const PAO_DATA = {
                 person: "Anh Bách Việt Mỹ",
                 action: "hi-5",
                 object: "Bác Hồ",
-                story: "Anh Bách Việt Mỹ mặc quân phục chỉnh tề đứng nghiêm Chào điều lệnh trước tượng Bác Hồ."
+                story: "Anh Bách Việt Mỹ mặc quân phục chỉnh tề đứng nghiêm hi-5 trước tượng Bác Hồ."
         },
         {
                 code: "69",
@@ -497,7 +497,7 @@ const PAO_DATA = {
                 person: "bạn Phong",
                 action: "buộc vào nhau Nhảy dù cùng",
                 object: "Phi Công",
-                story: "Bạn Phong gan dạ ôm chặt eo anh Phi Công rồi cả hai Nhảy dù cùng nhau xuống đất."
+                story: "Bạn Phong gan dạ ôm chặt eo anh Phi Công rồi cả hai buộc vào nhau Nhảy dù cùng nhau xuống đất."
         },
         {
                 code: "71",
@@ -539,14 +539,14 @@ const PAO_DATA = {
                 person: "Bá Phương",
                 action: "Đếm vứt kiểu Gangster",
                 object: "Phong Bì",
-                story: "Bá Phương ngồi liếm ngón tay sột soạt Đếm đi đếm lại xấp Phong Bì dày cộp."
+                story: "Bá Phương ngồi liếm ngón tay sột soạt Đếm vứt kiểu Gangster đi Đếm vứt kiểu Gangster lại xấp Phong Bì dày cộp."
         },
         {
                 code: "77",
                 person: "Phước Thịnh",
                 action: "Lạy 5 vóc chạm chân",
                 object: "Phật Pháp",
-                story: "Phước Thịnh thành tâm nằm rạp xuống đất Lạy 5 vóc trước biểu tượng Phật Pháp thiêng liêng."
+                story: "Phước Thịnh thành tâm nằm rạp xuống đất Lạy 5 vóc chạm chân trước biểu tượng Phật Pháp thiêng liêng."
         },
         {
                 code: "78",
@@ -565,16 +565,16 @@ const PAO_DATA = {
         {
                 code: "80",
                 person: "cháu Hải",
-                action: "Vươn cổ",
+                action: "dắt kéo cổ",
                 object: "Hươu Cao Cổ",
-                story: "Cháu Hải đứng kiễng chân cố gắng Vươn cổ dài ra để thi cao với Hươu Cao Cổ."
+                story: "Cháu Hải đứng kiễng chân cố gắng dắt kéo cổ dài ra để thi cao với Hươu Cao Cổ."
         },
         {
                 code: "81",
                 person: "anh Hùng Liên",
                 action: "Chảy nước mắt rơi vào",
                 object: "Hành Tây",
-                story: "Anh Hùng Liên đang thái rau thì bị cay xè mắt, khóc Chảy nước mắt giàn giụa vì củ Hành Tây."
+                story: "Anh Hùng Liên đang thái rau thì bị cay xè mắt, khóc Chảy nước mắt rơi vào giàn giụa vì củ Hành Tây."
         },
         {
                 code: "82",
@@ -588,7 +588,7 @@ const PAO_DATA = {
                 person: "Hoàng",
                 action: "Ói nôn",
                 object: "Hộc Máu",
-                story: "Hoàng diễn cảnh kiếm hiệp bị nội thương, ôm ngực rên rỉ rồi Ói ra một Hộc Máu giả."
+                story: "Hoàng diễn cảnh kiếm hiệp bị nội thương, ôm ngực rên rỉ rồi Ói nôn ra một Hộc Máu giả."
         },
         {
                 code: "84",
@@ -616,7 +616,7 @@ const PAO_DATA = {
                 person: "sếp  Hạnh",
                 action: "Nhặt từng cánh",
                 object: "Hoa Phượng",
-                story: "Sếp Hạnh thẩn thơ ngồi dưới gốc cây sân trường Nhặt từng cánh hoa rơi từ bông Hoa Phượng đỏ."
+                story: "sếp  Hạnh thẩn thơ ngồi dưới gốc cây sân trường Nhặt từng cánh hoa rơi từ bông Hoa Phượng đỏ."
         },
         {
                 code: "88",
@@ -630,7 +630,7 @@ const PAO_DATA = {
                 person: "bà Hiệp",
                 action: "Sàng bằng rổ cho lọt xuống",
                 object: "Hạt Gạo",
-                story: "Bà Hiệp cầm cái mẹt tre khéo léo lắc lắc để Sàng sảy sạch trấu khỏi những Hạt Gạo trắng."
+                story: "Bà Hiệp cầm cái mẹt tre khéo léo lắc lắc để Sàng bằng rổ cho lọt xuống sảy sạch trấu khỏi những Hạt Gạo trắng."
         },
         {
                 code: "90",
@@ -651,7 +651,7 @@ const PAO_DATA = {
                 person: "anh Lanh",
                 action: "kéo dài",
                 object: "Gậy Như Ý",
-                story: "Anh Lanh hô to câu thần chú \"Biến to\" làm cây Gậy Như Ý Biến dài ra chọc thủng trời xanh."
+                story: "Anh Lanh hô to câu thần chú \"Biến to\" làm cây Gậy Như Ý kéo dài ra chọc thủng trời xanh."
         },
         {
                 code: "93",
@@ -679,14 +679,14 @@ const PAO_DATA = {
                 person: "Gì Liên",
                 action: "quạt bay",
                 object: "Gió Bão",
-                story: "Gì Liên hóa thân thành Thiết Phiến Công Chúa cầm Quạt Ba Tiêu vẫy mạnh tạo ra cơn Gió Bão cuốn bay tất cả."
+                story: "Gì Liên hóa thân thành Thiết Phiến Công Chúa cầm quạt bay vẫy mạnh tạo ra cơn Gió Bão cuốn bay tất cả."
         },
         {
                 code: "97",
                 person: "Chú Liệu",
                 action: "Mở cửa lồng chim",
                 object: "Giải Phóng",
-                story: "Chú Liệu cầm chìa khóa vàng trịnh trọng Mở cửa cổng thành để Giải Phóng đoàn quân chiến thắng đi vào."
+                story: "Chú Liệu cầm chìa khóa vàng trịnh trọng Mở cửa lồng chim cổng thành để Giải Phóng đoàn quân chiến thắng đi vào."
         },
         {
                 code: "98",
@@ -700,7 +700,7 @@ const PAO_DATA = {
                 person: "Anh Lực",
                 action: "Trải dàn phẳng",
                 object: "Ga Giường",
-                story: "Anh Lực tỉ mỉ vuốt ve từng nếp nhăn và Trải phẳng phiu tấm Ga Giường trắng tinh tươm."
+                story: "Anh Lực tỉ mỉ vuốt ve từng nếp nhăn và Trải dàn phẳng phiu tấm Ga Giường trắng tinh tươm."
         }
 ],
 
@@ -725,28 +725,28 @@ const PAO_DATA = {
                 person: "Jack 5 Củ ca sĩ",
                 action: "Hét ra lửa",
                 object: "Inh Tai",
-                story: "Jack 5 Củ ca sĩ cầm mic gào Hét lên một nốt cao chót vót làm Inh Tai nhức óc khán giả."
+                story: "Jack 5 Củ ca sĩ cầm mic gào Hét ra lửa lên một nốt cao chót vót làm Inh Tai nhức óc khán giả."
         },
         {
                 code: "Jb",
                 person: "Võ Nguyên Giáp",
                 action: "Phóng súng phóng lựu",
                 object: "Người Khổng Lồ",
-                story: "Võ Nguyên Giáp bình tĩnh ra lệnh ấn nút Phóng tên lửa bay vèo vào gót chân của Người Khổng Lồ."
+                story: "Võ Nguyên Giáp bình tĩnh ra lệnh ấn nút Phóng súng phóng lựu bay vèo vào gót chân của Người Khổng Lồ."
         },
         {
                 code: "qc",
                 person: "Chị Quế",
                 action: "xé nát",
                 object: "Quả Cầu",
-                story: "Chị Quế mặc váy xòe chơi thể thao, khéo léo co chân tâng bằng đùi trái Quả Cầu lông bay lên xuống."
+                story: "Chị Quế mặc váy xòe chơi thể thao, khéo léo co chân xé nát trái Quả Cầu lông bay lên xuống."
         },
         {
                 code: "qr",
                 person: "anh Quý",
                 action: "khoét",
                 object: "Quả rứa",
-                story: "Anh Quý dùng con dao nhọn tỉ mỉ xoay tròn khoét từng cái mắt nâu trên thân Quả dứa (thơm)."
+                story: "Anh Quý dùng con dao nhọn tỉ mỉ xoay tròn khoét từng cái mắt nâu trên thân Quả rứa (thơm)."
         },
         {
                 code: "qt",
@@ -774,7 +774,7 @@ const PAO_DATA = {
                 person: "Khoát",
                 action: "Gài lên áo",
                 object: "Kính Râm",
-                story: "Khoát điệu đà lấy Kính Râm đen xì ra và Cài lên cổ áo sơ mi cho ngầu."
+                story: "Khoát điệu đà lấy Kính Râm đen xì ra và Gài lên áo lên cổ áo sơ mi cho ngầu."
         },
         {
                 code: "kt",
@@ -788,7 +788,7 @@ const PAO_DATA = {
                 person: "thầy Kiên",
                 action: "Dò bằng siêu âm",
                 object: "Kho Báu",
-                story: "Thầy Kiên cầm máy dò kim loại đi rà trên bãi biển để Dò bằng máy tín hiệu phát ra từ rương Kho Báu chôn vùi."
+                story: "Thầy Kiên cầm máy dò kim loại đi rà trên bãi biển để Dò bằng siêu âm tín hiệu phát ra từ rương Kho Báu chôn vùi."
         }
 ],
 

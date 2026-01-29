@@ -373,7 +373,7 @@ const paoData = {
     '77': { person: 'Phước Thịnh', action: 'Lạy 5 vóc chạm chân', object: 'Phật Pháp', story: 'Phước Thịnh thành tâm nằm rạp xuống đất Lạy 5 vóc chạm chân trước biểu tượng Phật Pháp thiêng liêng.' },
     '78': { person: 'em Phi', action: 'châm lửa', object: 'Phóng Hỏa', story: 'Em Phi cầm đuốc châm lửa rồi chạy đi Phóng Hỏa đốt cháy rụi kho rơm.' },
     '79': { person: 'Rapper Pháo', action: 'Hót xẻng', object: 'Phân Gà', story: 'Rapper Pháo đeo khẩu trang bịt mũi cầm Hót xẻng xúc dọn đống Phân Gà trong chuồng.' },
-    '80': { person: 'cháu Hải', action: 'Vươn cổ', object: 'Hươu Cao Cổ', story: 'Cháu Hải đứng kiễng chân cố gắng Vươn cổ dài ra để thi cao với Hươu Cao Cổ.' },
+    '80': { person: 'cháu Hải', action: 'dắt kéo cổ', object: 'Hươu Cao Cổ', story: 'Cháu Hải đứng kiễng chân cố gắng dắt kéo cổ dài ra để thi cao với Hươu Cao Cổ.' },
     '81': { person: 'anh Hùng Liên', action: 'Chảy nước mắt rơi vào', object: 'Hành Tây', story: 'Anh Hùng Liên đang thái rau thì bị cay xè mắt, khóc Chảy nước mắt rơi vào giàn giụa vì củ Hành Tây.' },
     '82': { person: 'chị Huyền', action: 'nếm', object: 'Hạt Nêm', story: 'Chị Huyền dùng đầu ngón tay út chấm một ít và nếm thử vị mặn ngọt của gói Hạt Nêm.' },
     '83': { person: 'Hoàng', action: 'Ói nôn', object: 'Hộc Máu', story: 'Hoàng diễn cảnh kiếm hiệp bị nội thương, ôm ngực rên rỉ rồi Ói nôn ra một Hộc Máu giả.' },
