@@ -855,7 +855,7 @@ function setupEventListeners() {
                     if (excelSection) excelSection.classList.add('hidden');
                     // Render on first open
                     const container = document.getElementById('body-loci-container');
-                    if (container && container.innerHTML.trim() === '') {
+                    if (container && container.children.length === 0) {
                         renderBodyAnchorTable();
                     }
                 }
