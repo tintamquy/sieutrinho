@@ -818,12 +818,14 @@ function setupEventListeners() {
             const excelSection = document.getElementById('pao-excel-section');
             const refSection = document.getElementById('reference-section');
             const paoSection = document.getElementById('pao-table-section');
+            const lociSection = document.getElementById('body-loci-section');
             if (excelSection) {
                 excelSection.classList.toggle('hidden');
                 // Hide others when showing Excel
                 if (!excelSection.classList.contains('hidden')) {
                     if (refSection) refSection.classList.add('hidden');
                     if (paoSection) paoSection.classList.add('hidden');
+                    if (lociSection) lociSection.classList.add('hidden');
                 }
                 toggleExcel.textContent = excelSection.classList.contains('hidden')
                     ? '📊 Xem PAO Bảng'
@@ -833,6 +835,33 @@ function setupEventListeners() {
                 if (!excelSection.classList.contains('hidden')) {
                     renderPAOExcelTable();
                 }
+            }
+        });
+    }
+
+    // Toggle Body Loci Table
+    const toggleBodyLoci = document.getElementById('toggle-body-loci');
+    if (toggleBodyLoci) {
+        toggleBodyLoci.addEventListener('click', () => {
+            const lociSection = document.getElementById('body-loci-section');
+            const refSection = document.getElementById('reference-section');
+            const paoSection = document.getElementById('pao-table-section');
+            const excelSection = document.getElementById('pao-excel-section');
+            if (lociSection) {
+                lociSection.classList.toggle('hidden');
+                if (!lociSection.classList.contains('hidden')) {
+                    if (refSection) refSection.classList.add('hidden');
+                    if (paoSection) paoSection.classList.add('hidden');
+                    if (excelSection) excelSection.classList.add('hidden');
+                    // Render on first open
+                    const container = document.getElementById('body-loci-container');
+                    if (container && container.innerHTML.trim() === '') {
+                        renderBodyAnchorTable();
+                    }
+                }
+                toggleBodyLoci.textContent = lociSection.classList.contains('hidden')
+                    ? '🗺️ Loci Cơ Thể'
+                    : '❌ Đóng Loci Cơ Thể';
             }
         });
     }
@@ -1938,4 +1967,99 @@ function renderPAOExcelTable() {
     `;
 
     table.innerHTML = html;
+}
+
+// ===== Render Body Anchor Loci Table =====
+function renderBodyAnchorTable() {
+    const container = document.getElementById('body-loci-container');
+    if (!container) return;
+    if (typeof BODY_ANCHOR_STATIONS === 'undefined' || typeof BODY_ANCHORS === 'undefined') {
+        container.innerHTML = '<p style="color:#f87171;text-align:center;">Không tìm thấy dữ liệu điểm neo cơ thể.</p>';
+        return;
+    }
+
+    let html = '';
+
+    BODY_ANCHOR_STATIONS.forEach(station => {
+        // Station banner
+        html += `
+            <div style="
+                background: linear-gradient(135deg, ${station.color}dd, ${station.color}88);
+                border-left: 5px solid ${station.color};
+                border-radius: 10px;
+                padding: 0.65rem 1.2rem;
+                margin: 1.2rem 0 0.4rem;
+                display: flex; align-items: center; gap: 0.75rem;
+            ">
+                <span style="font-size:1.8rem;">${station.emoji}</span>
+                <div>
+                    <div style="font-size:1.05rem; font-weight:800; color:#fff; letter-spacing:0.03em;">${station.name}</div>
+                    <div style="font-size:0.75rem; color:rgba(255,255,255,0.75);">
+                        Điểm neo <strong>${station.range[0].toString().padStart(2, '0')}</strong> đến <strong>${station.range[1].toString().padStart(2, '0')}</strong>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Table for this station
+        html += `
+            <div style="overflow-x:auto; margin-bottom:0.5rem;">
+            <table style="
+                width:100%; border-collapse:collapse;
+                background:rgba(15,23,42,0.7);
+                border-radius:10px; overflow:hidden;
+                font-size:0.9rem; color:#e2e8f0;
+            ">
+                <thead>
+                    <tr style="background:rgba(255,255,255,0.08); text-align:left;">
+                        <th style="padding:0.55rem 0.8rem; width:52px; font-size:0.78rem; color:rgba(255,255,255,0.5); font-weight:600; white-space:nowrap;">Mã</th>
+                        <th style="padding:0.55rem 0.8rem; font-size:0.78rem; color:rgba(255,255,255,0.5); font-weight:600;">Điểm Neo (Tên Loci)</th>
+                        <th style="padding:0.55rem 0.8rem; font-size:0.78rem; color:rgba(255,255,255,0.5); font-weight:600;">Mô Tả Vị Trí</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        for (let i = station.range[0]; i <= station.range[1]; i++) {
+            const code = i.toString().padStart(2, '0');
+            const anchor = BODY_ANCHORS[code];
+            if (!anchor) continue;
+            const isEven = (i - station.range[0]) % 2 === 0;
+            html += `
+                <tr style="
+                    background:${isEven ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.15)'};
+                    border-bottom:1px solid rgba(255,255,255,0.05);
+                    transition:background 0.15s;
+                " onmouseover="this.style.background='rgba(${hexToRgb(station.color)},0.18)'"
+                   onmouseout="this.style.background='${isEven ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.15)'}'">
+                    <td style="padding:0.55rem 0.8rem; text-align:center;">
+                        <span style="
+                            display:inline-block;
+                            background:${station.color};
+                            color:#fff; font-weight:700;
+                            font-size:0.88rem; border-radius:6px;
+                            padding:0.15rem 0.45rem; min-width:32px; text-align:center;
+                        ">${code}</span>
+                    </td>
+                    <td style="padding:0.55rem 0.8rem; font-weight:600; color:#a7f3d0;">${anchor.anchor}</td>
+                    <td style="padding:0.55rem 0.8rem; color:rgba(255,255,255,0.6); font-style:italic; font-size:0.85rem;">📍 ${anchor.description}</td>
+                </tr>
+            `;
+        }
+
+        html += `
+                </tbody>
+            </table>
+            </div>
+        `;
+    });
+
+    container.innerHTML = html;
+}
+
+// Helper: convert hex color to r,g,b
+function hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    if (!result) return '99,102,241';
+    return `${parseInt(result[1], 16)},${parseInt(result[2], 16)},${parseInt(result[3], 16)}`;
 }
