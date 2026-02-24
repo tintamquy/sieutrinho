@@ -864,46 +864,126 @@ function renderReferenceSection() {
     }).join('');
 }
 
-// Render PAO table
+// Render PAO table - grouped by station with body anchor info
 function renderPAOTable() {
     const grid = document.getElementById('pao-table-grid');
     if (!grid) return;
 
-    // Get all PAO codes in order (00-99, then special codes)
     const numericCodes = [];
     for (let i = 0; i <= 99; i++) {
         numericCodes.push(String(i).padStart(2, '0'));
     }
     const specialCodes = ['JC', 'JR', 'JT', 'JB', 'QC', 'QR', 'QT', 'QB', 'KC', 'KR', 'KT', 'KB'];
-    const allCodes = [...numericCodes, ...specialCodes];
 
-    grid.innerHTML = allCodes.map(code => {
-        const pao = getPAO(code);
-        if (!pao) return '';
+    // Build numeric section grouped by stations
+    const hasBankData = typeof BODY_ANCHOR_STATIONS !== 'undefined' && typeof BODY_ANCHORS !== 'undefined';
+    let html = '';
 
-        return `
-            <div class="pao-table-item">
-                <div class="pao-code">${code}</div>
-                <div class="pao-details">
-                    <div class="pao-row">
-                        <span class="pao-label">👤 Person:</span>
-                        <span class="pao-value">${pao.person}</span>
-                    </div>
-                    <div class="pao-row">
-                        <span class="pao-label">⚡ Action:</span>
-                        <span class="pao-value">${pao.action}</span>
-                    </div>
-                    <div class="pao-row">
-                        <span class="pao-label">🎯 Object:</span>
-                        <span class="pao-value">${pao.object}</span>
-                    </div>
-                    <div class="pao-row" style="margin-top: 0.5rem; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.5rem;">
-                        <span class="pao-value" style="font-style: italic; color: #a5b4fc; font-size: 0.9em;">📖 ${pao.story || ''}</span>
+    if (hasBankData) {
+        BODY_ANCHOR_STATIONS.forEach(station => {
+            const stationCodes = numericCodes.slice(station.range[0], station.range[1] + 1);
+            html += `
+                <div class="body-station-header" style="
+                    grid-column: 1 / -1;
+                    background: linear-gradient(135deg, ${station.color}cc, ${station.color}66);
+                    border: 1px solid ${station.color};
+                    border-radius: 12px;
+                    padding: 0.75rem 1.25rem;
+                    margin: 1rem 0 0.5rem;
+                    display: flex; align-items: center; gap: 0.75rem;
+                ">
+                    <span style="font-size: 1.6rem;">${station.emoji}</span>
+                    <div>
+                        <div style="font-size: 1rem; font-weight: 700; color: #fff; letter-spacing:0.03em;">${station.name}</div>
+                        <div style="font-size: 0.78rem; color: rgba(255,255,255,0.7);">Điểm neo ${station.range[0].toString().padStart(2, '0')} – ${station.range[1].toString().padStart(2, '0')}</div>
                     </div>
                 </div>
+            `;
+            stationCodes.forEach(code => {
+                const pao = getPAO(code);
+                if (!pao) return;
+                const bodyAnchor = BODY_ANCHORS[code];
+                html += buildPAOCard(code, pao, bodyAnchor, station.color);
+            });
+        });
+    } else {
+        numericCodes.forEach(code => {
+            const pao = getPAO(code);
+            if (!pao) return;
+            html += buildPAOCard(code, pao, null, null);
+        });
+    }
+
+    // Special codes section
+    html += `
+        <div class="body-station-header" style="
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #64748bcc, #64748b66);
+            border: 1px solid #64748b;
+            border-radius: 12px;
+            padding: 0.75rem 1.25rem;
+            margin: 1rem 0 0.5rem;
+            display: flex; align-items: center; gap: 0.75rem;
+        ">
+            <span style="font-size: 1.6rem;">🃏</span>
+            <div>
+                <div style="font-size: 1rem; font-weight: 700; color: #fff;">Mã Đặc Biệt – Bài Tây (J, Q, K)</div>
+                <div style="font-size: 0.78rem; color: rgba(255,255,255,0.7);">Jack – Queen – King × 4 chất bài</div>
             </div>
-        `;
-    }).join('');
+        </div>
+    `;
+    specialCodes.forEach(code => {
+        const pao = getPAO(code);
+        if (!pao) return;
+        html += buildPAOCard(code, pao, null, '#64748b');
+    });
+
+    grid.innerHTML = html;
+}
+
+// Build a single PAO card (with optional body anchor info)
+function buildPAOCard(code, pao, bodyAnchor, accentColor) {
+    const anchorHtml = bodyAnchor ? `
+        <div class="pao-row" style="
+            margin-top: 0.5rem;
+            border-top: 1px solid rgba(255,255,255,0.12);
+            padding-top: 0.5rem;
+            background: rgba(0,0,0,0.15);
+            border-radius: 6px;
+            padding: 0.4rem 0.5rem;
+        ">
+            <div style="display:flex; gap:0.4rem; align-items:flex-start; flex-wrap:wrap;">
+                <span style="font-size:0.8rem; color:#34d399; font-weight:600; white-space:nowrap;">🗺️ Điểm neo:</span>
+                <span style="font-size:0.85rem; color:#a7f3d0; font-weight:600;">${bodyAnchor.anchor}</span>
+            </div>
+            <div style="font-size:0.78rem; color:rgba(255,255,255,0.55); margin-top:0.2rem; font-style:italic;">📍 ${bodyAnchor.description}</div>
+        </div>
+    ` : '';
+
+    const borderColor = accentColor || '#6366f1';
+    return `
+        <div class="pao-table-item" style="border-top: 3px solid ${borderColor};">
+            <div class="pao-code">${code}</div>
+            <div class="pao-details">
+                <div class="pao-row">
+                    <span class="pao-label">👤 Person:</span>
+                    <span class="pao-value">${pao.person}</span>
+                </div>
+                <div class="pao-row">
+                    <span class="pao-label">⚡ Action:</span>
+                    <span class="pao-value">${pao.action}</span>
+                </div>
+                <div class="pao-row">
+                    <span class="pao-label">🎯 Object:</span>
+                    <span class="pao-value">${pao.object}</span>
+                </div>
+                <div class="pao-row" style="margin-top: 0.5rem; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.5rem;">
+                    <span class="pao-value" style="font-style: italic; color: #a5b4fc; font-size: 0.9em;">📖 ${pao.story || ''}</span>
+                </div>
+                ${anchorHtml}
+            </div>
+        </div>
+    `;
 }
 
 // Render Major System Table
