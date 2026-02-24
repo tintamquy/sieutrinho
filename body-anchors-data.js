@@ -1,19 +1,18 @@
 // ===== BODY ANCHORS DATA (Memory Palace on Body) =====
-// 100 điểm neo cơ thể từ 00 đến 99
-// Dữ liệu chính xác từ file 100_Diem_Neo_Co_The.doc
-// STT 1-100 trong file → mã 00-99
+// 100 diem neo co the tu 00 den 99
+// Ten Tram chinh xac tu file 100_Diem_Neo_Co_The.doc
 
 const BODY_ANCHOR_STATIONS = [
-    { id: 1, name: 'Trạm 1 - Gáy & Đầu Sau', range: [0, 9], emoji: '🧠', color: '#4f46e5' },
-    { id: 2, name: 'Trạm 2 - Đỉnh Đầu & Trán', range: [10, 19], emoji: '👆', color: '#7c3aed' },
-    { id: 3, name: 'Trạm 3 - Mắt & Thái Dương', range: [20, 29], emoji: '👁️', color: '#059669' },
-    { id: 4, name: 'Trạm 4 - Mũi & Miệng', range: [30, 39], emoji: '👃', color: '#d97706' },
-    { id: 5, name: 'Trạm 5 - Cằm, Cổ & Vai', range: [40, 49], emoji: '🦴', color: '#dc2626' },
-    { id: 6, name: 'Trạm 6 - Ngực & Lưng Trên', range: [50, 59], emoji: '💪', color: '#0891b2' },
-    { id: 7, name: 'Trạm 7 - Bụng & Eo', range: [60, 69], emoji: '🫀', color: '#65a30d' },
-    { id: 8, name: 'Trạm 8 - Đùi & Gối', range: [70, 79], emoji: '🦵', color: '#e11d48' },
-    { id: 9, name: 'Trạm 9 - Bắp Chân & Mắt Cá', range: [80, 89], emoji: '🦶', color: '#7c2d12' },
-    { id: 10, name: 'Trạm 10 - Bàn Chân & Ngón', range: [90, 99], emoji: '🦷', color: '#6b7280' },
+    { id: 1, name: '🧠 TRẠM 1: SAU GÁY LÊN TRÁN (Từ dưới lên đỉnh, vòng ra trước)', range: [0, 9], emoji: '🧠', color: '#4f46e5' },
+    { id: 2, name: '👁️ TRẠM 2: KHU VỰC MẮT (Từ trên xuống, từ trong ra ngoài)', range: [10, 19], emoji: '👁', color: '#7c3aed' },
+    { id: 3, name: '👃 TRẠM 3: MŨI, MIỆNG & CẰM (Quét trục dọc từ trên xuống dưới)', range: [20, 29], emoji: '👃', color: '#059669' },
+    { id: 4, name: '👂 TRẠM 4: TAI & CỔ (Từ bên hông vòng ra trước, trên xuống dưới)', range: [30, 39], emoji: '👂', color: '#d97706' },
+    { id: 5, name: '🔙 TRẠM 5: LƯNG & THÂN SAU (Quét dọc sống lưng từ trên xuống)', range: [40, 49], emoji: '🔙', color: '#dc2626' },
+    { id: 6, name: '👕 TRẠM 6: NGỰC & BỤNG THÂN TRƯỚC (Từ trên xuống dưới)', range: [50, 59], emoji: '👕', color: '#0891b2' },
+    { id: 7, name: '💪 TRẠM 7: CÁNH TAY & CẲNG TAY (Từ gốc vai lan dần xuống)', range: [60, 69], emoji: '💪', color: '#65a30d' },
+    { id: 8, name: '🤚 TRẠM 8: BÀN TAY (Từ mặt sau ra mặt trước)', range: [70, 79], emoji: '🤚', color: '#e11d48' },
+    { id: 9, name: '🦵 TRẠM 9: ĐÙI, GỐI & CẲNG CHÂN (Mặt sau rồi mặt trước)', range: [80, 89], emoji: '🦵', color: '#7c2d12' },
+    { id: 10, name: '🦶 TRẠM 10: BÀN CHÂN (Từ gót sau lan ra mũi trước)', range: [90, 99], emoji: '🦶', color: '#6b7280' },
 ];
 
 const BODY_ANCHORS = {
