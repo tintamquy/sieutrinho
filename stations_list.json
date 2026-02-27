@@ -1,0 +1,72 @@
+[
+  {
+    "id": 2,
+    "name": "🧠 TRẠM 1: SAU GÁY LÊN TRÁN (Từ dưới lên đỉnh, vòng ra trước)",
+    "first": "00",
+    "last": "09",
+    "count": 10
+  },
+  {
+    "id": 3,
+    "name": "👁️ TRẠM 2: KHU VỰC MẮT (Từ trên xuống, từ trong ra ngoài)",
+    "first": "10",
+    "last": "19",
+    "count": 10
+  },
+  {
+    "id": 4,
+    "name": "👃 TRẠM 3: MŨI, MIỆNG & CẰM (Quét trục dọc từ trên xuống dưới)",
+    "first": "20",
+    "last": "29",
+    "count": 10
+  },
+  {
+    "id": 5,
+    "name": "👂 TRẠM 4: TAI & CỔ (Từ bên hông vòng ra trước, trên xuống dưới)",
+    "first": "30",
+    "last": "39",
+    "count": 10
+  },
+  {
+    "id": 6,
+    "name": "🔙 TRẠM 5: LƯNG & THÂN SAU (Quét dọc sống lưng từ trên xuống)",
+    "first": "40",
+    "last": "49",
+    "count": 10
+  },
+  {
+    "id": 7,
+    "name": "👕 TRẠM 6: NGỰC & BỤNG THÂN TRƯỚC (Từ trên xuống dưới)",
+    "first": "50",
+    "last": "59",
+    "count": 10
+  },
+  {
+    "id": 8,
+    "name": "💪 TRẠM 7: CÁNH TAY & CẲNG TAY (Từ gốc vai lan dần xuống)",
+    "first": "60",
+    "last": "69",
+    "count": 10
+  },
+  {
+    "id": 9,
+    "name": "🤚 TRẠM 8: BÀN TAY (Từ mặt sau ra mặt trước)",
+    "first": "70",
+    "last": "79",
+    "count": 10
+  },
+  {
+    "id": 10,
+    "name": "🦵 TRẠM 9: ĐÙI, GỐI & CẲNG CHÂN (Mặt sau rồi mặt trước)",
+    "first": "80",
+    "last": "89",
+    "count": 10
+  },
+  {
+    "id": 11,
+    "name": "🦶 TRẠM 10: BÀN CHÂN (Từ gót sau lan ra mũi trước)",
+    "first": "90",
+    "last": "99",
+    "count": 10
+  }
+]

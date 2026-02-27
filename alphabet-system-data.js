@@ -9,7 +9,7 @@ const ALPHABET_SYSTEM_DATA = {
         { number: '5', character: 'E', image: 'Em bé', story: 'Chữ E giống Em bé đang nằm trong nôi.' },
         { number: '6', character: 'F', image: 'ếch', story: 'Chữ F giống con ếch đang ngồi chồm hỗm.' },
         { number: '7', character: 'G', image: 'Ghi-ta', story: 'Chữ G tròn giống thùng đàn Ghi-ta.' },
-        { number: '8', character: 'H', image: 'Hươu', story: 'Chữ H cao lênh khênh như chân Hươu cao cổ.' },
+        { number: '8', character: 'H', image: 'Trực thăng', story: 'Chữ H có hình dáng giống như một chiếc Trực thăng (Helicopter).' },
         { number: '9', character: 'I', image: 'Kem', story: 'Chữ I thẳng đứng giống que Kem.' },
         { number: '10', character: 'J', image: 'Chuối', story: 'Chữ J cong cong giống quả Chuối.' },
         { number: '11', character: 'K', image: 'Tắc Kè', story: 'Chữ K giống con Tắc Kè đang bám tường.' },

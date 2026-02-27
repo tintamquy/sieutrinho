@@ -36,7 +36,7 @@ Dưới đây là bảng câu chuyện kết hợp sự sáng tạo, hài hướ
 | 29 | Chú Nghiêm toản | Đẩy xe lăn | Người già | **Chú Nghiêm toản** tận tình vừa hát vừa **Đẩy xe lăn** đưa một **Người già** đi dạo mát. |
 | 30 | bá Mạo | bấm cắt | Móng Chân | **Bá Mạo** dùng cái kìm cộng lực khổng lồ để **bấm cắt** cái **Móng Chân** cứng như đá. |
 | 31 | anh Minh công ty | Xoay ốc | Máy Tính | **Anh Minh công ty** múa tua vít điệu nghệ **Xoay ốc** tháo tung cái **Máy Tính** ra. |
-| 32 | bà Mưu | ngoáy tai | Màng Nhĩ | **Bà Mưu** lỡ tay chọc cây bông quá sâu khi **ngoáy tai** làm thủng cả **Màng Nhĩ**. |
+| 32 | bà Mưu | chọc tai | Màng Nhĩ | **Bà Mưu** lỡ tay chọc cây bông quá sâu khi **ngoáy tai** làm thủng cả **Màng Nhĩ**. |
 | 33 | em Mạnh đồng tu | Moi | Móc Mắt | **Em Mạnh đồng tu** đang diễn ảo thuật kinh dị hành động **Moi** ra một cái **Móc Mắt** giả. |
 | 34 | Mẹ Xuân | Che | Mưa Rào | **Mẹ Xuân** lấy thân mình làm ô **Che** chắn cho đàn con khỏi cơn **Mưa Rào** tầm tã. |
 | 35 | anh May | Uốn cong | Móc Sắt | **Anh May** gồng cơ bắp cuồn cuộn dùng tay không **Uốn cong** một thanh **Móc Sắt** cứng. |

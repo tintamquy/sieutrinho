@@ -1,0 +1,702 @@
+﻿[
+    {
+        "num":  "00",
+        "stt":  1,
+        "anchor":  "Hõm gáy",
+        "description":  "Phần trũng sâu sát gáy",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "01",
+        "stt":  2,
+        "anchor":  "Chân tóc gáy",
+        "description":  "Đường viền tóc phía sau cổ",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "02",
+        "stt":  3,
+        "anchor":  "Xương chẩm",
+        "description":  "Phần hộp sọ gồ lên phía sau",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "03",
+        "stt":  4,
+        "anchor":  "Gờ chẩm",
+        "description":  "Đường viền ngang nổi lên của xương sau đầu",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "04",
+        "stt":  5,
+        "anchor":  "Xoáy tóc",
+        "description":  "Điểm xoáy tóc trên đầu",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "05",
+        "stt":  6,
+        "anchor":  "Đỉnh đầu",
+        "description":  "Điểm cao nhất của mâm sọ (Crown)",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "06",
+        "stt":  7,
+        "anchor":  "Chân tóc trán",
+        "description":  "Đường viền tóc phía trước",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "07",
+        "stt":  8,
+        "anchor":  "Giữa trán",
+        "description":  "Vùng phẳng trung tâm trán",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "08",
+        "stt":  9,
+        "anchor":  "Thái dương",
+        "description":  "Chỗ lõm bên hông trán",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "09",
+        "stt":  10,
+        "anchor":  "Mai tóc (Lông mai)",
+        "description":  "Phần tóc tơ mọc kéo dài xuống hai bên tai",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "10",
+        "stt":  11,
+        "anchor":  "Ấn đường",
+        "description":  "Vùng da ngay giữa 2 lông mày",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "11",
+        "stt":  12,
+        "anchor":  "Đầu lông mày",
+        "description":  "Phần chân mày sát ấn đường",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "12",
+        "stt":  13,
+        "anchor":  "Đỉnh cung mày",
+        "description":  "Điểm nhô cao nhất của lông mày",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "13",
+        "stt":  14,
+        "anchor":  "Đuôi lông mày",
+        "description":  "Phần vuốt nhọn phía ngoài",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "14",
+        "stt":  15,
+        "anchor":  "Nếp mí trên",
+        "description":  "Đường gấp mí sát chân mày",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "15",
+        "stt":  16,
+        "anchor":  "Khóe mắt trong",
+        "description":  "\"Đầu mắt\", nơi có cục thịt nhỏ màu hồng",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "16",
+        "stt":  17,
+        "anchor":  "Lòng trắng mắt",
+        "description":  "Phần nền trắng của nhãn cầu",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "17",
+        "stt":  18,
+        "anchor":  "Tròng đen (Mống mắt)",
+        "description":  "Vòng tròn màu (đen/nâu)",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "18",
+        "stt":  19,
+        "anchor":  "Khóe mắt ngoài",
+        "description":  "\"Đuôi mắt\", nơi hay có vết chân chim",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "19",
+        "stt":  20,
+        "anchor":  "Bọng mắt dưới",
+        "description":  "Phần da hơi phồng ngay dưới mắt",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "20",
+        "stt":  21,
+        "anchor":  "Gốc sống mũi",
+        "description":  "Điểm gãy ngay giữa 2 mắt",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "21",
+        "stt":  22,
+        "anchor":  "Dọc sống mũi",
+        "description":  "Phần xương cứng chạy dọc",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "22",
+        "stt":  23,
+        "anchor":  "Chóp mũi",
+        "description":  "Đỉnh tròn trịa nhất của mũi",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "23",
+        "stt":  24,
+        "anchor":  "Cánh mũi",
+        "description":  "Phần thịt phồng hai bên",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "24",
+        "stt":  25,
+        "anchor":  "Lỗ mũi",
+        "description":  "Cửa hang của khoang mũi",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "25",
+        "stt":  26,
+        "anchor":  "Nhân trung",
+        "description":  "Rãnh dọc nối mũi và môi trên",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "26",
+        "stt":  27,
+        "anchor":  "Viền môi trên",
+        "description":  "Đường uốn lượn (Cung Cupid)",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "27",
+        "stt":  28,
+        "anchor":  "Môi dưới",
+        "description":  "Phần đệm thịt môi dưới",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "28",
+        "stt":  29,
+        "anchor":  "Khóe miệng",
+        "description":  "Góc nếp gấp hai bên mép",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "29",
+        "stt":  30,
+        "anchor":  "Đỉnh cằm",
+        "description":  "Điểm nhô ra thấp nhất của khuôn mặt",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "30",
+        "stt":  31,
+        "anchor":  "Xương chũm",
+        "description":  "Cục xương cứng lồi ngay sau tai",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "31",
+        "stt":  32,
+        "anchor":  "Đỉnh vành tai",
+        "description":  "Vòng sụn sờn nhô cao nhất",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "32",
+        "stt":  33,
+        "anchor":  "Nắp tai (Tragus)",
+        "description":  "Mẩu sụn nhỏ che trước lỗ tai",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "33",
+        "stt":  34,
+        "anchor":  "Dái tai",
+        "description":  "Phần thịt mềm dưới cùng",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "34",
+        "stt":  35,
+        "anchor":  "Góc hàm",
+        "description":  "Khúc ngoặt của xương hàm dưới (gần tai)",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "35",
+        "stt":  36,
+        "anchor":  "Gầm cằm",
+        "description":  "Vùng lõm dưới cằm (nọng cằm)",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "36",
+        "stt":  37,
+        "anchor":  "Yết hầu",
+        "description":  "Khối sụn nhô ra ở cổ trước (Trái cổ)",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "37",
+        "stt":  38,
+        "anchor":  "Hõm cổ (Thanh quản)",
+        "description":  "Chỗ trũng mềm ngay dưới yết hầu",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "38",
+        "stt":  39,
+        "anchor":  "Hõm trên ức",
+        "description":  "Phần lõm tam giác giữa 2 xương đòn",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "39",
+        "stt":  40,
+        "anchor":  "Xương đòn",
+        "description":  "Thanh xương quai xanh nổi ngang",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "40",
+        "stt":  41,
+        "anchor":  "Gáy dưới",
+        "description":  "Chỗ giao nối giữa cổ và lưng",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "41",
+        "stt":  42,
+        "anchor":  "Cơ cầu vai",
+        "description":  "Cụm thịt nhô lên nối vai và cổ",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "42",
+        "stt":  43,
+        "anchor":  "Xương bả vai",
+        "description":  "Hai tấm xương tam giác phẳng sau lưng",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "43",
+        "stt":  44,
+        "anchor":  "Rãnh sống lưng",
+        "description":  "Đường lõm chạy dọc giữa lưng",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "44",
+        "stt":  45,
+        "anchor":  "Thắt lưng (Lưng dưới)",
+        "description":  "Vùng cong lõm phía trên mông",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "45",
+        "stt":  46,
+        "anchor":  "Điểm xương cùng",
+        "description":  "Cục xương cứng ngay sát trên khe mông",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "46",
+        "stt":  47,
+        "anchor":  "Khe mông",
+        "description":  "Đường phân chia hai bờ mông",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "47",
+        "stt":  48,
+        "anchor":  "Chóp mông",
+        "description":  "Điểm thịt phồng nhô ra nhất phía sau",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "48",
+        "stt":  49,
+        "anchor":  "Nếp lằn mông",
+        "description":  "Đường gấp ngang ngay dưới mông",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "49",
+        "stt":  50,
+        "anchor":  "Hông sau",
+        "description":  "Phần gờ xương chậu phía sau",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "50",
+        "stt":  51,
+        "anchor":  "Giữa xương ức",
+        "description":  "Khối xương cứng chắn ngay giữa ngực",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "51",
+        "stt":  52,
+        "anchor":  "Ngực trên",
+        "description":  "Vùng cơ ngực sát dưới quai xanh",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "52",
+        "stt":  53,
+        "anchor":  "Núm vú",
+        "description":  "Điểm nhô trung tâm ngực",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "53",
+        "stt":  54,
+        "anchor":  "Rãnh dưới ngực",
+        "description":  "Đường gấp phân chia ngực và bụng",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "54",
+        "stt":  55,
+        "anchor":  "Mạn sườn",
+        "description":  "Cung xương sườn hai bên hông",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "55",
+        "stt":  56,
+        "anchor":  "Thượng vị (Bụng trên)",
+        "description":  "Vùng lõm giữa xương ức và rốn",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "56",
+        "stt":  57,
+        "anchor":  "Rốn",
+        "description":  "\"Cái hố\" trung tâm bụng",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "57",
+        "stt":  58,
+        "anchor":  "Bụng dưới",
+        "description":  "Vùng mặt phẳng dưới rốn",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "58",
+        "stt":  59,
+        "anchor":  "Hõm eo",
+        "description":  "Phần thắt hẹp nhất hai bên sườn",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "59",
+        "stt":  60,
+        "anchor":  "Nếp bẹn",
+        "description":  "Đường gấp xéo ranh giới bụng và đùi",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "60",
+        "stt":  61,
+        "anchor":  "Đỉnh vai",
+        "description":  "Cục xương mỏm cùng vai cao nhất",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "61",
+        "stt":  62,
+        "anchor":  "Cơ Delta",
+        "description":  "Bắp thịt phồng bao lấy bờ vai ngoài",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "62",
+        "stt":  63,
+        "anchor":  "Hõm nách",
+        "description":  "Chỗ trũng sâu mặt dưới vai",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "63",
+        "stt":  64,
+        "anchor":  "Bắp tay sau",
+        "description":  "Phần cơ bắp phía sau (Cơ tam đầu)",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "64",
+        "stt":  65,
+        "anchor":  "Bắp tay trước",
+        "description":  "Phần cơ bắp phía trước (Cơ nhị đầu)",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "65",
+        "stt":  66,
+        "anchor":  "Cùi chỏ (Mỏm khuỷu)",
+        "description":  "Đỉnh xương cứng mặt sau tay",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "66",
+        "stt":  67,
+        "anchor":  "Nếp gấp khuỷu",
+        "description":  "Rãnh nếp gấp mặt trước tay",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "67",
+        "stt":  68,
+        "anchor":  "Cẳng tay ngoài",
+        "description":  "Mặt nhiều lông, hướng ra ngoài",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "68",
+        "stt":  69,
+        "anchor":  "Cẳng tay trong",
+        "description":  "Mặt nhẵn mịn, áp sát vào hông",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "69",
+        "stt":  70,
+        "anchor":  "Cổ tay",
+        "description":  "Các nếp gấp chia ranh giới cẳng - bàn tay",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "70",
+        "stt":  71,
+        "anchor":  "Mu bàn tay",
+        "description":  "Mặt trên phẳng của tay",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "71",
+        "stt":  72,
+        "anchor":  "Khớp đốt ngón tay",
+        "description":  "Hàng sụn lồi lên (Knuckles) khi nắm đấm",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "72",
+        "stt":  73,
+        "anchor":  "Lòng bàn tay",
+        "description":  "Điểm giữa trũng nhất mặt trong",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "73",
+        "stt":  74,
+        "anchor":  "Gò ngón cái",
+        "description":  "Khối thịt phồng lớn ở gốc ngón cái",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "74",
+        "stt":  75,
+        "anchor":  "Hổ khẩu",
+        "description":  "Chỗ màng da chữ V giữa ngón cái và ngón trỏ",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "75",
+        "stt":  76,
+        "anchor":  "Đầu ngón cái",
+        "description":  "Đệm thịt ngón số 1",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "76",
+        "stt":  77,
+        "anchor":  "Đầu ngón trỏ",
+        "description":  "Đệm thịt ngón số 2",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "77",
+        "stt":  78,
+        "anchor":  "Đầu ngón giữa",
+        "description":  "Đệm thịt ngón số 3",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "78",
+        "stt":  79,
+        "anchor":  "Đầu ngón áp út",
+        "description":  "Đệm thịt ngón số 4 (ngón đeo nhẫn)",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "79",
+        "stt":  80,
+        "anchor":  "Đầu ngón út",
+        "description":  "Đệm thịt ngón số 5",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "80",
+        "stt":  81,
+        "anchor":  "Đùi sau",
+        "description":  "Mặt thịt lồi sau đùi",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "81",
+        "stt":  82,
+        "anchor":  "Đùi trước",
+        "description":  "Khối cơ lớn mặt trước đùi",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "82",
+        "stt":  83,
+        "anchor":  "Đùi trong",
+        "description":  "Mặt đùi ép sát vào nhau",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "83",
+        "stt":  84,
+        "anchor":  "Khoeo gối",
+        "description":  "Phần hõm nếp gấp mặt sau gối",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "84",
+        "stt":  85,
+        "anchor":  "Xương bánh chè",
+        "description":  "\"Nắp gối\" cứng tròn phía trước",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "85",
+        "stt":  86,
+        "anchor":  "Gân dưới gối",
+        "description":  "Rãnh gân chìm ngay dưới bánh chè",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "86",
+        "stt":  87,
+        "anchor":  "Bắp chân",
+        "description":  "Bụng cơ phồng to phía sau cẳng chân",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "87",
+        "stt":  88,
+        "anchor":  "Ống đồng",
+        "description":  "Đường sống xương sắc phía trước",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "88",
+        "stt":  89,
+        "anchor":  "Mắt cá ngoài",
+        "description":  "Cục xương lồi ra mặt ngoài cổ chân",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "89",
+        "stt":  90,
+        "anchor":  "Mắt cá trong",
+        "description":  "Cục xương lồi ra mặt trong cổ chân",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "90",
+        "stt":  91,
+        "anchor":  "Gân Achilles",
+        "description":  "Sợi gân cứng vành sau cổ chân",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "91",
+        "stt":  92,
+        "anchor":  "Gót chân",
+        "description":  "Khối đệm tỳ xuống đất phía sau",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "92",
+        "stt":  93,
+        "anchor":  "Mu bàn chân",
+        "description":  "Mặt trên cong của bàn chân",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "93",
+        "stt":  94,
+        "anchor":  "Cạnh ngoài bàn chân",
+        "description":  "Mép dài chạy dọc mặt ngoài",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "94",
+        "stt":  95,
+        "anchor":  "Vòm gan bàn chân",
+        "description":  "Vùng lõm sâu không chạm đất dưới lòng chân",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "95",
+        "stt":  96,
+        "anchor":  "Đệm ức bàn chân",
+        "description":  "Miếng thịt dày chịu lực ngay dưới các ngón",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "96",
+        "stt":  97,
+        "anchor":  "Đầu ngón chân cái",
+        "description":  "Đệm thịt ngón số 1",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "97",
+        "stt":  98,
+        "anchor":  "Móng ngón chân cái",
+        "description":  "Bề mặt sừng cứng ngón cái",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "98",
+        "stt":  99,
+        "anchor":  "Khe ngón chân",
+        "description":  "Điểm kẽ giữa các ngón chân",
+        "station":  "Tram 1"
+    },
+    {
+        "num":  "99",
+        "stt":  100,
+        "anchor":  "Đầu ngón chân út",
+        "description":  "Đệm thịt nhỏ xíu ngoài cùng",
+        "station":  "Tram 1"
+    }
+]

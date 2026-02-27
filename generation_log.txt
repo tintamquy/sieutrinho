@@ -1,0 +1,25 @@
+Total items: 100
+Stations (10):
+  Tram 1 (00-09): 🧠 TRẠM 1: SAU GÁY LÊN TRÁN (Từ dưới lên đỉnh, vòng ra trước)
+  Tram 2 (10-19): 👁️ TRẠM 2: KHU VỰC MẮT (Từ trên xuống, từ trong ra ngoài)
+  Tram 3 (20-29): 👃 TRẠM 3: MŨI, MIỆNG & CẰM (Quét trục dọc từ trên xuống dưới)
+  Tram 4 (30-39): 👂 TRẠM 4: TAI & CỔ (Từ bên hông vòng ra trước, trên xuống dưới)
+  Tram 5 (40-49): 🔙 TRẠM 5: LƯNG & THÂN SAU (Quét dọc sống lưng từ trên xuống)
+  Tram 6 (50-59): 👕 TRẠM 6: NGỰC & BỤNG THÂN TRƯỚC (Từ trên xuống dưới)
+  Tram 7 (60-69): 💪 TRẠM 7: CÁNH TAY & CẲNG TAY (Từ gốc vai lan dần xuống)
+  Tram 8 (70-79): 🤚 TRẠM 8: BÀN TAY (Từ mặt sau ra mặt trước)
+  Tram 9 (80-89): 🦵 TRẠM 9: ĐÙI, GỐI & CẲNG CHÂN (Mặt sau rồi mặt trước)
+  Tram 10 (90-99): 🦶 TRẠM 10: BÀN CHÂN (Từ gót sau lan ra mũi trước)
+
+First 5 items:
+  00: Hõm gáy | Phần trũng sâu sát gáy
+  01: Chân tóc gáy | Đường viền tóc phía sau cổ
+  02: Xương chẩm | Phần hộp sọ gồ lên phía sau
+  03: Gờ chẩm | Đường viền ngang nổi lên của xương sau đầu
+  04: Xoáy tóc | Điểm xoáy tóc trên đầu
+Last 5 items:
+  95: Đệm ức bàn chân | Miếng thịt dày chịu lực ngay dưới các ngón
+  96: Đầu ngón chân cái | Đệm thịt ngón số 1
+  97: Móng ngón chân cái | Bề mặt sừng cứng ngón cái
+  98: Khe ngón chân | Điểm kẽ giữa các ngón chân
+  99: Đầu ngón chân út | Đệm thịt nhỏ xíu ngoài cùng
