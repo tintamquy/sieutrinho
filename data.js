@@ -407,7 +407,7 @@ const paoDataOriginal = {
     'KB': { person: 'thầy Kiên', action: 'Dò bằng siêu âm', object: 'Kho Báu', story: 'Thầy Kiên cầm máy dò kim loại đi rà trên bãi biển để Dò bằng siêu âm tín hiệu phát ra từ rương Kho Báu chôn vùi.' }
 };
 
-let currentPaoSystem = localStorage.getItem('paoSystem') || 'pao';
+let currentPaoSystem = localStorage.getItem('paoSystem') || 'paoq';
 let paoData = paoDataOriginal;
 window.paoqDataObj = null;
 

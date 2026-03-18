@@ -767,13 +767,11 @@ window.switchTab = function (tabName) {
 
 // Setup event listeners
 function setupEventListeners() {
-    // Initialize PAO system select dropdown
-    const sys = typeof window.getCurrentPaoSystem === 'function' ? window.getCurrentPaoSystem() : 'pao';
-    const selects = ['pao-system-select', 'pao-excel-system-select'];
-    selects.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = sys;
-    });
+    // Initialize PAO system toggle
+    const sys = typeof window.getCurrentPaoSystem === 'function' ? window.getCurrentPaoSystem() : 'paoq';
+    if (typeof window.onPaoSystemChanged === 'function') {
+        window.onPaoSystemChanged(sys);
+    }
 
     document.getElementById('back-btn').addEventListener('click', () => {
         stopGame();
@@ -2133,11 +2131,20 @@ function renderPAOExcelTable() {
 }
 
 window.onPaoSystemChanged = function (sys) {
-    // Update select UI
-    const selects = ['pao-system-select', 'pao-excel-system-select'];
-    selects.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.value = sys;
+    // Update toggle buttons UI
+    const btns = document.querySelectorAll('.pao-toggle-btn');
+    btns.forEach(btn => {
+        if (btn.dataset.sys === sys) {
+            btn.classList.add('active');
+            btn.style.background = '#6366f1';
+            btn.style.color = 'white';
+            btn.style.fontWeight = 'bold';
+        } else {
+            btn.classList.remove('active');
+            btn.style.background = 'transparent';
+            btn.style.color = '#cbd5e1';
+            btn.style.fontWeight = '500';
+        }
     });
 
     // Re-render excel table if visible

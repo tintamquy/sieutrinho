@@ -135,13 +135,17 @@
             <div id="tab-pao" class="tab-content">
                 <div style="text-align: center; margin-bottom: 1.5rem;">
                     <label
-                        style="color: #fff; font-weight: bold; margin-right: 0.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">⚙️
+                        style="color: #fff; font-weight: bold; margin-right: 1rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">⚙️
                         Cơ sở dữ liệu Game:</label>
-                    <select id="pao-system-select" onchange="window.togglePaoSystem(this.value);"
-                        style="padding: 0.5rem 1rem; border-radius: 8px; background: rgba(0,0,0,0.5); color: #fff; border: 1px solid rgba(255,255,255,0.2); font-size: 1rem; cursor: pointer;">
-                        <option value="pao">PAO Gốc</option>
-                        <option value="paoq">PAOQ (Quote)</option>
-                    </select>
+                    <div class="pao-system-toggles"
+                        style="display: inline-flex; background: rgba(0,0,0,0.4); border-radius: 8px; padding: 4px; border: 1px solid rgba(255,255,255,0.1);">
+                        <button class="pao-toggle-btn active" data-sys="paoq" onclick="window.togglePaoSystem('paoq')"
+                            style="padding: 0.5rem 1rem; border-radius: 6px; border: none; background: #6366f1; color: white; font-weight: bold; cursor: pointer; transition: all 0.2s;">🧠
+                            PAOQ (Quote)</button>
+                        <button class="pao-toggle-btn" data-sys="pao" onclick="window.togglePaoSystem('pao')"
+                            style="padding: 0.5rem 1rem; border-radius: 6px; border: none; background: transparent; color: #cbd5e1; font-weight: 500; cursor: pointer; transition: all 0.2s;">🎴
+                            PAO Gốc</button>
+                    </div>
                 </div>
                 <div class="compact-grid" id="games-grid-pao">
                     <!-- PAO Games populated here -->
@@ -225,11 +229,11 @@
                 <!-- System Tabs -->
                 <div class="system-tabs"
                     style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
-                    <button class="system-tab-btn active" onclick="switchSystemTab('pao')" data-system="pao">
-                        🎴 PAO System
-                    </button>
-                    <button class="system-tab-btn" onclick="switchSystemTab('paoq')" data-system="paoq">
+                    <button class="system-tab-btn active" onclick="switchSystemTab('paoq')" data-system="paoq">
                         🧠 PAOQ System
+                    </button>
+                    <button class="system-tab-btn" onclick="switchSystemTab('pao')" data-system="pao">
+                        🎴 PAO System
                     </button>
                     <button class="system-tab-btn" onclick="switchSystemTab('major')" data-system="major">
                         🔢 Major System
@@ -240,7 +244,7 @@
                 </div>
 
                 <!-- PAO System Table -->
-                <div id="system-tab-pao" class="system-tab-content active">
+                <div id="system-tab-pao" class="system-tab-content">
                     <h3 style="text-align: center; color: #f9ca24; margin-bottom: 1rem;">Person-Action-Object (00-99 +
                         Special)</h3>
                     <div id="pao-table-grid" class="pao-table-grid">
@@ -278,7 +282,7 @@
                 </div>
 
                 <!-- PAOQ System Table -->
-                <div id="system-tab-paoq" class="system-tab-content">
+                <div id="system-tab-paoq" class="system-tab-content active">
                     <h3 style="text-align: center; color: #f9ca24; margin-bottom: 1rem;">Person-Action-Object-Quote
                         (00-99 + Special)</h3>
                     <div id="paoq-table-grid" class="pao-table-grid paoq-grid">
@@ -314,11 +318,15 @@
                     <label
                         style="color: #fff; font-weight: bold; margin-right: 0.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">⚙️
                         Cơ sở dữ liệu:</label>
-                    <select id="pao-excel-system-select" onchange="window.togglePaoSystem(this.value);"
-                        style="padding: 0.5rem 1rem; border-radius: 8px; background: rgba(0,0,0,0.5); color: #fff; border: 1px solid rgba(255,255,255,0.2); font-size: 1rem; cursor: pointer;">
-                        <option value="pao">PAO Gốc</option>
-                        <option value="paoq">PAOQ (Quote)</option>
-                    </select>
+                    <div class="pao-system-toggles"
+                        style="display: inline-flex; background: rgba(0,0,0,0.4); border-radius: 8px; padding: 4px; border: 1px solid rgba(255,255,255,0.1);">
+                        <button class="pao-toggle-btn active" data-sys="paoq" onclick="window.togglePaoSystem('paoq')"
+                            style="padding: 0.5rem 1rem; border-radius: 6px; border: none; background: #6366f1; color: white; font-weight: bold; cursor: pointer; transition: all 0.2s;">🧠
+                            PAOQ (Quote)</button>
+                        <button class="pao-toggle-btn" data-sys="pao" onclick="window.togglePaoSystem('pao')"
+                            style="padding: 0.5rem 1rem; border-radius: 6px; border: none; background: transparent; color: #cbd5e1; font-weight: 500; cursor: pointer; transition: all 0.2s;">🎴
+                            PAO Gốc</button>
+                    </div>
                 </div>
                 <div id="pao-excel-container" style="overflow-x: auto; padding: 1rem;">
                     <table id="pao-excel-table" class="pao-excel-table">
