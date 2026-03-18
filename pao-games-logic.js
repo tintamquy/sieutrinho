@@ -1,6 +1,22 @@
 // ===== PAO GAMES LOGIC =====
 // Tích hợp vào app chính sieutrinho
 
+// Tích hợp vào app chính sieutrinho
+
+function getActivePaoTypes() {
+    return window.getCurrentPaoSystem && window.getCurrentPaoSystem() === 'paoq'
+        ? ['person', 'action', 'object', 'quote']
+        : ['person', 'action', 'object'];
+}
+
+function getPaoTypeLabel(type) {
+    return type === 'person' ? 'Person' : type === 'action' ? 'Action' : type === 'quote' ? 'Quote' : 'Object';
+}
+
+function getPaoTypeLabelShort(type) {
+    return type === 'person' ? 'P' : type === 'action' ? 'A' : type === 'quote' ? 'Q' : 'O';
+}
+
 // Global keyboard shortcuts handler for multiple choice (1,2,3,4 keys)
 let currentKeyboardHandler = null;
 
@@ -60,6 +76,7 @@ function startPAOFlashCard() {
                             <div class="pao-item"><strong>Person:</strong> ${pao.person}</div>
                             <div class="pao-item"><strong>Action:</strong> ${pao.action}</div>
                             <div class="pao-item"><strong>Object:</strong> ${pao.object}</div>
+                            ${pao.quote ? `<div class="pao-item"><strong>Quote:</strong> ${pao.quote}</div>` : ''}
                         </div>
                     </div>
                 </div>
@@ -172,21 +189,26 @@ function startPAOSpeedQuiz() {
         }
 
         const data = getRandomPAO(); // Include ALL codes (00-99 + special codes)
-        const types = ['person', 'action', 'object'];
-        const selectedType = types[Math.floor(Math.random() * types.length)];
-        const correctAnswer = data[selectedType];
+        const types = getActivePaoTypes();
+        let selectedType = types[Math.floor(Math.random() * types.length)];
+        let correctAnswer = data[selectedType];
+        while (!correctAnswer) {
+            selectedType = types[Math.floor(Math.random() * types.length)];
+            correctAnswer = data[selectedType];
+        }
 
         // Generate wrong answers
         const wrongAnswers = [];
         while (wrongAnswers.length < 3) {
-            const random = getRandomPAO()[selectedType];
-            if (random !== correctAnswer && !wrongAnswers.includes(random)) {
+            const randomPao = getRandomPAO();
+            const random = randomPao[selectedType];
+            if (random && random !== correctAnswer && !wrongAnswers.includes(random)) {
                 wrongAnswers.push(random);
             }
         }
 
         const options = [...wrongAnswers, correctAnswer].sort(() => Math.random() - 0.5);
-        const typeLabel = selectedType === 'person' ? 'Person' : selectedType === 'action' ? 'Action' : 'Object';
+        const typeLabel = getPaoTypeLabel(selectedType);
 
         document.getElementById('game-container').innerHTML = `
             <div class="pao-quiz-container">
@@ -282,7 +304,7 @@ function startPAOSpeedQuiz() {
     document.getElementById('game-container').innerHTML = `
         <div class="pao-start-screen">
             <h2>⚡ Speed Quiz - PAO</h2>
-            <p>Trả lời nhanh: Số → Person/Action/Object</p>
+            <p>Trả lời nhanh: Số → ${window.getCurrentPaoSystem && window.getCurrentPaoSystem() === 'paoq' ? 'Person/Action/Object/Quote' : 'Person/Action/Object'}</p>
             <p>Thời gian: ${timeLimit}s mỗi câu</p>
             <button class="btn-game-large" onclick="PAOGames.speedQuiz.start()">Bắt Đầu</button>
         </div>
@@ -298,11 +320,15 @@ function startPAOReverseQuiz() {
 
     function nextQuestion() {
         const data = getRandomPAONumeric();
-        const types = ['person', 'action', 'object'];
-        const selectedType = types[Math.floor(Math.random() * types.length)];
-        const paoValue = data[selectedType];
+        const types = getActivePaoTypes();
+        let selectedType = types[Math.floor(Math.random() * types.length)];
+        let paoValue = data[selectedType];
+        while (!paoValue) {
+            selectedType = types[Math.floor(Math.random() * types.length)];
+            paoValue = data[selectedType];
+        }
         const correctCode = data.code;
-        const typeLabel = selectedType === 'person' ? 'Person' : selectedType === 'action' ? 'Action' : 'Object';
+        const typeLabel = getPaoTypeLabel(selectedType);
 
         document.getElementById('game-container').innerHTML = `
             <div class="pao-quiz-container">
@@ -385,8 +411,11 @@ function startPAOMemoryMatch() {
             const pao = getPAO(code);
             cards.push({ type: 'number', value: code, matchId: code });
 
-            const types = ['person', 'action', 'object'];
-            const randomType = types[Math.floor(Math.random() * types.length)];
+            const types = getActivePaoTypes();
+            let randomType = types[Math.floor(Math.random() * types.length)];
+            while (!pao[randomType]) {
+                randomType = types[Math.floor(Math.random() * types.length)];
+            }
             cards.push({ type: randomType, value: pao[randomType], matchId: code });
         });
 
@@ -521,6 +550,7 @@ function startPAOChainChallenge() {
                     <input type="text" placeholder="Person" data-index="${index}" data-type="person" class="pao-recall-input" />
                     <input type="text" placeholder="Action" data-index="${index}" data-type="action" class="pao-recall-input" />
                     <input type="text" placeholder="Object" data-index="${index}" data-type="object" class="pao-recall-input" />
+                    ${window.getCurrentPaoSystem && window.getCurrentPaoSystem() === 'paoq' ? `<input type="text" placeholder="Quote" data-index="${index}" data-type="quote" class="pao-recall-input" />` : ''}
                 </div>
             `;
         });
@@ -538,7 +568,7 @@ function startPAOChainChallenge() {
     function checkAnswer() {
         const inputs = document.querySelectorAll('.pao-recall-input');
         let correct = 0;
-        let total = currentPairs.length * 3;
+        let total = currentPairs.length * (window.getCurrentPaoSystem && window.getCurrentPaoSystem() === 'paoq' ? 4 : 3);
 
         inputs.forEach(input => {
             const index = parseInt(input.dataset.index);
@@ -605,14 +635,18 @@ function startPAOUltimateSpeed() {
 
     function nextQuestion() {
         const data = getRandomPAONumeric();
-        const types = ['person', 'action', 'object'];
-        const selectedType = types[Math.floor(Math.random() * types.length)];
-        const correctAnswer = data[selectedType];
+        const types = getActivePaoTypes();
+        let selectedType = types[Math.floor(Math.random() * types.length)];
+        let correctAnswer = data[selectedType];
+        while (!correctAnswer) {
+            selectedType = types[Math.floor(Math.random() * types.length)];
+            correctAnswer = data[selectedType];
+        }
 
         // Get 3 wrong answers
-        const allAnswers = Object.values(paoData).map(p => p[selectedType]);
+        const allAnswers = Object.values(paoData).map(p => p[selectedType]).filter(Boolean);
         const wrongAnswers = [];
-        while (wrongAnswers.length < 3) {
+        while (wrongAnswers.length < 3 && allAnswers.length > 3) {
             const random = allAnswers[Math.floor(Math.random() * allAnswers.length)];
             if (random !== correctAnswer && !wrongAnswers.includes(random)) {
                 wrongAnswers.push(random);
@@ -620,7 +654,7 @@ function startPAOUltimateSpeed() {
         }
 
         const options = [...wrongAnswers, correctAnswer].sort(() => Math.random() - 0.5);
-        const typeLabel = selectedType === 'person' ? 'Person' : selectedType === 'action' ? 'Action' : 'Object';
+        const typeLabel = getPaoTypeLabel(selectedType);
 
         document.getElementById('game-container').innerHTML = `
             <div class="pao-ultimate-container">
@@ -713,13 +747,17 @@ function startPAOMarathon() {
 
         currentQuestion++;
         const data = getRandomPAONumeric();
-        const types = ['person', 'action', 'object'];
-        const selectedType = types[Math.floor(Math.random() * types.length)];
-        const correctAnswer = data[selectedType];
+        const types = getActivePaoTypes();
+        let selectedType = types[Math.floor(Math.random() * types.length)];
+        let correctAnswer = data[selectedType];
+        while (!correctAnswer) {
+            selectedType = types[Math.floor(Math.random() * types.length)];
+            correctAnswer = data[selectedType];
+        }
 
-        const allAnswers = Object.values(paoData).map(p => p[selectedType]);
+        const allAnswers = Object.values(paoData).map(p => p[selectedType]).filter(Boolean);
         const wrongAnswers = [];
-        while (wrongAnswers.length < 3) {
+        while (wrongAnswers.length < 3 && allAnswers.length > 3) {
             const random = allAnswers[Math.floor(Math.random() * allAnswers.length)];
             if (random !== correctAnswer && !wrongAnswers.includes(random)) {
                 wrongAnswers.push(random);
@@ -727,7 +765,7 @@ function startPAOMarathon() {
         }
 
         const options = [...wrongAnswers, correctAnswer].sort(() => Math.random() - 0.5);
-        const typeLabel = selectedType === 'person' ? 'P' : selectedType === 'action' ? 'A' : 'O';
+        const typeLabel = getPaoTypeLabelShort(selectedType);
 
         document.getElementById('game-container').innerHTML = `
             <div class="pao-marathon-container">
@@ -800,13 +838,17 @@ function startPAOSurvival() {
         }
 
         const data = getRandomPAONumeric();
-        const types = ['person', 'action', 'object'];
-        const selectedType = types[Math.floor(Math.random() * types.length)];
-        const correctAnswer = data[selectedType];
+        const types = getActivePaoTypes();
+        let selectedType = types[Math.floor(Math.random() * types.length)];
+        let correctAnswer = data[selectedType];
+        while (!correctAnswer) {
+            selectedType = types[Math.floor(Math.random() * types.length)];
+            correctAnswer = data[selectedType];
+        }
 
-        const allAnswers = Object.values(paoData).map(p => p[selectedType]);
+        const allAnswers = Object.values(paoData).map(p => p[selectedType]).filter(Boolean);
         const wrongAnswers = [];
-        while (wrongAnswers.length < 3) {
+        while (wrongAnswers.length < 3 && allAnswers.length > 3) {
             const random = allAnswers[Math.floor(Math.random() * allAnswers.length)];
             if (random !== correctAnswer && !wrongAnswers.includes(random)) {
                 wrongAnswers.push(random);
@@ -814,7 +856,7 @@ function startPAOSurvival() {
         }
 
         const options = [...wrongAnswers, correctAnswer].sort(() => Math.random() - 0.5);
-        const typeLabel = selectedType === 'person' ? 'Person' : selectedType === 'action' ? 'Action' : 'Object';
+        const typeLabel = getPaoTypeLabel(selectedType);
 
         const heartsHTML = '❤️'.repeat(lives) + '🖤'.repeat(3 - lives);
 
@@ -877,13 +919,17 @@ function startPAOComboStreak() {
 
     function nextQuestion() {
         const data = getRandomPAONumeric();
-        const types = ['person', 'action', 'object'];
-        const selectedType = types[Math.floor(Math.random() * types.length)];
-        const correctAnswer = data[selectedType];
+        const types = getActivePaoTypes();
+        let selectedType = types[Math.floor(Math.random() * types.length)];
+        let correctAnswer = data[selectedType];
+        while (!correctAnswer) {
+            selectedType = types[Math.floor(Math.random() * types.length)];
+            correctAnswer = data[selectedType];
+        }
 
-        const allAnswers = Object.values(paoData).map(p => p[selectedType]);
+        const allAnswers = Object.values(paoData).map(p => p[selectedType]).filter(Boolean);
         const wrongAnswers = [];
-        while (wrongAnswers.length < 3) {
+        while (wrongAnswers.length < 3 && allAnswers.length > 3) {
             const random = allAnswers[Math.floor(Math.random() * allAnswers.length)];
             if (random !== correctAnswer && !wrongAnswers.includes(random)) {
                 wrongAnswers.push(random);
@@ -891,7 +937,7 @@ function startPAOComboStreak() {
         }
 
         const options = [...wrongAnswers, correctAnswer].sort(() => Math.random() - 0.5);
-        const typeLabel = selectedType === 'person' ? 'P' : selectedType === 'action' ? 'A' : 'O';
+        const typeLabel = getPaoTypeLabelShort(selectedType);
 
         const comboClass = combo >= 10 ? 'mega' : combo >= 5 ? 'super' : '';
 

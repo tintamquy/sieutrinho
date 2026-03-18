@@ -292,7 +292,7 @@ initMemoryData();
 
 // ===== PAO SYSTEM DATA =====
 // PAO System Data (Person-Action-Object)
-const paoData = {
+const paoDataOriginal = {
     '00': { person: 'Con Cao', action: 'Vuốt Ve', object: 'Con Chó', story: 'Con Cao (con trai bạn) đang cúi xuống âu yếm Vuốt Ve đầu một chú Con Chó cưng.' },
     '01': { person: 'Bố Chí', action: 'Cưỡi phi nước đại', object: 'Con Trâu', story: 'Bố Chí oai phong như cao bồi đang Cưỡi phi nước đại trên lưng Con Trâu mộng điên cuồng.' },
     '02': { person: 'U Cẩm', action: 'Nhổ Lông', object: 'Con Nhím', story: 'U Cẩm đeo kính lúp tỉ mẩn ngồi Nhổ Lông từng cái gai nhọn hoắt của Con Nhím.' },
@@ -405,6 +405,47 @@ const paoData = {
     'KR': { person: 'Khoát', action: 'Gài lên áo', object: 'Kính Râm', story: 'Khoát điệu đà lấy Kính Râm đen xì ra và Gài lên áo lên cổ áo sơ mi cho ngầu.' },
     'KT': { person: 'Anh Khoái', action: 'quấn', object: 'Khăn Tắm', story: 'Anh Khoái vừa tắm xong bước ra vội vàng lấy Khăn Tắm to sụ quấn quanh người che thân.' },
     'KB': { person: 'thầy Kiên', action: 'Dò bằng siêu âm', object: 'Kho Báu', story: 'Thầy Kiên cầm máy dò kim loại đi rà trên bãi biển để Dò bằng siêu âm tín hiệu phát ra từ rương Kho Báu chôn vùi.' }
+};
+
+let currentPaoSystem = localStorage.getItem('paoSystem') || 'pao';
+let paoData = paoDataOriginal;
+window.paoqDataObj = null;
+
+function initPaoSystem() {
+    if (typeof PAOQ_DATA !== 'undefined') {
+        const paoqObj = {};
+        PAOQ_DATA.getAllCodes().forEach(item => {
+            paoqObj[item.code.toUpperCase()] = {
+                person: item.person,
+                action: item.action,
+                object: item.object,
+                quote: item.quote || '',
+                story: ''
+            };
+        });
+        window.paoqDataObj = paoqObj;
+
+        if (currentPaoSystem === 'paoq') {
+            paoData = window.paoqDataObj;
+        }
+    }
+}
+
+// Ensure PAOQ_DATA is loaded (it should be if order in index.html is correct, but just in case)
+setTimeout(initPaoSystem, 100);
+
+window.togglePaoSystem = function (sys) {
+    currentPaoSystem = sys;
+    localStorage.setItem('paoSystem', sys);
+    if (sys === 'paoq' && window.paoqDataObj) {
+        paoData = window.paoqDataObj;
+    } else {
+        paoData = paoDataOriginal;
+    }
+};
+
+window.getCurrentPaoSystem = function () {
+    return currentPaoSystem;
 };
 
 // PAO Helper Functions

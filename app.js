@@ -416,6 +416,22 @@ const games = [
         category: 'advanced',
         func: typeof startRandomWordsGame !== 'undefined' ? startRandomWordsGame : null
     },
+    {
+        id: 'historical-events',
+        title: 'Sự Kiện Lịch Sử',
+        icon: '🏛️',
+        desc: 'Ghi nhớ các mốc sự kiện lịch sử',
+        category: 'advanced',
+        func: typeof startHistoricalEventsGame !== 'undefined' ? startHistoricalEventsGame : null
+    },
+    {
+        id: 'random-poetry',
+        title: 'Nhớ Thơ',
+        icon: '📜',
+        desc: 'Ghi nhớ và điền từ vào bài thơ',
+        category: 'advanced',
+        func: typeof startRandomPoetryGame !== 'undefined' ? startRandomPoetryGame : null
+    },
     // PAO SYSTEM GAMES
     {
         id: 'pao-flashcard',
@@ -751,6 +767,12 @@ window.switchTab = function (tabName) {
 
 // Setup event listeners
 function setupEventListeners() {
+    // Initialize PAO system select dropdown
+    const paoSystemSelect = document.getElementById('pao-system-select');
+    if (paoSystemSelect && typeof window.getCurrentPaoSystem === 'function') {
+        paoSystemSelect.value = window.getCurrentPaoSystem();
+    }
+
     document.getElementById('back-btn').addEventListener('click', () => {
         stopGame();
         showHomepage();
@@ -795,11 +817,15 @@ function setupEventListeners() {
                 if (!paoSection.classList.contains('hidden')) {
                     // Auto-render all tabs on first open (check if grid has actual content, not just comments)
                     const paoGrid = document.getElementById('pao-table-grid');
+                    const paoqGrid = document.getElementById('paoq-table-grid');
                     const majorGrid = document.getElementById('major-table-grid');
                     const alphabetGrid = document.getElementById('alphabet-table-grid');
 
                     if (paoGrid && paoGrid.children.length === 0) {
                         renderPAOTable();
+                    }
+                    if (paoqGrid && paoqGrid.children.length === 0) {
+                        renderPAOQTable();
                     }
                     if (majorGrid && majorGrid.children.length === 0) {
                         renderMajorSystemTable();
@@ -1015,6 +1041,135 @@ function buildPAOCard(code, pao, bodyAnchor, accentColor) {
     `;
 }
 
+// Render PAOQ table - similar to PAOTable
+function renderPAOQTable() {
+    const grid = document.getElementById('paoq-table-grid');
+    if (!grid) return;
+
+    if (typeof PAOQ_DATA === 'undefined') {
+        grid.innerHTML = '<p style="color:red;">Lỗi: Chưa load được dữ liệu PAOQ_DATA</p>';
+        return;
+    }
+
+    const { rawData, specialCodes } = PAOQ_DATA;
+    const hasBankData = typeof BODY_ANCHOR_STATIONS !== 'undefined' && typeof BODY_ANCHORS !== 'undefined';
+    let html = '';
+
+    if (hasBankData) {
+        BODY_ANCHOR_STATIONS.forEach(station => {
+            const rangeStart = station.range[0];
+            const rangeEnd = station.range[1];
+
+            html += `
+                <div class="body-station-header" style="
+                    grid-column: 1 / -1;
+                    background: linear-gradient(135deg, ${station.color}cc, ${station.color}66);
+                    border: 1px solid ${station.color};
+                    border-radius: 12px;
+                    padding: 0.75rem 1.25rem;
+                    margin: 1rem 0 0.5rem;
+                    display: flex; align-items: center; gap: 0.75rem;
+                ">
+                    <span style="font-size: 1.6rem;">${station.emoji}</span>
+                    <div>
+                        <div style="font-size: 1rem; font-weight: 700; color: #fff; letter-spacing:0.03em;">${station.name}</div>
+                        <div style="font-size: 0.78rem; color: rgba(255,255,255,0.7);">Điểm neo ${rangeStart.toString().padStart(2, '0')} – ${rangeEnd.toString().padStart(2, '0')}</div>
+                    </div>
+                </div>
+            `;
+
+            for (let i = rangeStart; i <= rangeEnd; i++) {
+                const codeFormat = String(i).padStart(2, '0');
+                const paoq = rawData.find(item => item.code === codeFormat);
+                if (!paoq) continue;
+                const bodyAnchor = BODY_ANCHORS[codeFormat];
+                html += buildPAOQCard(codeFormat, paoq, bodyAnchor, station.color);
+            }
+        });
+    } else {
+        rawData.forEach(item => {
+            html += buildPAOQCard(item.code, item, null, null);
+        });
+    }
+
+    // Special codes section
+    html += `
+        <div class="body-station-header" style="
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #64748bcc, #64748b66);
+            border: 1px solid #64748b;
+            border-radius: 12px;
+            padding: 0.75rem 1.25rem;
+            margin: 1rem 0 0.5rem;
+            display: flex; align-items: center; gap: 0.75rem;
+        ">
+            <span style="font-size: 1.6rem;">🃏</span>
+            <div>
+                <div style="font-size: 1rem; font-weight: 700; color: #fff;">Mã Đặc Biệt – Bài Tây, Phụ Đạo (J, Q, K, ...)</div>
+            </div>
+        </div>
+    `;
+    specialCodes.forEach(item => {
+        html += buildPAOQCard(item.code, item, null, '#64748b');
+    });
+
+    grid.innerHTML = html;
+}
+
+function buildPAOQCard(code, paoq, bodyAnchor, accentColor) {
+    const anchorHtml = bodyAnchor ? `
+        <div class="pao-row" style="
+            margin-top: 0.5rem;
+            border-top: 1px solid rgba(255,255,255,0.12);
+            padding-top: 0.5rem;
+            background: rgba(0,0,0,0.15);
+            border-radius: 6px;
+            padding: 0.4rem 0.5rem;
+        ">
+            <div style="display:flex; gap:0.4rem; align-items:flex-start; flex-wrap:wrap;">
+                <span style="font-size:0.8rem; color:#34d399; font-weight:600; white-space:nowrap;">🗺️ Điểm neo:</span>
+                <span style="font-size:0.85rem; color:#a7f3d0; font-weight:600;">${bodyAnchor.anchor}</span>
+            </div>
+            <div style="font-size:0.78rem; color:rgba(255,255,255,0.55); margin-top:0.2rem; font-style:italic;">📍 ${bodyAnchor.description}</div>
+        </div>
+    ` : '';
+
+    const borderColor = accentColor || '#6366f1';
+
+    // Convert quote string properly
+    let quoteHtml = '';
+    if (paoq.quote && paoq.quote.trim()) {
+        quoteHtml = `
+            <div class="pao-row" style="margin-top: 0.3rem;">
+                <span class="pao-label" style="color: #fbbf24;">🗣️ Quote:</span>
+                <span class="pao-value" style="color: #fef3c7;"><em>${paoq.quote}</em></span>
+            </div>
+        `;
+    }
+
+    return `
+        <div class="pao-table-item" style="border-top: 3px solid ${borderColor};">
+            <div class="pao-code">${code}</div>
+            <div class="pao-details">
+                <div class="pao-row">
+                    <span class="pao-label">👤 Person:</span>
+                    <span class="pao-value">${paoq.person}</span>
+                </div>
+                <div class="pao-row">
+                    <span class="pao-label">⚡ Action:</span>
+                    <span class="pao-value">${paoq.action}</span>
+                </div>
+                <div class="pao-row">
+                    <span class="pao-label">🎯 Object:</span>
+                    <span class="pao-value">${paoq.object}</span>
+                </div>
+                ${quoteHtml}
+                ${anchorHtml}
+            </div>
+        </div>
+    `;
+}
+
 // Render Major System Table
 function renderMajorSystemTable() {
     const grid = document.getElementById('major-table-grid');
@@ -1087,11 +1242,13 @@ window.switchSystemTab = function (system) {
     document.getElementById(`system-tab-${system}`).classList.add('active');
 
     // Render appropriate table if not already rendered
-    if (system === 'pao' && document.getElementById('pao-table-grid').innerHTML === '') {
+    if (system === 'pao' && document.getElementById('pao-table-grid').innerHTML.trim() === '') {
         renderPAOTable();
-    } else if (system === 'major' && document.getElementById('major-table-grid').innerHTML === '') {
+    } else if (system === 'paoq' && document.getElementById('paoq-table-grid').innerHTML.trim() === '') {
+        renderPAOQTable();
+    } else if (system === 'major' && document.getElementById('major-table-grid').innerHTML.trim() === '') {
         renderMajorSystemTable();
-    } else if (system === 'alphabet' && document.getElementById('alphabet-table-grid').innerHTML === '') {
+    } else if (system === 'alphabet' && document.getElementById('alphabet-table-grid').innerHTML.trim() === '') {
         renderAlphabetSystemTable();
     }
 }
