@@ -785,10 +785,10 @@ const PAOQ_DATA = {
         },
         {
                 "code": "kb",
-                "person": "Nami (One Piece)",
-                "action": "Cầm la bàn dò tìm",
+                "person": "Cooper (Matthew McConaughey) – Phim Interstellar",
+                "action": "Dò bằng máy dò",
                 "object": "Kho Báu",
-                "quote": "\"Tiền của ta!\" (tiếng vàng rơi leng keng)"
+                "quote": "Mankind was born on Earth. It was never meant to die here. -Tít... rè... tít! – Tiếng sóng radio nhiễu loạn"
         },
         {
                 "code": "0",

@@ -768,10 +768,12 @@ window.switchTab = function (tabName) {
 // Setup event listeners
 function setupEventListeners() {
     // Initialize PAO system select dropdown
-    const paoSystemSelect = document.getElementById('pao-system-select');
-    if (paoSystemSelect && typeof window.getCurrentPaoSystem === 'function') {
-        paoSystemSelect.value = window.getCurrentPaoSystem();
-    }
+    const sys = typeof window.getCurrentPaoSystem === 'function' ? window.getCurrentPaoSystem() : 'pao';
+    const selects = ['pao-system-select', 'pao-excel-system-select'];
+    selects.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = sys;
+    });
 
     document.getElementById('back-btn').addEventListener('click', () => {
         stopGame();
@@ -2092,6 +2094,8 @@ function renderPAOExcelTable() {
     const specialCodes = ['JC', 'JR', 'JT', 'JB', 'QC', 'QR', 'QT', 'QB', 'KC', 'KR', 'KT', 'KB'];
     const allCodes = [...numericCodes, ...specialCodes];
 
+    const isPaoq = typeof window.getCurrentPaoSystem === 'function' && window.getCurrentPaoSystem() === 'paoq';
+
     // Create table HTML
     let html = `
         <thead>
@@ -2100,6 +2104,7 @@ function renderPAOExcelTable() {
                 <th>👤 Person</th>
                 <th>⚡ Action</th>
                 <th>🎯 Object</th>
+                ${isPaoq ? '<th>🗣️ Quote</th>' : ''}
             </tr>
         </thead>
         <tbody>
@@ -2114,6 +2119,7 @@ function renderPAOExcelTable() {
                     <td>${pao.person}</td>
                     <td>${pao.action}</td>
                     <td>${pao.object}</td>
+                    ${isPaoq ? `<td><em>${pao.quote || ''}</em></td>` : ''}
                 </tr>
             `;
         }
@@ -2125,6 +2131,21 @@ function renderPAOExcelTable() {
 
     table.innerHTML = html;
 }
+
+window.onPaoSystemChanged = function (sys) {
+    // Update select UI
+    const selects = ['pao-system-select', 'pao-excel-system-select'];
+    selects.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = sys;
+    });
+
+    // Re-render excel table if visible
+    const excelSection = document.getElementById('pao-excel-section');
+    if (excelSection && !excelSection.classList.contains('hidden')) {
+        renderPAOExcelTable();
+    }
+};
 
 // ===== Render Body Anchor Loci Table =====
 function renderBodyAnchorTable() {

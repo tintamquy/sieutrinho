@@ -442,6 +442,11 @@ window.togglePaoSystem = function (sys) {
     } else {
         paoData = paoDataOriginal;
     }
+
+    // Notify app.js to update UI if exists
+    if (typeof window.onPaoSystemChanged === 'function') {
+        window.onPaoSystemChanged(sys);
+    }
 };
 
 window.getCurrentPaoSystem = function () {
