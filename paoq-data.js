@@ -593,14 +593,14 @@ const PAOQ_DATA = {
         {
                 "code": "84",
                 "person": "Thành Long (Jackie Chan)",
-                "action": "Nhảy santo leo qua",
+                "action": "Nhảy leo qua",
                 "object": "Hàng Rào",
                 "quote": "\"Wa-cha!\" (tiếng trèo rào sột soạt)"
         },
         {
                 "code": "85",
                 "person": "King Leonidas (300)",
-                "action": "Đá xuống",
+                "action": "Đạp tống xuống",
                 "object": "Hố Sâu",
                 "quote": "\"This is Sparta!\" (Tiếng thét và tiếng rơi vọng lại Aaaaaa...)"
         },
@@ -616,7 +616,7 @@ const PAOQ_DATA = {
                 "person": "Sơn Tùng M-TP",
                 "action": "Cúi xuống nhặt",
                 "object": "Hoa Phượng",
-                "quote": "\"Chắc ai đó sẽ về\" (âm thanh huýt sáo giai điệu)"
+                "quote": "\"Có chắc đây là yêu?\" (âm thanh thì thầm m...t..p...)"
         },
         {
                 "code": "88",
@@ -730,7 +730,7 @@ const PAOQ_DATA = {
         {
                 "code": "Jb",
                 "person": "Jinx LOL",
-                "action": "phóng tên lửa",
+                "action": "phóng lựu đạn",
                 "object": "Người Khổng Lồ",
                 "quote": "\"Bye-bye!\" (tiếng \"Kaboom!\")"
         },
@@ -842,7 +842,7 @@ const PAOQ_DATA = {
         {
                 "code": "7",
                 "person": "Vịt Donald",
-                "action": "Mặc phao bơi lạch bạch",
+                "action": "kẹp nách",
                 "object": "Phao",
                 "quote": "Quack quack! (tiếng lạch bạch xì xộp)"
         },

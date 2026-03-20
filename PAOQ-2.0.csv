@@ -83,10 +83,10 @@ Mã,P (Person),A (Action),O (Object),Q (Quote/Sound)
 81,Shrek,Chảy nước mắt,Hành Tây,"""Ogres are like onions!"" (tiếng nhai chóp chép)"
 82,Ratatouille Linguini,nếm,Hạt Nêm,"""Anyone can cook!"" (tiếng chép miệng hít hà) "
 83,Dracula,Ói,Hộc Máu,"""I want to suck your blood"" (tiếng khạc máu khụ khụ)"
-84,Thành Long (Jackie Chan),Nhảy santo leo qua,Hàng Rào,"""Wa-cha!"" (tiếng trèo rào sột soạt)"
-85,King Leonidas (300),Đá xuống,Hố Sâu,"""This is Sparta!"" (Tiếng thét và tiếng rơi vọng lại Aaaaaa...)"
+84,Thành Long (Jackie Chan),Nhảy leo qua,Hàng Rào,"""Wa-cha!"" (tiếng trèo rào sột soạt)"
+85,King Leonidas (300),Đạp tống xuống,Hố Sâu,"""This is Sparta!"" (Tiếng thét và tiếng rơi vọng lại Aaaaaa...)"
 86,Võ Tắc Thiên,Choàng Mặc,Hoàng Bào,"""Miễn lễ"" (tiếng vải bay phần phật)"
-87,Sơn Tùng M-TP,Cúi xuống nhặt,Hoa Phượng,"""Chắc ai đó sẽ về"" (âm thanh huýt sáo giai điệu)"
+87,Sơn Tùng M-TP,Cúi xuống nhặt,Hoa Phượng,"""Có chắc đây là yêu?"" (âm thanh thì thầm m...t..p...)"
 88,Venom,Xịt khử mùi,Miệng Hôi Hám,"""We are Venom"" (tiếng nhểu dãi tỏng tỏng)"
 89,Thạch Sanh,xới tung,Hạt Gạo,"""Niêu cơm thần"" (tiếng xới cơm sột soạt)"
 90,John Cena,Kẹp cổ (Chokehold),Gà Chọi,"""You can't see me!"" (tiếng gáy o o o)"
@@ -102,7 +102,7 @@ Mã,P (Person),A (Action),O (Object),Q (Quote/Sound)
 Jc,Neo (Ma trận),Giật rút dây,Giắc Cắm,"""I know Kung Fu"" (tiếng tuốt cáp điện xoẹt xoẹt) "
 Jr,Steve Jobs,Chạm nhẹ đầu ngón,Iphone,"""One more thing..."" (tiếng chuông iPhone marimba)"
 Jt,Bao Tô Bà (Tuyệt đỉnh Kungfu),Hét sư tử hống,Inh Tai,"""Đóng tiền nhà chưa hả?!"" (tiếng vỡ kính xoảng) "
-Jb,Jinx LOL,phóng tên lửa,Người Khổng Lồ,"""Bye-bye!"" (tiếng ""Kaboom!"")"
+Jb,Jinx LOL,phóng lựu đạn,Người Khổng Lồ,"""Bye-bye!"" (tiếng ""Kaboom!"")"
 qc,Hercules,Vác lên vai,Quả Cầu,"""I can go the distance!"" ""Hnnnnnn... GHHH!"" (Tiếng gồng mình, nghiến răng khi dồn lực vào vai)."
 qr,Pikotaro (PPAP),cắm bút,Quả rứa,"""PPAP!"" (âm thanh bút đâm phập)"
 qt,Bạch Tuyết,Cắn,Quả Táo,"""Gương kia ngự ở trên tường"" (tiếng cắn táo rộp rộp)"
@@ -118,6 +118,6 @@ kb,Cooper (Matthew McConaughey) – Phim Interstellar,Dò bằng máy dò,Kho B�
 4,Rambo,Liếc mài dao dạo rực,dao,Mission accomplished (tiếng mài xẹt xẹt)
 5,Nàng tiên cá Ariel,Cạy nắp vỏ trai,sò huyết,"I want to be where the people are.-  Tiếng bật mở (Popping): ""Cạch... phụp!"""
 6,The Collector,ghim cắm,bướm,"If he catches you, he's gonna make you wish you were dead. Tiếng kim đâm (Piercing): ""Phập... sột..."" "
-7,Vịt Donald,Mặc phao bơi lạch bạch,Phao,Quack quack! (tiếng lạch bạch xì xộp)
+7,Vịt Donald,kẹp nách,Phao,Quack quack! (tiếng lạch bạch xì xộp)
 8,Võ Tòng,chém đao,Hổ,"""Rượu ngon!"" (tiếng gầm rú tuyệt vọng gào gào) "
 9,Po (Kung Fu Panda),Lấy bụng mỡ hất văng,gấu,Skadoosh! (tiếng mỡ rung núng nính)
