@@ -616,7 +616,7 @@ const PAOQ_DATA = {
                 "person": "Sơn Tùng M-TP",
                 "action": "Cúi xuống nhặt",
                 "object": "Hoa Phượng",
-                "quote": "\"Có chắc đây là yêu?\" (âm thanh thì thầm m...t..p...)"
+                "quote": "\"Có chắc yêu là đây?\" (âm thanh thì thầm m...t..p...)"
         },
         {
                 "code": "88",
@@ -641,10 +641,10 @@ const PAOQ_DATA = {
         },
         {
                 "code": "91",
-                "person": "Thanos",
+                "person": "Saitama One-Punch Man",
                 "action": "Đấm bằng",
-                "object": "Găng Tay",
-                "quote": "\"I am inevitable\" (tiếng búng tay tách)"
+                "object": "Găng Tay đỏ",
+                "quote": "\"Tôi là một anh hùng làm vì sở thích. (I'm just a guy who's a hero for fun) (tiếng bùm nổ lớn)"
         },
         {
                 "code": "92",
