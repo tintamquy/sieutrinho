@@ -501,10 +501,10 @@ const PAOQ_DATA = {
         },
         {
                 "code": "71",
-                "person": "Gandalf",
-                "action": "Dán bùa lên",
+                "person": "Veigar - Liên Minh Huyền Thoại",
+                "action": "vận gậy làm thiên thạch rơi",
                 "object": "Phù Thủy",
-                "quote": "\"You shall not pass!\" (tiếng gậy gõ cộc cộc)"
+                "quote": "\"I am evil! Stop laughing!\" (tiếng cười và uỳnh lớn thiên thạch rơi xuống)"
         },
         {
                 "code": "72",
@@ -529,10 +529,10 @@ const PAOQ_DATA = {
         },
         {
                 "code": "75",
-                "person": "Geralt of Rivia (The Witcher)",
-                "action": "Xếp chân kiết già",
+                "person": "Lâm chánh anh",
+                "action": "dán bùa vào trán",
                 "object": "Pháp Sư",
-                "quote": "\"Toss a coin to your Witcher\" (tiếng thi triển ấn phép)"
+                "quote": "\"Cấp cấp như luật lệnh\" (tiếng lắc chuông)"
         },
         {
                 "code": "76",
