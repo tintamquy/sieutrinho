@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /debug.html
+Disallow: /preview.html
+
+Sitemap: https://sieutrinho.page.dev/sitemap.xml
