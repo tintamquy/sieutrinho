@@ -180,7 +180,7 @@ const PAOQ_DATA = {
         {
                 "code": "25",
                 "person": "Tần Thủy Hoàng",
-                "action": "ngậm mãi như ninja",
+                "action": "ngậm mãi như ninja ngậm bùa",
                 "object": "Nhân Sâm",
                 "quote": "\"Trẫm muốn trường sinh bất lão\" (tiếng gươm rút khỏi vỏ)"
         },
@@ -480,10 +480,10 @@ const PAOQ_DATA = {
         },
         {
                 "code": "68",
-                "person": "Đại tướng Võ Nguyên Giáp",
+                "person": "Nguyễn Ái Quốc",
                 "action": "bắt tay",
                 "object": "Tượng Bác Hồ",
-                "quote": "\"Tôi sống ngày nào, cũng là vì đất nước ngày đó\" (tiếng nhạc Tiến Quân Ca vang dội)"
+                "quote": "\"không có gì quý hơn độc lập tự do\" (tiếng nhạc Tiến Quân Ca vang dội)"
         },
         {
                 "code": "69",
