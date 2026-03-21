@@ -3,4 +3,4 @@ Allow: /
 Disallow: /debug.html
 Disallow: /preview.html
 
-Sitemap: https://sieutrinho.page.dev/sitemap.xml
+Sitemap: https://sieutrinho.pages.dev/sitemap.xml
