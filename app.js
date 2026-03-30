@@ -2089,7 +2089,8 @@ let excelTableState = {
     markerMode: false,
     allValuesHidden: false,
     search: '',
-    groupBy10: false
+    groupBy10: false,
+    viewMode: 'table' // table or grid
 };
 
 // Global functions for UI calls
@@ -2144,6 +2145,18 @@ window.searchExcel = function(query) {
     renderPAOExcelTable();
 };
 
+window.switchExcelView = function(mode) {
+    excelTableState.viewMode = mode;
+    
+    // Update UI buttons
+    const tableBtn = document.getElementById('view-mode-table');
+    const gridBtn = document.getElementById('view-mode-grid');
+    if (tableBtn) tableBtn.classList.toggle('active', mode === 'table');
+    if (gridBtn) gridBtn.classList.toggle('active', mode === 'grid');
+    
+    renderPAOExcelTable();
+};
+
 window.toggleExcelGrouping = function() {
     excelTableState.groupBy10 = !excelTableState.groupBy10;
     const btn = document.getElementById('group-toggle-btn');
@@ -2161,7 +2174,8 @@ window.resetExcelState = function() {
         markerMode: false,
         allValuesHidden: false,
         search: '',
-        groupBy10: false
+        groupBy10: false,
+        viewMode: 'table'
     };
     
     // Reset inputs
@@ -2172,7 +2186,10 @@ window.resetExcelState = function() {
     const mainCheckboxes = document.querySelectorAll('#pao-excel-controls input[type="checkbox"]');
     mainCheckboxes.forEach(cb => cb.checked = true);
     
-    renderPAOExcelTable();
+    // Reset buttons UI
+    switchExcelView('table');
+    filterExcel('all');
+    sortExcel('asc');
 };
 
 function updateControlUI(group, activeVal) {
@@ -2250,21 +2267,30 @@ function renderPAOExcelTable() {
         allCodes = allCodes.filter(code => {
             const pao = getPAO(code);
             if (!pao) return false;
-            return code.toLowerCase().includes(excelTableState.search) ||
-                   pao.person.toLowerCase().includes(excelTableState.search) ||
-                   pao.action.toLowerCase().includes(excelTableState.search) ||
-                   pao.object.toLowerCase().includes(excelTableState.search) ||
-                   (pao.quote && pao.quote.toLowerCase().includes(excelTableState.search));
+            const s = excelTableState.search;
+            return code.toLowerCase().includes(s) ||
+                   pao.person.toLowerCase().includes(s) ||
+                   pao.action.toLowerCase().includes(s) ||
+                   pao.object.toLowerCase().includes(s) ||
+                   (pao.quote && pao.quote.toLowerCase().includes(s));
         });
     }
+
+    // Update active states for filter/sort buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.filter === excelTableState.filter);
+    });
+    document.querySelectorAll('.sort-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.sort === excelTableState.sort);
+    });
 
     const isPaoq = typeof window.getCurrentPaoSystem === 'function' && window.getCurrentPaoSystem() === 'paoq';
 
     // Create table HTML
     let html = '';
     
-    if (excelTableState.groupBy10) {
-        // Render with station headers
+    if (excelTableState.groupBy10 && excelTableState.viewMode === 'table') {
+        // Render with station headers (Only in table mode for now)
         for (let i = 0; i < allCodes.length; i += 10) {
             const chunk = allCodes.slice(i, i + 10);
             const startStr = chunk[0];
@@ -2301,7 +2327,7 @@ function renderPAOExcelTable() {
                     const isLearned = learnedItems[code];
                     const hideClass = excelTableState.allValuesHidden ? 'hidden-value' : '';
                     html += `
-                        <tr>
+                        <tr class="${isLearned ? 'learned-row' : ''}">
                             <td class="code-cell" onclick="this.parentElement.querySelectorAll('td').forEach(c => c.classList.toggle('hidden-value'))">
                                 ${excelTableState.markerMode ? `<span class="learned-marker ${isLearned ? 'checked' : ''}" onclick="toggleLearned('${code}'); event.stopPropagation();"></span>` : ''}
                                 ${code}
@@ -2317,8 +2343,57 @@ function renderPAOExcelTable() {
             
             html += `</tbody></table>`;
         }
+    } else if (excelTableState.viewMode === 'grid') {
+        // Grid View (Mobile Optimized)
+        html += '<div class="pao-excel-grid">';
+        
+        allCodes.forEach(code => {
+            const pao = getPAO(code);
+            if (pao) {
+                const isLearned = learnedItems[code];
+                const hideClass = excelTableState.allValuesHidden ? 'hidden-value' : '';
+                
+                html += `
+                    <div class="pao-card ${isLearned ? 'learned' : ''}">
+                        <div class="pao-card-code" onclick="this.parentElement.querySelectorAll('.pao-card-value').forEach(v => v.classList.toggle('hidden-value'))">
+                            ${code}
+                        </div>
+                        
+                        <div class="pao-card-item ${excelTableState.hiddenColumns.has(1) ? 'hide-column' : ''}">
+                            <div class="pao-card-label">👤 Person</div>
+                            <div class="pao-card-value ${hideClass}" onclick="this.classList.toggle('hidden-value')">${pao.person}</div>
+                        </div>
+                        
+                        <div class="pao-card-item ${excelTableState.hiddenColumns.has(2) ? 'hide-column' : ''}">
+                            <div class="pao-card-label">⚡ Action</div>
+                            <div class="pao-card-value ${hideClass}" onclick="this.classList.toggle('hidden-value')">${pao.action}</div>
+                        </div>
+                        
+                        <div class="pao-card-item ${excelTableState.hiddenColumns.has(3) ? 'hide-column' : ''}">
+                            <div class="pao-card-label">🎯 Object</div>
+                            <div class="pao-card-value ${hideClass}" onclick="this.classList.toggle('hidden-value')">${pao.object}</div>
+                        </div>
+                        
+                        ${isPaoq && !excelTableState.hiddenColumns.has(4) ? `
+                        <div class="pao-card-quote ${hideClass}" onclick="this.classList.toggle('hidden-value')">
+                            "${pao.quote || ''}"
+                        </div>
+                        ` : ''}
+                        
+                        ${excelTableState.markerMode ? `
+                        <div style="margin-top: 1rem; display: flex; align-items: center; gap: 0.5rem; color: #4ade80; font-size: 0.8rem; font-weight: bold;">
+                            <span class="learned-marker ${isLearned ? 'checked' : ''}" onclick="toggleLearned('${code}')"></span>
+                            ${isLearned ? 'Đã thuộc' : 'Chưa thuộc'}
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+        });
+        
+        html += '</div>';
     } else {
-        // Standard table render
+        // Standard Table View
         html += `
             <table class="pao-excel-table">
                 <thead>
@@ -2340,7 +2415,7 @@ function renderPAOExcelTable() {
                 const hideClass = excelTableState.allValuesHidden ? 'hidden-value' : '';
                 
                 html += `
-                    <tr>
+                    <tr class="${isLearned ? 'learned-row' : ''}">
                         <td class="code-cell" onclick="this.parentElement.querySelectorAll('td').forEach(c => c.classList.toggle('hidden-value'))">
                             ${excelTableState.markerMode ? `<span class="learned-marker ${isLearned ? 'checked' : ''}" onclick="toggleLearned('${code}'); event.stopPropagation();"></span>` : ''}
                             ${code}
