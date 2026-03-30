@@ -308,85 +308,111 @@
             </div>
 
             <div id="pao-excel-section" class="reference-section pao-excel-section hidden">
-                <h2 style="text-align: center; color: #ffffff; font-size: 2.2rem; margin-bottom: 0.5rem; font-weight: 800; letter-spacing: -0.02em;">📊 PAO Excel Pro</h2>
-                <p style="text-align:center; color:rgba(255,255,255,0.6); font-size:1rem; margin-bottom:2rem; font-weight: 300;">Dữ liệu bảng tính nâng cao - Dễ dàng ôn tập & ghi nhớ</p>
-
-                <div style="text-align: center; margin-bottom: 2rem;">
-                    <label style="color: #94a3b8; font-weight: 700; margin-right: 1.5rem; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Cơ sở dữ liệu:</label>
-                    <div class="pao-btn-group">
-                        <button class="pao-btn pao-toggle-btn active" data-sys="paoq" onclick="window.togglePaoSystem('paoq')">🧠 PAOQ (Quote)</button>
-                        <button class="pao-btn pao-toggle-btn" data-sys="pao" onclick="window.togglePaoSystem('pao')">🎴 PAO Gốc</button>
-                    </div>
+                <div style="text-align: center; margin-bottom: 4rem;">
+                    <h2 style="font-size: 3rem; font-weight: 900; background: linear-gradient(to right, #6366f1, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; letter-spacing: -2px;">PAO EXCEL PRO</h2>
+                    <p style="color: #94a3b8; font-size: 1.1rem; font-weight: 300;">Hệ thống quản lý dữ liệu siêu trí nhớ tối ưu</p>
                 </div>
 
                 <div id="pao-excel-controls" class="pao-controls-panel">
-                    <!-- Global Tools & View Switcher -->
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1.5rem;">
-                         <div class="pao-btn-group">
-                            <button id="view-mode-table" class="pao-btn active" onclick="switchExcelView('table')">📊 Bảng biểu</button>
-                            <button id="view-mode-grid" class="pao-btn" onclick="switchExcelView('grid')">📱 Tối ưu Mobile</button>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; flex-wrap: wrap; gap: 2rem;">
+                         <div class="pao-btn-group" style="padding: 6px; background: rgba(0,0,0,0.3); border-radius: 18px;">
+                            <button id="view-mode-table" class="pao-btn active" onclick="switchExcelView('table')">
+                                <svg style="width: 18px; height: 18px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+                                📊 Dạng Bảng
+                            </button>
+                            <button id="view-mode-grid" class="pao-btn" onclick="switchExcelView('grid')">
+                                <svg style="width: 18px; height: 18px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"></path></svg>
+                                📱 Dạng Lưới (Mobile)
+                            </button>
                          </div>
-                         <button class="pao-btn" style="background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); font-weight: 700;" onclick="resetExcelState()">🔄 Làm mới bộ lọc</button>
+                         
+                         <div style="display: flex; align-items: center; gap: 1.5rem;">
+                            <div class="pao-btn-group" style="padding: 6px; background: rgba(0,0,0,0.3); border-radius: 18px;">
+                                <button class="pao-btn pao-toggle-btn active" data-sys="paoq" onclick="window.togglePaoSystem('paoq')">🧠 PAOQ (Quote)</button>
+                                <button class="pao-btn pao-toggle-btn" data-sys="pao" onclick="window.togglePaoSystem('pao')">🎴 PAO Gốc</button>
+                            </div>
+                            <button class="pao-btn" style="border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; background: rgba(239, 68, 68, 0.05);" onclick="resetExcelState()">
+                                <svg style="width: 18px; height: 18px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                                Reset
+                            </button>
+                         </div>
                     </div>
 
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 4rem;">
                         <!-- Column 1: Numbers & Sort -->
-                        <div>
-                            <span class="control-group-title">🔢 Lọc số & Thứ tự</span>
-                            <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-                                <div class="pao-btn-group" style="width: 100%; justify-content: space-around;">
-                                    <button class="pao-btn filter-btn active" data-filter="all" onclick="filterExcel('all')">Tất cả</button>
-                                    <button class="pao-btn filter-btn" data-filter="even" onclick="filterExcel('even')">Chẵn</button>
-                                    <button class="pao-btn filter-btn" data-filter="odd" onclick="filterExcel('odd')">Lẻ</button>
-                                    <button class="pao-btn filter-btn" data-filter="random" onclick="filterExcel('random')">🎲 Ngẫu</button>
+                        <div style="background: rgba(255,255,255,0.02); padding: 2rem; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05);">
+                            <span class="control-group-title">
+                                <svg style="width: 20px; height: 20px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path></svg>
+                                THỨ TỰ & LỌC SỐ
+                            </span>
+                            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                                <div class="pao-btn-group" style="width: 100%;">
+                                    <button class="pao-btn filter-btn active" data-filter="all" onclick="filterExcel('all')" style="flex:1">Tất cả</button>
+                                    <button class="pao-btn filter-btn" data-filter="even" onclick="filterExcel('even')" style="flex:1">Chẵn</button>
+                                    <button class="pao-btn filter-btn" data-filter="odd" onclick="filterExcel('odd')" style="flex:1">Lẻ</button>
+                                    <button class="pao-btn filter-btn" data-filter="random" onclick="filterExcel('random')" style="flex:1">🎲</button>
                                 </div>
-                                <div class="pao-btn-group" style="width: 100%; justify-content: space-around;">
-                                    <button class="pao-btn sort-btn active" data-sort="asc" onclick="sortExcel('asc')">⬆️ Thuận</button>
-                                    <button class="pao-btn sort-btn" data-sort="desc" onclick="sortExcel('desc')">⬇️ Ngược</button>
+                                <div class="pao-btn-group" style="width: 100%;">
+                                    <button class="pao-btn sort-btn active" data-sort="asc" onclick="sortExcel('asc')" style="flex:1">⬆️ Thứ tự thuận</button>
+                                    <button class="pao-btn sort-btn" data-sort="desc" onclick="sortExcel('desc')" style="flex:1">⬇️ Thứ tự ngược</button>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Column 2: Visibility & Display -->
-                        <div>
-                            <span class="control-group-title">👁️ Hiển thị & Kiểm tra</span>
+                        <div style="background: rgba(255,255,255,0.02); padding: 2rem; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05);">
+                            <span class="control-group-title">
+                                <svg style="width: 20px; height: 20px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                CHẾ ĐỘ HIỂN THỊ
+                            </span>
                             <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                                <div style="display: flex; gap: 1rem; flex-wrap: wrap; background: rgba(0,0,0,0.2); padding: 0.75rem; border-radius: 12px;">
-                                    <label class="check-container">P <input type="checkbox" checked onchange="toggleExcelColumn(1, this.checked)"><span class="checkmark"></span></label>
-                                    <label class="check-container">A <input type="checkbox" checked onchange="toggleExcelColumn(2, this.checked)"><span class="checkmark"></span></label>
-                                    <label class="check-container">O <input type="checkbox" checked onchange="toggleExcelColumn(3, this.checked)"><span class="checkmark"></span></label>
-                                    <label class="check-container" id="q-toggle-container">Q <input type="checkbox" checked onchange="toggleExcelColumn(4, this.checked)"><span class="checkmark"></span></label>
+                                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: space-between;">
+                                    <label class="check-container">Person <input type="checkbox" checked onchange="toggleExcelColumn(1, this.checked)"><span class="checkmark"></span></label>
+                                    <label class="check-container">Action <input type="checkbox" checked onchange="toggleExcelColumn(2, this.checked)"><span class="checkmark"></span></label>
                                 </div>
-                                <div style="display: flex; gap: 1rem;">
-                                    <button class="pao-btn action-btn text-white" style="flex: 1; justify-content: center;" onclick="toggleAllExcelValues()">Ẩn/Hiện Toàn Bộ</button>
-                                    <button class="pao-btn" id="group-toggle-btn" style="flex: 1; justify-content: center;" onclick="toggleExcelGrouping()">📁 Nhóm 10 số</button>
+                                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: space-between;">
+                                    <label class="check-container">Object <input type="checkbox" checked onchange="toggleExcelColumn(3, this.checked)"><span class="checkmark"></span></label>
+                                    <label class="check-container" id="q-toggle-container">Quote <input type="checkbox" checked onchange="toggleExcelColumn(4, this.checked)"><span class="checkmark"></span></label>
                                 </div>
-                                <label class="check-container" style="color: #4ade80; font-weight: 700;">⭐ Đánh dấu đã thuộc <input type="checkbox" onchange="toggleExcelMarkers(this.checked)"><span class="checkmark"></span></label>
+                                <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                                    <button class="pao-btn" style="flex: 1; border-color: #6366f1; color: #818cf8; font-weight: 700;" onclick="toggleAllExcelValues()">ẨN/HIỆN GIÁ TRỊ</button>
+                                    <button class="pao-btn" id="group-toggle-btn" style="flex: 1" onclick="toggleExcelGrouping()">📁 Phân nhóm 10</button>
+                                </div>
+                                <label class="check-container" style="color: #4ade80; font-weight: 800; border: 1px solid rgba(74, 222, 128, 0.2); padding: 0.75rem;">
+                                    ⭐ ĐÁNH DẤU LUYỆN TẬP
+                                    <input type="checkbox" onchange="toggleExcelMarkers(this.checked)">
+                                    <span class="checkmark"></span>
+                                </label>
                             </div>
                         </div>
 
                         <!-- Column 3: Row Limits -->
-                        <div>
-                            <span class="control-group-title">📏 Giới hạn & Tìm kiếm</span>
-                            <div style="display: flex; flex-direction: column; gap: 1.25rem;">
-                                <div style="display: flex; gap: 0.75rem;">
-                                    <button class="pao-btn" style="flex: 1; justify-content: center;" onclick="limitExcelRows(10)">10 hàng</button>
-                                    <button class="pao-btn" style="flex: 1; justify-content: center;" onclick="limitExcelRows(20, true)">20 Random</button>
+                        <div style="background: rgba(255,255,255,0.02); padding: 2rem; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05);">
+                            <span class="control-group-title">
+                                <svg style="width: 20px; height: 20px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                GIỚI HẠN & TÌM KIẾM
+                            </span>
+                            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                                <div style="display: flex; gap: 1rem;">
+                                    <button class="pao-btn" style="flex: 1" onclick="limitExcelRows(10)">Hàng 1-10</button>
+                                    <button class="pao-btn" style="flex: 1" onclick="limitExcelRows(20, true)">20 Hàng Ngẫu</button>
                                 </div>
-                                <div style="display: flex; gap: 0.75rem;">
-                                    <input type="number" id="custom-row-count" placeholder="Nhập số dòng..." style="background: rgba(0,0,0,0.3); border: 1px solid var(--pao-border-glass); border-radius: 12px; padding: 0.75rem; color: #fff; flex: 1; outline: none; font-family: Outfit;">
-                                    <button class="pao-btn action-btn" onclick="limitExcelRows(document.getElementById('custom-row-count').value, true)">Lấy hàng</button>
+                                <div style="display: flex; gap: 1rem;">
+                                    <input type="number" id="custom-row-count" placeholder="Số lượng..." style="background: rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 0.75rem; color: #fff; width: 100px; font-family: Outfit; outline: none; transition: 0.3s;" onfocus="this.style.borderColor='#6366f1'">
+                                    <button class="pao-btn active" style="flex: 1" onclick="limitExcelRows(document.getElementById('custom-row-count').value, true)">Lấy hàng ngẫu nhiên</button>
                                 </div>
                                 <div style="position: relative;">
-                                    <span style="position: absolute; left: 14px; top: 12px; opacity: 0.5;">🔍</span>
-                                    <input type="text" id="excel-search" placeholder="Số, tên, hành động hoặc vật thể..." oninput="searchExcel(this.value)" style="background: rgba(0,0,0,0.3); border: 1px solid var(--pao-border-glass); border-radius: 14px; padding: 0.75rem 0.75rem 0.75rem 2.5rem; color: #fff; width: 100%; outline: none; font-family: Outfit;">
+                                    <input type="text" id="excel-search" placeholder="Tìm nhanh (số, tên, vật...)" oninput="searchExcel(this.value)" style="width: 100%; border-radius: 18px; padding-left: 3.5rem;">
+                                    <svg style="position: absolute; left: 16px; top: 16px; width: 22px; height: 22px; opacity: 0.4;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div id="pao-excel-container" style="padding-top: 2rem;">
-                    <!-- Table or Grid populated by JS -->
+                
+                <div id="pao-excel-container" style="margin-top: 4rem; min-height: 400px; position: relative;">
+                    <!-- Content populated by JS -->
                 </div>
             </div>
 
