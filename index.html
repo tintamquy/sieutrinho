@@ -517,11 +517,14 @@
                     </div>
 
                     <!-- Options Row -->
-                    <div class="control-group">
-                        <div class="control-group-title">🛠️ Tùy chọn</div>
-                        <div class="pao-btn-group">
-                            <button id="group-toggle-btn" class="pao-btn" onclick="toggleExcelGroupBy10()">📁 Nhóm 10</button>
-                            <button id="hide-all-btn" class="pao-btn" onclick="toggleAllExcelValues()">👁️ Ẩn/Hiện</button>
+                    <div class="control-group" style="width: 100%;">
+                        <div class="control-group-title">🛠️ Phân nhóm & Tiện ích</div>
+                        <div class="pao-btn-group" style="flex-wrap: wrap;">
+                            <button class="pao-btn group-btn active" data-group="0" onclick="setExcelGroupBy(0)">Mặc định</button>
+                            <button class="pao-btn group-btn" data-group="10" onclick="setExcelGroupBy(10)">Nhóm 10</button>
+                            <button class="pao-btn group-btn" data-group="20" onclick="setExcelGroupBy(20)">Nhóm 20</button>
+                            <button class="pao-btn group-btn" data-group="50" onclick="setExcelGroupBy(50)">Nhóm 50</button>
+                            <button class="pao-btn" onclick="toggleAllExcelValues()">👁️ Ẩn/Hiện Giá Trị</button>
                             <button class="pao-btn" onclick="resetExcelState()">🔄 Reset</button>
                         </div>
                     </div>

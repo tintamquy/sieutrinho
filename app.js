@@ -2089,12 +2089,12 @@ let excelTableState = {
     markerMode: false,
     allValuesHidden: false,
     search: '',
-    groupBy10: false,
+    groupBy: 0, // 0 (off), 10, 20...
     viewMode: 'table' // table or grid
 };
 
 // Global functions for UI calls
-window.filterExcel = function(type) {
+window.updateExcelFilter = function(type) {
     excelTableState.filter = type;
     renderPAOExcelTable();
 };
@@ -2128,27 +2128,32 @@ window.toggleExcelMarkers = function(enabled) {
     renderPAOExcelTable();
 };
 
-window.searchExcel = function(query) {
+window.updateExcelSearch = function(query) {
     excelTableState.search = query.toLowerCase();
     renderPAOExcelTable();
 };
 
-window.switchExcelView = function(mode) {
+window.updateExcelView = function(mode) {
     excelTableState.viewMode = mode;
     
     // Update UI buttons
-    const tableBtn = document.getElementById('view-mode-table');
-    const gridBtn = document.getElementById('view-mode-grid');
-    if (tableBtn) tableBtn.classList.toggle('active', mode === 'table');
-    if (gridBtn) gridBtn.classList.toggle('active', mode === 'grid');
+    const btns = document.querySelectorAll('.view-btn');
+    btns.forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.view === mode);
+    });
     
     renderPAOExcelTable();
 };
 
-window.toggleExcelGrouping = function() {
-    excelTableState.groupBy10 = !excelTableState.groupBy10;
-    const btn = document.getElementById('group-toggle-btn');
-    if (btn) btn.classList.toggle('active', excelTableState.groupBy10);
+window.setExcelGroupBy = function(num) {
+    excelTableState.groupBy = parseInt(num) || 0;
+    
+    // Update active class on buttons
+    const btns = document.querySelectorAll('.group-btn');
+    btns.forEach(btn => {
+        btn.classList.toggle('active', parseInt(btn.dataset.group) === excelTableState.groupBy);
+    });
+    
     renderPAOExcelTable();
 };
 
@@ -2162,22 +2167,19 @@ window.resetExcelState = function() {
         markerMode: false,
         allValuesHidden: false,
         search: '',
-        groupBy10: false,
+        groupBy: 0,
         viewMode: 'table'
     };
     
     // Reset inputs
-    const searchInput = document.getElementById('excel-search');
+    const searchInput = document.getElementById('pao-excel-search');
     if (searchInput) searchInput.value = '';
-    const limitInput = document.getElementById('custom-row-count');
-    if (limitInput) limitInput.value = '';
-    const mainCheckboxes = document.querySelectorAll('#pao-excel-controls input[type="checkbox"]');
-    mainCheckboxes.forEach(cb => cb.checked = true);
     
     // Reset buttons UI
-    switchExcelView('table');
-    filterExcel('all');
+    updateExcelView('table');
+    updateExcelFilter('all');
     sortExcel('asc');
+    setExcelGroupBy(0);
 };
 
 function updateControlUI(group, activeVal) {
@@ -2286,12 +2288,13 @@ function renderPAOExcelTable() {
         });
         html += '</div>';
     } else {
-        // Table View (Supporting Group By 10)
+        // Table View (Supporting Custom Group By)
         let processedCodes = allCodes;
-        if (excelTableState.groupBy10) {
-            for (let i = 0; i < processedCodes.length; i += 10) {
-                const chunk = processedCodes.slice(i, i + 10);
-                html += `<div class="excel-station-header">Trạm: ${chunk[0]} - ${chunk[chunk.length-1]}</div>`;
+        if (excelTableState.groupBy > 0) {
+            const step = excelTableState.groupBy;
+            for (let i = 0; i < processedCodes.length; i += step) {
+                const chunk = processedCodes.slice(i, i + step);
+                html += `<div class="excel-station-header">Nhóm: ${chunk[0]} - ${chunk[chunk.length-1]}</div>`;
                 html += renderSingleTable(chunk, isPaoq);
             }
         } else {
