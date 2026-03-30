@@ -2089,12 +2089,15 @@ let excelTableState = {
     markerMode: false,
     allValuesHidden: false,
     search: '',
-    groupBy: 0, // 0 (off), 10, 20...
-    viewMode: 'table' // table or grid
+    groupBy: 0, 
+    viewMode: 'table',
+    isPracticeMode: false,
+    practiceCodes: []
 };
 
 // Global functions for UI calls
 window.updateExcelFilter = function(type) {
+    excelTableState.isPracticeMode = false; // Turn off practice mode when changing filters
     excelTableState.filter = type;
     renderPAOExcelTable();
 };
@@ -2168,7 +2171,9 @@ window.resetExcelState = function() {
         allValuesHidden: false,
         search: '',
         groupBy: 0,
-        viewMode: 'table'
+        viewMode: 'table',
+        isPracticeMode: false,
+        practiceCodes: []
     };
     
     // Reset inputs
@@ -2180,6 +2185,26 @@ window.resetExcelState = function() {
     updateExcelFilter('all');
     sortExcel('asc');
     setExcelGroupBy(0);
+};
+
+// --- NEW PRACTICE MODE LOGIC ---
+window.startRandomPractice = function() {
+    const input = document.getElementById('practice-count-input');
+    const count = parseInt(input ? input.value : 10) || 10;
+    
+    // Get all possible codes
+    const singleDigitCodes = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const numericCodes = [];
+    for (let i = 0; i <= 99; i++) { numericCodes.push(String(i).padStart(2, '0')); }
+    const specialCodes = ['JC', 'JR', 'JT', 'JB', 'QC', 'QR', 'QT', 'QB', 'KC', 'KR', 'KT', 'KB'];
+    const allPossible = [...singleDigitCodes, ...numericCodes, ...specialCodes];
+    
+    // Pick unique random codes
+    const shuffled = [...allPossible].sort(() => Math.random() - 0.5);
+    excelTableState.practiceCodes = shuffled.slice(0, count);
+    excelTableState.isPracticeMode = true;
+    
+    renderPAOExcelTable();
 };
 
 function updateControlUI(group, activeVal) {
@@ -2202,29 +2227,35 @@ function renderPAOExcelTable() {
     const container = document.getElementById('pao-excel-container');
     if (!container) return;
     
-    // Get all PAO codes - Including 0-9 as requested
-    const singleDigitCodes = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    const numericCodes = [];
-    for (let i = 0; i <= 99; i++) {
-        numericCodes.push(String(i).padStart(2, '0'));
-    }
-    const specialCodes = ['JC', 'JR', 'JT', 'JB', 'QC', 'QR', 'QT', 'QB', 'KC', 'KR', 'KT', 'KB'];
+    let allCodes = [];
     
-    let allCodes = [...singleDigitCodes, ...numericCodes, ...specialCodes];
+    if (excelTableState.isPracticeMode) {
+        // Use fixed practice list
+        allCodes = [...excelTableState.practiceCodes];
+    } else {
+        // Get all PAO codes - Including 0-9 as requested
+        const singleDigitCodes = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        const numericCodes = [];
+        for (let i = 0; i <= 99; i++) {
+            numericCodes.push(String(i).padStart(2, '0'));
+        }
+        const specialCodes = ['JC', 'JR', 'JT', 'JB', 'QC', 'QR', 'QT', 'QB', 'KC', 'KR', 'KT', 'KB'];
+        allCodes = [...singleDigitCodes, ...numericCodes, ...specialCodes];
 
-    // --- APPLY FILTERS ---
-    if (excelTableState.filter === 'even') {
-        allCodes = allCodes.filter(code => parseInt(code) % 2 === 0);
-    } else if (excelTableState.filter === 'odd') {
-        allCodes = allCodes.filter(code => parseInt(code) % 2 !== 0);
-    } else if (excelTableState.filter === 'random') {
-        allCodes = allCodes.sort(() => Math.random() - 0.5);
-    }
+        // --- APPLY FILTERS (Normal Mode) ---
+        if (excelTableState.filter === 'even') {
+            allCodes = allCodes.filter(code => parseInt(code) % 2 === 0);
+        } else if (excelTableState.filter === 'odd') {
+            allCodes = allCodes.filter(code => parseInt(code) % 2 !== 0);
+        } else if (excelTableState.filter === 'random') {
+            allCodes = allCodes.sort(() => Math.random() - 0.5);
+        }
 
-    // --- APPLY SORT ---
-    if (excelTableState.filter !== 'random') {
-        if (excelTableState.sort === 'desc') {
-            allCodes = allCodes.reverse();
+        // --- APPLY SORT ---
+        if (excelTableState.filter !== 'random') {
+            if (excelTableState.sort === 'desc') {
+                allCodes = allCodes.reverse();
+            }
         }
     }
 

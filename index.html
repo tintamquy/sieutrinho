@@ -516,29 +516,38 @@
                         </div>
                     </div>
 
-                    <!-- Options Row -->
+                    <!-- Actions & Practice Row -->
                     <div class="control-group" style="width: 100%;">
-                        <div class="control-group-title">🛠️ Phân nhóm & Tiện ích</div>
-                        <div class="pao-btn-group" style="flex-wrap: wrap;">
-                            <button class="pao-btn group-btn active" data-group="0" onclick="setExcelGroupBy(0)">Mặc định</button>
-                            <button class="pao-btn group-btn" data-group="10" onclick="setExcelGroupBy(10)">Nhóm 10</button>
-                            <button class="pao-btn group-btn" data-group="20" onclick="setExcelGroupBy(20)">Nhóm 20</button>
-                            <button class="pao-btn group-btn" data-group="50" onclick="setExcelGroupBy(50)">Nhóm 50</button>
-                            <button class="pao-btn" onclick="toggleAllExcelValues()">👁️ Ẩn/Hiện Giá Trị</button>
-                            <button class="pao-btn" onclick="resetExcelState()">🔄 Reset</button>
+                        <div class="control-group-title">🎓 Chế độ Luyện tập / Kiểm tra</div>
+                        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                            <div style="display: flex; align-items: center; background: #020617; padding: 4px 10px; border-radius: 8px; border: 1px solid #334155;">
+                                <span style="font-size: 0.8rem; color: #94a3b8; margin-right: 8px;">Số lượng:</span>
+                                <input type="number" id="practice-count-input" value="10" min="1" max="120" 
+                                       style="width: 60px; background: transparent; border: none; color: #fbbf24; font-weight: 800; outline: none; font-size: 1rem;">
+                            </div>
+                            <button class="pao-btn" onclick="startRandomPractice()" style="background: #4f46e5; border-color: #4f46e5; flex: none;">Bắt đầu Kiểm tra</button>
+                            <button class="pao-btn" onclick="toggleAllExcelValues()" style="flex: none;">👁️ Ẩn/Hiện Giá Trị</button>
+                            <button class="pao-btn" onclick="resetExcelState()" style="flex: none;">🔄 Toàn bộ danh sách</button>
                         </div>
                     </div>
 
                     <!-- View & Columns Row -->
                     <div class="control-group" style="width: 100%;">
                         <div class="control-group-title">📋 Cấu trúc & Cột hiển thị</div>
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 0.5rem;">
                             <div class="pao-btn-group" style="width: auto;">
                                 <button class="pao-btn view-btn active" data-view="table" onclick="updateExcelView('table')">Dạng Bảng</button>
                                 <button class="pao-btn view-btn" data-view="grid" onclick="updateExcelView('grid')">Dạng Lưới</button>
                             </div>
-                            <div class="pao-btn-group" style="width: auto; flex-wrap: wrap;">
-                                <button class="pao-btn col-toggle active" data-col="1" onclick="toggleExcelColumn(1)">Person</button>
+                            <div class="pao-btn-group" style="width: auto;">
+                                <button class="pao-btn group-btn active" data-group="0" onclick="setExcelGroupBy(0)">Mặc định</button>
+                                <button class="pao-btn group-btn" data-group="10" onclick="setExcelGroupBy(10)">Nhóm 10</button>
+                                <button class="pao-btn group-btn" data-group="20" onclick="setExcelGroupBy(20)">Nhóm 20</button>
+                                <button class="pao-btn group-btn" data-group="50" onclick="setExcelGroupBy(50)">Nhóm 50</button>
+                            </div>
+                        </div>
+                        <div class="pao-btn-group" style="width: auto; flex-wrap: wrap;">
+                            <button class="pao-btn col-toggle active" data-col="1" onclick="toggleExcelColumn(1)">Person</button>
                                 <button class="pao-btn col-toggle active" data-col="2" onclick="toggleExcelColumn(2)">Action</button>
                                 <button class="pao-btn col-toggle active" data-col="3" onclick="toggleExcelColumn(3)">Object</button>
                                 <button id="q-toggle-container" class="pao-btn col-toggle active" data-col="4" onclick="toggleExcelColumn(4)">Quote</button>
