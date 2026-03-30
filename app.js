@@ -2092,7 +2092,10 @@ let excelTableState = {
     groupBy: 0, 
     viewMode: 'table',
     isPracticeMode: false,
-    practiceCodes: []
+    practiceCodes: [],
+    // New game state
+    flashcardIndex: 0,
+    quizData: null
 };
 
 // Global functions for UI calls
@@ -2214,19 +2217,140 @@ function updateControlUI(group, activeVal) {
     // Highlight active buttons if needed
 }
 
-// Global learned items storage
-let learnedItems = JSON.parse(localStorage.getItem('learnedItems') || '{}');
-window.toggleLearned = function(code) {
-    learnedItems[code] = !learnedItems[code];
-    localStorage.setItem('learnedItems', JSON.stringify(learnedItems));
+// --- FLASHCARD MODE ---
+function renderFlashcardMode(container) {
+    const codes = excelTableState.isPracticeMode ? excelTableState.practiceCodes : getFullPaoCodes();
+    if (!codes.length) {
+        container.innerHTML = '<div class="pao-subtitle">Hãy chọn danh sách hoặc nhấn "Bắt đầu Kiểm tra" trước.</div>';
+        return;
+    }
+    
+    const idx = excelTableState.flashcardIndex % codes.length;
+    const code = codes[idx];
+    const pao = getPAO(code);
+    
+    container.innerHTML = `
+        <div class="pao-game-card">
+            <div style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 1rem;">Thẻ ${idx + 1} / ${codes.length}</div>
+            <div class="pao-game-code">${code}</div>
+            <div id="flashcard-content">
+                <button class="pao-game-reveal-btn" onclick="revealFlashcard('person')">Hiện Person</button>
+                <button class="pao-game-reveal-btn" onclick="revealFlashcard('action')">Hiện Action</button>
+                <button class="pao-game-reveal-btn" onclick="revealFlashcard('object')">Hiện Object</button>
+            </div>
+            <div class="pao-game-nav">
+                <button class="pao-btn" onclick="moveFlashcard(-1)">⬅ Trước</button>
+                <button class="pao-btn" onclick="moveFlashcard(1)">Sau ➡</button>
+            </div>
+        </div>
+    `;
+}
+
+window.revealFlashcard = function(type) {
+    const codes = excelTableState.isPracticeMode ? excelTableState.practiceCodes : getFullPaoCodes();
+    const code = codes[excelTableState.flashcardIndex % codes.length];
+    const pao = getPAO(code);
+    const content = document.getElementById('flashcard-content');
+    if (pao && content) {
+        content.innerHTML = `<div class="pao-game-value">${pao[type]}</div>
+        <button class="pao-btn" style="margin-top: 1rem;" onclick="renderPAOExcelTable()">Quay lại</button>`;
+    }
+};
+
+window.moveFlashcard = function(dir) {
+    const codes = excelTableState.isPracticeMode ? excelTableState.practiceCodes : getFullPaoCodes();
+    excelTableState.flashcardIndex = (excelTableState.flashcardIndex + dir + codes.length) % codes.length;
     renderPAOExcelTable();
 };
+
+// --- QUIZ MODE ---
+function renderQuizMode(container) {
+    const codes = excelTableState.isPracticeMode ? excelTableState.practiceCodes : getFullPaoCodes();
+    if (codes.length < 4) {
+        container.innerHTML = '<div class="pao-subtitle">Cần ít nhất 4 mã để chơi Quiz. Hãy nhấn "Bắt đầu Kiểm tra" với số lượng lớn hơn.</div>';
+        return;
+    }
+    
+    if (!excelTableState.quizData) {
+        generateNewQuiz();
+    }
+    
+    const quiz = excelTableState.quizData;
+    container.innerHTML = `
+        <div class="pao-game-card">
+            <div style="color: #6366f1; font-weight: 800; margin-bottom: 1rem;">CÂU HỎI TRẮC NGHIỆM</div>
+            <div class="pao-game-code">${quiz.questionCode}</div>
+            <div style="color: #94a3b8; margin-bottom: 1.5rem;">${quiz.typeLabel} của mã này là gì?</div>
+            <div class="quiz-options">
+                ${quiz.options.map((opt, i) => `
+                    <div class="quiz-option" onclick="checkQuizAnswer(${i})">${opt}</div>
+                `).join('')}
+            </div>
+            <button class="pao-btn" style="margin-top: 2rem;" onclick="generateNewQuiz()">Đổi câu hỏi 🔄</button>
+        </div>
+    `;
+}
+
+window.generateNewQuiz = function() {
+    const codes = excelTableState.isPracticeMode ? excelTableState.practiceCodes : getFullPaoCodes();
+    const questionCode = codes[Math.floor(Math.random() * codes.length)];
+    const types = ['person', 'action', 'object'];
+    const type = types[Math.floor(Math.random() * types.length)];
+    const typeLabel = type.charAt(0).toUpperCase() + type.slice(1);
+    
+    const correctPao = getPAO(questionCode);
+    const correctAnswer = correctPao[type];
+    
+    // Get 3 wrong answers
+    const allPossiblePao = getFullPaoCodes().map(c => getPAO(c)).filter(p => p && p[type] !== correctAnswer);
+    const shuffledWrong = allPossiblePao.sort(() => Math.random() - 0.5);
+    const options = [correctAnswer, shuffledWrong[0][type], shuffledWrong[1][type], shuffledWrong[2][type]].sort(() => Math.random() - 0.5);
+    
+    excelTableState.quizData = {
+        questionCode,
+        type,
+        typeLabel,
+        correctAnswer,
+        options
+    };
+    renderPAOExcelTable();
+};
+
+window.checkQuizAnswer = function(idx) {
+    const quiz = excelTableState.quizData;
+    const options = document.querySelectorAll('.quiz-option');
+    if (quiz.options[idx] === quiz.correctAnswer) {
+        options[idx].classList.add('correct');
+        playSound('correct');
+        setTimeout(generateNewQuiz, 1000);
+    } else {
+        options[idx].classList.add('wrong');
+        playSound('wrong');
+    }
+};
+
+function getFullPaoCodes() {
+    const singleDigitCodes = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const numericCodes = [];
+    for (let i = 0; i <= 99; i++) { numericCodes.push(String(i).padStart(2, '0')); }
+    const specialCodes = ['JC', 'JR', 'JT', 'JB', 'QC', 'QR', 'QT', 'QB', 'KC', 'KR', 'KT', 'KB'];
+    return [...singleDigitCodes, ...numericCodes, ...specialCodes];
+}
 
 // Render PAO Excel table
 function renderPAOExcelTable() {
     const container = document.getElementById('pao-excel-container');
     if (!container) return;
     
+    // Clear and handle different view modes
+    if (excelTableState.viewMode === 'card') {
+        renderFlashcardMode(container);
+        return;
+    }
+    if (excelTableState.viewMode === 'quiz') {
+        renderQuizMode(container);
+        return;
+    }
     let allCodes = [];
     
     if (excelTableState.isPracticeMode) {

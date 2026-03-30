@@ -477,11 +477,42 @@
                     .pao-label { color: #64748b; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.1rem; }
                     .pao-card-value { color: #f1f5f9; font-weight: 500; }
                     
-                    @media (max-width: 600px) {
-                        .pao-controls-panel { padding: 1rem; gap: 1rem; }
-                        .pao-excel-section h2 { font-size: 1.5rem; }
-                        .control-group { min-width: 100%; }
+                    /* Mobile & Game Optimizations */
+                    @media (max-width: 768px) {
+                        .pao-controls-panel { padding: 0.8rem; gap: 0.8rem; }
+                        .control-group { min-width: 100%; margin-bottom: 0.5rem; }
+                        .pao-excel-section h2 { font-size: 1.4rem; }
+                        .pao-btn { padding: 0.6rem 0.4rem; font-size: 0.78rem; }
+                        .pao-excel-table th, .pao-excel-table td { padding: 0.6rem 0.4rem; font-size: 0.8rem; }
+                        .excel-station-header { font-size: 0.85rem; padding: 0.5rem 0.8rem; }
+                        .pao-game-code { font-size: 3.5rem; }
+                        .quiz-options { grid-template-columns: 1fr; }
                     }
+
+                    /* Flashcard & Quiz UI */
+                    .pao-game-card {
+                        background: #1e293b;
+                        border: 2px solid #334155;
+                        border-radius: 20px;
+                        padding: 2rem;
+                        text-align: center;
+                        max-width: 450px;
+                        margin: 1.5rem auto;
+                        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+                    }
+                    .pao-game-code { font-size: 4.5rem; font-weight: 900; color: #fbbf24; margin-bottom: 1.5rem; }
+                    .pao-game-reveal-btn { background: #4f46e5; color: white; padding: 0.8rem 1.2rem; border-radius: 10px; margin: 0.4rem; font-weight: 700; width: 100%; max-width: 280px; border: none; cursor: pointer; display: block; margin: 0.5rem auto; }
+                    .pao-game-reveal-btn:hover { background: #4338ca; }
+                    .pao-game-value { font-size: 1.6rem; font-weight: 700; color: #fff; margin: 1.2rem 0; min-height: 2.2rem; animation: slideIn 0.3s ease-out; }
+                    .pao-game-nav { display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; }
+                    
+                    .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: 1.5rem; }
+                    .quiz-option { background: #0f172a; border: 1px solid #334155; padding: 0.9rem; border-radius: 10px; cursor: pointer; transition: 0.2s; color: #e2e8f0; font-weight: 600; text-align: center; }
+                    .quiz-option:hover { border-color: #4f46e5; background: rgba(79,70,229,0.1); }
+                    .quiz-option.correct { background: #10b981 !important; border-color: #10b981; color: white; }
+                    .quiz-option.wrong { background: #ef4444 !important; border-color: #ef4444; color: white; }
+                    
+                    @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
                 </style>
 
                 <h2>PAO EXCEL PRO</h2>
@@ -531,19 +562,17 @@
                         </div>
                     </div>
 
-                    <!-- View & Columns Row -->
-                    <div class="control-group" style="width: 100%;">
-                        <div class="control-group-title">📋 Cấu trúc & Cột hiển thị</div>
-                        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 0.8rem;">
                             <div class="pao-btn-group" style="width: auto;">
-                                <button class="pao-btn view-btn active" data-view="table" onclick="updateExcelView('table')">Dạng Bảng</button>
-                                <button class="pao-btn view-btn" data-view="grid" onclick="updateExcelView('grid')">Dạng Lưới</button>
+                                <button class="pao-btn view-btn active" data-view="table" onclick="updateExcelView('table')">📊 Bảng</button>
+                                <button class="pao-btn view-btn" data-view="grid" onclick="updateExcelView('grid')">📱 Lưới</button>
+                                <button class="pao-btn view-btn" data-view="card" onclick="updateExcelView('card')">🃏 Thẻ</button>
+                                <button class="pao-btn view-btn" data-view="quiz" onclick="updateExcelView('quiz')">✍️ Quiz</button>
                             </div>
                             <div class="pao-btn-group" style="width: auto;">
-                                <button class="pao-btn group-btn active" data-group="0" onclick="setExcelGroupBy(0)">Mặc định</button>
+                                <button class="pao-btn group-btn active" data-group="0" onclick="setExcelGroupBy(0)">Bản gốc</button>
                                 <button class="pao-btn group-btn" data-group="10" onclick="setExcelGroupBy(10)">Nhóm 10</button>
                                 <button class="pao-btn group-btn" data-group="20" onclick="setExcelGroupBy(20)">Nhóm 20</button>
-                                <button class="pao-btn group-btn" data-group="50" onclick="setExcelGroupBy(50)">Nhóm 50</button>
                             </div>
                         </div>
                         <div class="pao-btn-group" style="width: auto; flex-wrap: wrap;">
