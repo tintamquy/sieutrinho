@@ -307,113 +307,244 @@
                 </div>
             </div>
 
+            <!-- PAO EXCEL PRO SECTION -->
             <div id="pao-excel-section" class="reference-section pao-excel-section hidden">
-                <div style="text-align: center; margin-bottom: 4rem;">
-                    <h2 style="font-size: 3rem; font-weight: 900; background: linear-gradient(to right, #6366f1, #a855f7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.5rem; letter-spacing: -2px;">PAO EXCEL PRO</h2>
-                    <p style="color: #94a3b8; font-size: 1.1rem; font-weight: 300;">Hệ thống quản lý dữ liệu siêu trí nhớ tối ưu</p>
-                </div>
+                <style>
+                    #pao-excel-section {
+                        --pao-primary: #4f46e5;
+                        --pao-bg: #1e293b;
+                        --pao-border: #334155;
+                        --pao-text: #f1f5f9;
+                        padding: 1rem;
+                    }
 
-                <div id="pao-excel-controls" class="pao-controls-panel">
+                    .pao-excel-section h2 {
+                        text-align: center;
+                        font-size: 2rem;
+                        color: #f9ca24;
+                        margin-top: 1rem;
+                        margin-bottom: 0.5rem;
+                    }
+
+                    .pao-subtitle {
+                        text-align: center;
+                        color: #94a3b8;
+                        font-size: 0.95rem;
+                        margin-bottom: 2rem;
+                    }
+
+                    .pao-controls-panel {
+                        background: #0f172a;
+                        border: 1px solid var(--pao-border);
+                        border-radius: 12px;
+                        padding: 1.5rem;
+                        margin-bottom: 2rem;
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 1.5rem;
+                    }
+
+                    .control-group {
+                        flex: 1;
+                        min-width: 250px;
+                    }
+
+                    .control-group-title {
+                        font-size: 0.8rem;
+                        font-weight: 700;
+                        color: #6366f1;
+                        margin-bottom: 0.75rem;
+                        text-transform: uppercase;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                    }
+
+                    .pao-btn-group {
+                        display: flex;
+                        gap: 5px;
+                        background: rgba(0,0,0,0.2);
+                        padding: 4px;
+                        border-radius: 8px;
+                    }
+
+                    .pao-btn {
+                        background: transparent;
+                        border: 1px solid transparent;
+                        color: #94a3b8;
+                        padding: 0.5rem 0.8rem;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        font-size: 0.85rem;
+                        transition: 0.2s;
+                        flex: 1;
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-weight: 600;
+                    }
+
+                    .pao-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
+                    .pao-btn.active { background: var(--pao-primary); border-color: var(--pao-primary); color: #fff; }
+
+                    .col-toggle { border: 1px solid #334155; }
+                    .col-toggle.active { background: #10b981; border-color: #10b981; }
+
+                    /* Table Styles */
+                    .table-responsive { overflow-x: auto; margin-bottom: 1rem; }
+                    .pao-excel-table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        background: #1e293b;
+                        border-radius: 8px;
+                        overflow: hidden;
+                        margin-top: 1rem;
+                    }
+
+                    .pao-excel-table th, .pao-excel-table td {
+                        padding: 1rem 0.8rem;
+                        text-align: left;
+                        border-bottom: 1px solid #334155;
+                    }
+
+                    .pao-excel-table th {
+                        background: #334155;
+                        color: #94a3b8;
+                        font-size: 0.75rem;
+                        text-transform: uppercase;
+                        font-weight: 700;
+                        letter-spacing: 0.05em;
+                    }
+
+                    .pao-excel-table tr:hover { background: rgba(255,255,255,0.03); }
+
+                    .excel-station-header {
+                        background: linear-gradient(90deg, #4f46e5, transparent);
+                        color: #fff;
+                        padding: 0.6rem 1rem;
+                        font-weight: 800;
+                        border-radius: 4px;
+                        margin: 2rem 0 0.5rem;
+                        border-left: 4px solid #f9ca24;
+                    }
+
+                    .code-cell {
+                        font-weight: 900;
+                        color: #fbbf24 !important;
+                        cursor: pointer;
+                        background: rgba(251, 191, 36, 0.05);
+                        width: 60px;
+                        text-align: center !important;
+                    }
+
+                    .hidden-value { color: transparent !important; filter: blur(4px); opacity: 0.5; cursor: pointer; }
+                    .hide-column { display: none !important; }
+
+                    /* Grid View for Mobile */
+                    .pao-excel-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                        gap: 1rem;
+                    }
+
+                    .pao-card {
+                        background: #0f172a;
+                        border: 1px solid #334155;
+                        border-radius: 12px;
+                        padding: 1rem;
+                        transition: 0.2s;
+                    }
+                    .pao-card:hover { border-color: #4f46e5; }
+
+                    .pao-card-code {
+                        font-size: 1.5rem;
+                        font-weight: 900;
+                        color: #fbbf24;
+                        text-align: center;
+                        margin-bottom: 0.75rem;
+                        padding-bottom: 0.5rem;
+                        border-bottom: 1px solid #334155;
+                        cursor: pointer;
+                    }
+
+                    .pao-card-item {
+                        margin-bottom: 0.5rem;
+                        font-size: 0.85rem;
+                        display: flex;
+                        flex-direction: column;
+                    }
+
+                    .pao-label { color: #64748b; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.1rem; }
+                    .pao-card-value { color: #f1f5f9; font-weight: 500; }
                     
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; flex-wrap: wrap; gap: 2rem;">
-                         <div class="pao-btn-group" style="padding: 6px; background: rgba(0,0,0,0.3); border-radius: 18px;">
-                            <button id="view-mode-table" class="pao-btn active" onclick="switchExcelView('table')">
-                                <svg style="width: 18px; height: 18px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
-                                📊 Dạng Bảng
-                            </button>
-                            <button id="view-mode-grid" class="pao-btn" onclick="switchExcelView('grid')">
-                                <svg style="width: 18px; height: 18px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"></path></svg>
-                                📱 Dạng Lưới (Mobile)
-                            </button>
-                         </div>
-                         
-                         <div style="display: flex; align-items: center; gap: 1.5rem;">
-                            <div class="pao-btn-group" style="padding: 6px; background: rgba(0,0,0,0.3); border-radius: 18px;">
-                                <button class="pao-btn pao-toggle-btn active" data-sys="paoq" onclick="window.togglePaoSystem('paoq')">🧠 PAOQ (Quote)</button>
-                                <button class="pao-btn pao-toggle-btn" data-sys="pao" onclick="window.togglePaoSystem('pao')">🎴 PAO Gốc</button>
-                            </div>
-                            <button class="pao-btn" style="border: 1px solid rgba(239, 68, 68, 0.4); color: #f87171; background: rgba(239, 68, 68, 0.05);" onclick="resetExcelState()">
-                                <svg style="width: 18px; height: 18px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                                Reset
-                            </button>
-                         </div>
-                    </div>
+                    @media (max-width: 600px) {
+                        .pao-controls-panel { padding: 1rem; gap: 1rem; }
+                        .pao-excel-section h2 { font-size: 1.5rem; }
+                        .control-group { min-width: 100%; }
+                    }
+                </style>
 
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 4rem;">
-                        <!-- Column 1: Numbers & Sort -->
-                        <div style="background: rgba(255,255,255,0.02); padding: 2rem; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05);">
-                            <span class="control-group-title">
-                                <svg style="width: 20px; height: 20px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path></svg>
-                                THỨ TỰ & LỌC SỐ
-                            </span>
-                            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                                <div class="pao-btn-group" style="width: 100%;">
-                                    <button class="pao-btn filter-btn active" data-filter="all" onclick="filterExcel('all')" style="flex:1">Tất cả</button>
-                                    <button class="pao-btn filter-btn" data-filter="even" onclick="filterExcel('even')" style="flex:1">Chẵn</button>
-                                    <button class="pao-btn filter-btn" data-filter="odd" onclick="filterExcel('odd')" style="flex:1">Lẻ</button>
-                                    <button class="pao-btn filter-btn" data-filter="random" onclick="filterExcel('random')" style="flex:1">🎲</button>
-                                </div>
-                                <div class="pao-btn-group" style="width: 100%;">
-                                    <button class="pao-btn sort-btn active" data-sort="asc" onclick="sortExcel('asc')" style="flex:1">⬆️ Thứ tự thuận</button>
-                                    <button class="pao-btn sort-btn" data-sort="desc" onclick="sortExcel('desc')" style="flex:1">⬇️ Thứ tự ngược</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Column 2: Visibility & Display -->
-                        <div style="background: rgba(255,255,255,0.02); padding: 2rem; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05);">
-                            <span class="control-group-title">
-                                <svg style="width: 20px; height: 20px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
-                                CHẾ ĐỘ HIỂN THỊ
-                            </span>
-                            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: space-between;">
-                                    <label class="check-container">Person <input type="checkbox" checked onchange="toggleExcelColumn(1, this.checked)"><span class="checkmark"></span></label>
-                                    <label class="check-container">Action <input type="checkbox" checked onchange="toggleExcelColumn(2, this.checked)"><span class="checkmark"></span></label>
-                                </div>
-                                <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: space-between;">
-                                    <label class="check-container">Object <input type="checkbox" checked onchange="toggleExcelColumn(3, this.checked)"><span class="checkmark"></span></label>
-                                    <label class="check-container" id="q-toggle-container">Quote <input type="checkbox" checked onchange="toggleExcelColumn(4, this.checked)"><span class="checkmark"></span></label>
-                                </div>
-                                <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
-                                    <button class="pao-btn" style="flex: 1; border-color: #6366f1; color: #818cf8; font-weight: 700;" onclick="toggleAllExcelValues()">ẨN/HIỆN GIÁ TRỊ</button>
-                                    <button class="pao-btn" id="group-toggle-btn" style="flex: 1" onclick="toggleExcelGrouping()">📁 Phân nhóm 10</button>
-                                </div>
-                                <label class="check-container" style="color: #4ade80; font-weight: 800; border: 1px solid rgba(74, 222, 128, 0.2); padding: 0.75rem;">
-                                    ⭐ ĐÁNH DẤU LUYỆN TẬP
-                                    <input type="checkbox" onchange="toggleExcelMarkers(this.checked)">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Column 3: Row Limits -->
-                        <div style="background: rgba(255,255,255,0.02); padding: 2rem; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05);">
-                            <span class="control-group-title">
-                                <svg style="width: 20px; height: 20px" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                                GIỚI HẠN & TÌM KIẾM
-                            </span>
-                            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                                <div style="display: flex; gap: 1rem;">
-                                    <button class="pao-btn" style="flex: 1" onclick="limitExcelRows(10)">Hàng 1-10</button>
-                                    <button class="pao-btn" style="flex: 1" onclick="limitExcelRows(20, true)">20 Hàng Ngẫu</button>
-                                </div>
-                                <div style="display: flex; gap: 1rem;">
-                                    <input type="number" id="custom-row-count" placeholder="Số lượng..." style="background: rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1); border-radius: 14px; padding: 0.75rem; color: #fff; width: 100px; font-family: Outfit; outline: none; transition: 0.3s;" onfocus="this.style.borderColor='#6366f1'">
-                                    <button class="pao-btn active" style="flex: 1" onclick="limitExcelRows(document.getElementById('custom-row-count').value, true)">Lấy hàng ngẫu nhiên</button>
-                                </div>
-                                <div style="position: relative;">
-                                    <input type="text" id="excel-search" placeholder="Tìm nhanh (số, tên, vật...)" oninput="searchExcel(this.value)" style="width: 100%; border-radius: 18px; padding-left: 3.5rem;">
-                                    <svg style="position: absolute; left: 16px; top: 16px; width: 22px; height: 22px; opacity: 0.4;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <h2>PAO EXCEL PRO</h2>
+                <p class="pao-subtitle">Bảng mã hóa dữ liệu trí nhớ - Giao diện Classic tối ưu</p>
                 
-                <div id="pao-excel-container" style="margin-top: 4rem; min-height: 400px; position: relative;">
-                    <!-- Content populated by JS -->
+                <div class="pao-controls-panel">
+                    <!-- System & Search Row -->
+                    <div style="width: 100%; display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                        <div class="control-group" style="flex: 1;">
+                            <div class="control-group-title">⚙️ Hệ thống</div>
+                            <div class="pao-btn-group">
+                                <button class="pao-btn pao-toggle-btn active" data-sys="paoq" onclick="window.togglePaoSystem('paoq')">PAOQ</button>
+                                <button class="pao-btn pao-toggle-btn" data-sys="pao" onclick="window.togglePaoSystem('pao')">PAO</button>
+                            </div>
+                        </div>
+                        <div class="control-group" style="flex: 2; min-width: 300px;">
+                            <div class="control-group-title">🔍 Tìm kiếm nhanh</div>
+                            <input type="text" id="pao-excel-search" placeholder="Nhập mã, tên, hành động..." 
+                                   style="width: 100%; padding: 0.6rem 1rem; border-radius: 8px; border: 1px solid #334155; background: #020617; color: #fff; outline: none; transition: 0.2s;"
+                                   oninput="updateExcelSearch(this.value)" onfocus="this.style.borderColor='#4f46e5'">
+                        </div>
+                    </div>
+
+                    <!-- Filters Row -->
+                    <div class="control-group">
+                        <div class="control-group-title">📂 Phân loại</div>
+                        <div class="pao-btn-group">
+                            <button class="pao-btn filter-btn active" data-filter="all" onclick="updateExcelFilter('all')">Tất cả</button>
+                            <button class="pao-btn filter-btn" data-filter="even" onclick="updateExcelFilter('even')">Chẵn</button>
+                            <button class="pao-btn filter-btn" data-filter="odd" onclick="updateExcelFilter('odd')">Lẻ</button>
+                            <button class="pao-btn filter-btn" data-filter="random" onclick="updateExcelFilter('random')">🎲 Ngẫu</button>
+                        </div>
+                    </div>
+
+                    <!-- Options Row -->
+                    <div class="control-group">
+                        <div class="control-group-title">🛠️ Tùy chọn</div>
+                        <div class="pao-btn-group">
+                            <button id="group-toggle-btn" class="pao-btn" onclick="toggleExcelGroupBy10()">📁 Nhóm 10</button>
+                            <button id="hide-all-btn" class="pao-btn" onclick="toggleAllExcelValues()">👁️ Ẩn/Hiện</button>
+                            <button class="pao-btn" onclick="resetExcelState()">🔄 Reset</button>
+                        </div>
+                    </div>
+
+                    <!-- View & Columns Row -->
+                    <div class="control-group" style="width: 100%;">
+                        <div class="control-group-title">📋 Cấu trúc & Cột hiển thị</div>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <div class="pao-btn-group" style="width: auto;">
+                                <button class="pao-btn view-btn active" data-view="table" onclick="updateExcelView('table')">Dạng Bảng</button>
+                                <button class="pao-btn view-btn" data-view="grid" onclick="updateExcelView('grid')">Dạng Lưới</button>
+                            </div>
+                            <div class="pao-btn-group" style="width: auto; flex-wrap: wrap;">
+                                <button class="pao-btn col-toggle active" data-col="1" onclick="toggleExcelColumn(1)">Person</button>
+                                <button class="pao-btn col-toggle active" data-col="2" onclick="toggleExcelColumn(2)">Action</button>
+                                <button class="pao-btn col-toggle active" data-col="3" onclick="toggleExcelColumn(3)">Object</button>
+                                <button id="q-toggle-container" class="pao-btn col-toggle active" data-col="4" onclick="toggleExcelColumn(4)">Quote</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                <div id="pao-excel-container"></div>
             </div>
 
             <!-- Body Loci Section -->
