@@ -2079,55 +2079,288 @@ function getRandomOptions(correctNum, count = 4) {
 
 
 
+// ===== PAO Excel Table Logic & Controls (New) =====
+let excelTableState = {
+    filter: 'all', // all, even, odd, random
+    sort: 'asc', // asc, desc
+    limit: 0, // 0 means all
+    randomLimit: false,
+    hiddenColumns: new Set(),
+    markerMode: false,
+    allValuesHidden: false,
+    search: '',
+    groupBy10: false
+};
+
+// Global functions for UI calls
+window.filterExcel = function(type) {
+    excelTableState.filter = type;
+    renderPAOExcelTable();
+    updateControlUI('filter', type);
+};
+
+window.sortExcel = function(order) {
+    excelTableState.sort = order;
+    renderPAOExcelTable();
+    updateControlUI('sort', order);
+};
+
+window.toggleExcelColumn = function(colIndex, isVisible) {
+    if (isVisible) excelTableState.hiddenColumns.delete(colIndex);
+    else excelTableState.hiddenColumns.add(colIndex);
+    
+    // Apply immediately to existing table to avoid full re-render if possible
+    const table = document.getElementById('pao-excel-table');
+    if (table) {
+        const rows = table.querySelectorAll('tr');
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('th, td');
+            if (cells[colIndex]) {
+                if (isVisible) cells[colIndex].classList.remove('hide-column');
+                else cells[colIndex].classList.add('hide-column');
+            }
+        });
+    }
+};
+
+window.limitExcelRows = function(count, random = false) {
+    excelTableState.limit = parseInt(count) || 0;
+    excelTableState.randomLimit = random;
+    renderPAOExcelTable();
+};
+
+window.toggleAllExcelValues = function() {
+    excelTableState.allValuesHidden = !excelTableState.allValuesHidden;
+    renderPAOExcelTable();
+};
+
+window.toggleExcelMarkers = function(enabled) {
+    excelTableState.markerMode = enabled;
+    renderPAOExcelTable();
+};
+
+window.searchExcel = function(query) {
+    excelTableState.search = query.toLowerCase();
+    renderPAOExcelTable();
+};
+
+window.toggleExcelGrouping = function() {
+    excelTableState.groupBy10 = !excelTableState.groupBy10;
+    const btn = document.getElementById('group-toggle-btn');
+    if (btn) btn.classList.toggle('active', excelTableState.groupBy10);
+    renderPAOExcelTable();
+};
+
+window.resetExcelState = function() {
+    excelTableState = {
+        filter: 'all',
+        sort: 'asc',
+        limit: 0,
+        randomLimit: false,
+        hiddenColumns: new Set(),
+        markerMode: false,
+        allValuesHidden: false,
+        search: '',
+        groupBy10: false
+    };
+    
+    // Reset inputs
+    const searchInput = document.getElementById('excel-search');
+    if (searchInput) searchInput.value = '';
+    const limitInput = document.getElementById('custom-row-count');
+    if (limitInput) limitInput.value = '';
+    const mainCheckboxes = document.querySelectorAll('#pao-excel-controls input[type="checkbox"]');
+    mainCheckboxes.forEach(cb => cb.checked = true);
+    
+    renderPAOExcelTable();
+};
+
+function updateControlUI(group, activeVal) {
+    // This is optional if we just want to update button styles
+    const panel = document.getElementById('pao-excel-controls');
+    if (!panel) return;
+    // Highlight active buttons if needed
+}
+
+// Global learned items storage
+let learnedItems = JSON.parse(localStorage.getItem('learnedItems') || '{}');
+window.toggleLearned = function(code) {
+    learnedItems[code] = !learnedItems[code];
+    localStorage.setItem('learnedItems', JSON.stringify(learnedItems));
+    renderPAOExcelTable();
+};
+
 // Render PAO Excel table
 function renderPAOExcelTable() {
     const table = document.getElementById('pao-excel-table');
     if (!table) return;
 
-    // Get all PAO codes
+    // Get all PAO codes - Including 0-9 as requested
+    const singleDigitCodes = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     const numericCodes = [];
     for (let i = 0; i <= 99; i++) {
         numericCodes.push(String(i).padStart(2, '0'));
     }
     const specialCodes = ['JC', 'JR', 'JT', 'JB', 'QC', 'QR', 'QT', 'QB', 'KC', 'KR', 'KT', 'KB'];
-    const allCodes = [...numericCodes, ...specialCodes];
+    
+    let allCodes = [...singleDigitCodes, ...numericCodes, ...specialCodes];
+
+    // --- APPLY FILTERS ---
+    if (excelTableState.filter === 'even') {
+        allCodes = allCodes.filter(code => {
+            const num = parseInt(code);
+            return !isNaN(num) && num % 2 === 0;
+        });
+    } else if (excelTableState.filter === 'odd') {
+        allCodes = allCodes.filter(code => {
+            const num = parseInt(code);
+            return !isNaN(num) && num % 2 !== 0;
+        });
+    } else if (excelTableState.filter === 'random') {
+        allCodes = allCodes.sort(() => Math.random() - 0.5);
+    }
+
+    // --- APPLY SORT ---
+    if (excelTableState.filter !== 'random') {
+        if (excelTableState.sort === 'desc') {
+            allCodes = allCodes.reverse();
+        }
+    }
+
+    // --- APPLY LIMITS ---
+    if (excelTableState.limit > 0) {
+        if (excelTableState.randomLimit) {
+            allCodes = allCodes.sort(() => Math.random() - 0.5).slice(0, excelTableState.limit);
+            // Re-sort numeric if not random filter
+            if (excelTableState.filter !== 'random') {
+                allCodes.sort((a, b) => {
+                    const valA = parseInt(a);
+                    const valB = parseInt(b);
+                    if (isNaN(valA) || isNaN(valB)) return a.localeCompare(b);
+                    return excelTableState.sort === 'asc' ? valA - valB : valB - valA;
+                });
+            }
+        } else {
+            allCodes = allCodes.slice(0, excelTableState.limit);
+        }
+    }
+
+    // --- APPLY SEARCH ---
+    if (excelTableState.search) {
+        allCodes = allCodes.filter(code => {
+            const pao = getPAO(code);
+            if (!pao) return false;
+            return code.toLowerCase().includes(excelTableState.search) ||
+                   pao.person.toLowerCase().includes(excelTableState.search) ||
+                   pao.action.toLowerCase().includes(excelTableState.search) ||
+                   pao.object.toLowerCase().includes(excelTableState.search) ||
+                   (pao.quote && pao.quote.toLowerCase().includes(excelTableState.search));
+        });
+    }
 
     const isPaoq = typeof window.getCurrentPaoSystem === 'function' && window.getCurrentPaoSystem() === 'paoq';
 
     // Create table HTML
-    let html = `
-        <thead>
-            <tr>
-                <th>Mã</th>
-                <th>👤 Person</th>
-                <th>⚡ Action</th>
-                <th>🎯 Object</th>
-                ${isPaoq ? '<th>🗣️ Quote</th>' : ''}
-            </tr>
-        </thead>
-        <tbody>
-    `;
-
-    allCodes.forEach(code => {
-        const pao = getPAO(code);
-        if (pao) {
+    let html = '';
+    
+    if (excelTableState.groupBy10) {
+        // Render with station headers
+        for (let i = 0; i < allCodes.length; i += 10) {
+            const chunk = allCodes.slice(i, i + 10);
+            const startStr = chunk[0];
+            const endStr = chunk[chunk.length - 1];
+            
             html += `
-                <tr>
-                    <td class="code-cell">${code}</td>
-                    <td>${pao.person}</td>
-                    <td>${pao.action}</td>
-                    <td>${pao.object}</td>
-                    ${isPaoq ? `<td><em>${pao.quote || ''}</em></td>` : ''}
-                </tr>
+                <div class="excel-station-header" style="
+                    background: rgba(99, 102, 241, 0.1);
+                    border-left: 4px solid #6366f1;
+                    padding: 0.5rem 1rem;
+                    margin: 1.5rem 0 0.5rem;
+                    color: #fff;
+                    font-weight: 700;
+                    border-radius: 4px;
+                ">
+                    Trạm: ${startStr} - ${endStr}
+                </div>
+                <table class="pao-excel-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 80px">Mã</th>
+                            <th class="${excelTableState.hiddenColumns.has(1) ? 'hide-column' : ''}">👤 Person</th>
+                            <th class="${excelTableState.hiddenColumns.has(2) ? 'hide-column' : ''}">⚡ Action</th>
+                            <th class="${excelTableState.hiddenColumns.has(3) ? 'hide-column' : ''}">🎯 Object</th>
+                            ${isPaoq ? `<th class="${excelTableState.hiddenColumns.has(4) ? 'hide-column' : ''}">🗣️ Quote</th>` : ''}
+                        </tr>
+                    </thead>
+                    <tbody>
             `;
+            
+            chunk.forEach(code => {
+                const pao = getPAO(code);
+                if (pao) {
+                    const isLearned = learnedItems[code];
+                    const hideClass = excelTableState.allValuesHidden ? 'hidden-value' : '';
+                    html += `
+                        <tr>
+                            <td class="code-cell" onclick="this.parentElement.querySelectorAll('td').forEach(c => c.classList.toggle('hidden-value'))">
+                                ${excelTableState.markerMode ? `<span class="learned-marker ${isLearned ? 'checked' : ''}" onclick="toggleLearned('${code}'); event.stopPropagation();"></span>` : ''}
+                                ${code}
+                            </td>
+                            <td class="${hideClass} ${excelTableState.hiddenColumns.has(1) ? 'hide-column' : ''}" onclick="this.classList.toggle('hidden-value')">${pao.person}</td>
+                            <td class="${hideClass} ${excelTableState.hiddenColumns.has(2) ? 'hide-column' : ''}" onclick="this.classList.toggle('hidden-value')">${pao.action}</td>
+                            <td class="${hideClass} ${excelTableState.hiddenColumns.has(3) ? 'hide-column' : ''}" onclick="this.classList.toggle('hidden-value')">${pao.object}</td>
+                            ${isPaoq ? `<td class="${hideClass} ${excelTableState.hiddenColumns.has(4) ? 'hide-column' : ''}" onclick="this.classList.toggle('hidden-value')"><em>${pao.quote || ''}</em></td>` : ''}
+                        </tr>
+                    `;
+                }
+            });
+            
+            html += `</tbody></table>`;
         }
-    });
+    } else {
+        // Standard table render
+        html += `
+            <table class="pao-excel-table">
+                <thead>
+                    <tr>
+                        <th style="width: 80px">Mã</th>
+                        <th class="${excelTableState.hiddenColumns.has(1) ? 'hide-column' : ''}">👤 Person</th>
+                        <th class="${excelTableState.hiddenColumns.has(2) ? 'hide-column' : ''}">⚡ Action</th>
+                        <th class="${excelTableState.hiddenColumns.has(3) ? 'hide-column' : ''}">🎯 Object</th>
+                        ${isPaoq ? `<th class="${excelTableState.hiddenColumns.has(4) ? 'hide-column' : ''}">🗣️ Quote</th>` : ''}
+                    </tr>
+                </thead>
+                <tbody>
+        `;
 
-    html += `
-        </tbody>
-    `;
+        allCodes.forEach(code => {
+            const pao = getPAO(code);
+            if (pao) {
+                const isLearned = learnedItems[code];
+                const hideClass = excelTableState.allValuesHidden ? 'hidden-value' : '';
+                
+                html += `
+                    <tr>
+                        <td class="code-cell" onclick="this.parentElement.querySelectorAll('td').forEach(c => c.classList.toggle('hidden-value'))">
+                            ${excelTableState.markerMode ? `<span class="learned-marker ${isLearned ? 'checked' : ''}" onclick="toggleLearned('${code}'); event.stopPropagation();"></span>` : ''}
+                            ${code}
+                        </td>
+                        <td class="${hideClass} ${excelTableState.hiddenColumns.has(1) ? 'hide-column' : ''}" onclick="this.classList.toggle('hidden-value')">${pao.person}</td>
+                        <td class="${hideClass} ${excelTableState.hiddenColumns.has(2) ? 'hide-column' : ''}" onclick="this.classList.toggle('hidden-value')">${pao.action}</td>
+                        <td class="${hideClass} ${excelTableState.hiddenColumns.has(3) ? 'hide-column' : ''}" onclick="this.classList.toggle('hidden-value')">${pao.object}</td>
+                        ${isPaoq ? `<td class="${hideClass} ${excelTableState.hiddenColumns.has(4) ? 'hide-column' : ''}" onclick="this.classList.toggle('hidden-value')"><em>${pao.quote || ''}</em></td>` : ''}
+                    </tr>
+                `;
+            }
+        });
 
-    table.innerHTML = html;
+        html += `
+                </tbody>
+            </table>
+        `;
+    }
+
+    container.innerHTML = html;
 }
 
 window.onPaoSystemChanged = function (sys) {

@@ -328,7 +328,93 @@
                             PAO Gốc</button>
                     </div>
                 </div>
+                <div id="pao-excel-controls" class="pao-controls-panel" style="
+                    background: rgba(30, 41, 59, 0.7);
+                    backdrop-filter: blur(10px);
+                    border-radius: 16px;
+                    padding: 1.5rem;
+                    margin: 1rem auto 2rem;
+                    max-width: 1000px;
+                    border: 1px solid rgba(255, 255, 255, 0.1);
+                    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+                ">
+                    <!-- Row 1: Filters & Sorting -->
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.25rem; justify-content: center;">
+                        <div class="control-group">
+                            <span class="control-label">🔢 Lọc số:</span>
+                            <button class="control-btn" onclick="filterExcel('all')">Tất cả</button>
+                            <button class="control-btn" onclick="filterExcel('even')">Chẵn</button>
+                            <button class="control-btn" onclick="filterExcel('odd')">Lẻ</button>
+                            <button class="control-btn" onclick="filterExcel('random')">Ngẫu nhiên 🎲</button>
+                        </div>
+                        <div class="control-group">
+                            <span class="control-label">↕️ Thứ tự:</span>
+                            <button class="control-btn" onclick="sortExcel('asc')">Tiến</button>
+                            <button class="control-btn" onclick="sortExcel('desc')">Lùi</button>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Visibility & Display -->
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.25rem; justify-content: center;">
+                        <div class="control-group">
+                            <span class="control-label">👁️ Hiện cột:</span>
+                            <label class="check-container">P <input type="checkbox" checked onchange="toggleExcelColumn(1, this.checked)"><span class="checkmark"></span></label>
+                            <label class="check-container">A <input type="checkbox" checked onchange="toggleExcelColumn(2, this.checked)"><span class="checkmark"></span></label>
+                            <label class="check-container">O <input type="checkbox" checked onchange="toggleExcelColumn(3, this.checked)"><span class="checkmark"></span></label>
+                            <label class="check-container" id="q-toggle-container">Q <input type="checkbox" checked onchange="toggleExcelColumn(4, this.checked)"><span class="checkmark"></span></label>
+                        </div>
+                        <div class="control-group">
+                            <button class="control-btn accent" onclick="toggleAllExcelValues()">Ẩn/Hiện Toàn Bộ</button>
+                            <button class="control-btn" id="group-toggle-btn" onclick="toggleExcelGrouping()">📁 Nhóm theo 10 (Trạm)</button>
+                        </div>
+                    </div>
+
+                    <!-- Row 3: Row Counts & Custom -->
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; align-items: center;">
+                        <div class="control-group">
+                            <span class="control-label">📏 Hiển thị:</span>
+                            <button class="control-btn" onclick="limitExcelRows(10)">10 hàng</button>
+                            <button class="control-btn" onclick="limitExcelRows(20, true)">20 ngẫu nhiên</button>
+                        </div>
+                        <div class="control-group">
+                            <input type="number" id="custom-row-count" placeholder="Số hàng..." style="
+                                background: rgba(0,0,0,0.3);
+                                border: 1px solid rgba(255,255,255,0.2);
+                                border-radius: 6px;
+                                padding: 0.4rem 0.8rem;
+                                color: white;
+                                width: 100px;
+                            ">
+                            <button class="control-btn" onclick="limitExcelRows(document.getElementById('custom-row-count').value, true)">Hiện tự do</button>
+                        </div>
+                        <div class="control-group">
+                            <label class="check-container">Đánh dấu luyện tập <input type="checkbox" onchange="toggleExcelMarkers(this.checked)"><span class="checkmark"></span></label>
+                        </div>
+                    </div>
+
+                    <!-- Row 4: Search & Extra -->
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; align-items: center; margin-top: 1rem;">
+                        <div class="control-group" style="width: 100%; max-width: 500px;">
+                            <span class="control-label">🔍 Tìm kiếm:</span>
+                            <input type="text" id="excel-search" placeholder="Nhập số, tên, hành động..." oninput="searchExcel(this.value)" style="
+                                background: rgba(0,0,0,0.3);
+                                border: 1px solid rgba(255,255,255,0.2);
+                                border-radius: 20px;
+                                padding: 0.6rem 1.2rem;
+                                color: white;
+                                flex-grow: 1;
+                                outline: none;
+                                transition: all 0.3s;
+                            ">
+                        </div>
+                        <div class="control-group">
+                            <button class="control-btn" style="background: rgba(239, 68, 68, 0.2); border-color: #ef4444;" onclick="resetExcelState()">🔄 Đặt lại</button>
+                        </div>
+                    </div>
+                </div>
                 <div id="pao-excel-container" style="overflow-x: auto; padding: 1rem;">
+
+
                     <table id="pao-excel-table" class="pao-excel-table">
                         <!-- Will be populated by JavaScript -->
                     </table>
