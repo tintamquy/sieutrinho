@@ -2112,15 +2112,16 @@ window.sortExcel = function(order) {
 };
 
 window.toggleExcelColumn = function(colIndex) {
-    if (excelTableState.hiddenColumns.has(colIndex)) {
-        excelTableState.hiddenColumns.delete(colIndex);
+    const idx = parseInt(colIndex);
+    if (excelTableState.hiddenColumns.has(idx)) {
+        excelTableState.hiddenColumns.delete(idx);
     } else {
-        excelTableState.hiddenColumns.add(colIndex);
+        excelTableState.hiddenColumns.add(idx);
     }
     
     // Update button active state
-    const btn = document.querySelector(`.col-toggle[data-col="${colIndex}"]`);
-    if (btn) btn.classList.toggle('active', !excelTableState.hiddenColumns.has(colIndex));
+    const btn = document.querySelector(`.col-toggle[data-col="${idx}"]`);
+    if (btn) btn.classList.toggle('active', !excelTableState.hiddenColumns.has(idx));
     
     renderPAOExcelTable();
 };
@@ -2183,7 +2184,8 @@ window.resetExcelState = function() {
         groupBy: 0,
         viewMode: 'table',
         isPracticeMode: false,
-        practiceCodes: []
+        practiceCodes: [],
+        matchingData: null
     };
     
     // Reset inputs
@@ -2447,6 +2449,99 @@ function checkSequenceResult() {
     else playSound('wrong');
 }
 
+// --- MATCHING GAME MODE ---
+window.startMatchingGame = function() {
+    const input = document.getElementById('practice-count-input');
+    const count = Math.min(parseInt(input ? input.value : 8) || 8, 12); // Max 12 pairs for UI
+    
+    const all = getFullPaoCodes();
+    const shuffled = [...all].sort(() => Math.random() - 0.5);
+    const selectedCodes = shuffled.slice(0, count);
+    
+    // Choose 1 type (Person/Action/Object) for naming
+    const types = ['person', 'action', 'object'];
+    const type = types[Math.floor(Math.random() * types.length)];
+    const typeLabel = type === 'person' ? 'Person' : (type === 'action' ? 'Action' : 'Object');
+    
+    const leftItems = selectedCodes.map(c => ({ id: c, text: c, type: 'code' })).sort(() => Math.random() - 0.5);
+    const rightItems = selectedCodes.map(c => ({ id: c, text: getPAO(c)[type], type: 'name' })).sort(() => Math.random() - 0.5);
+    
+    excelTableState.viewMode = 'matching';
+    excelTableState.matchingData = {
+        pairs: selectedCodes,
+        typeLabel,
+        leftItems,
+        rightItems,
+        selectedLeft: null,
+        selectedRight: null,
+        solved: new Set()
+    };
+    
+    renderPAOExcelTable();
+};
+
+function renderMatchingMode(container) {
+    const data = excelTableState.matchingData;
+    if (!data) return;
+    
+    container.innerHTML = `
+        <div class="pao-game-card" style="max-width: 800px;">
+            <div style="color: #4f46e5; font-weight: 800; margin-bottom: 2rem;">GHÉP ĐÔI: MÃ - ${data.typeLabel.toUpperCase()}</div>
+            <div class="matching-container">
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    ${data.leftItems.map(item => `
+                        <div class="matching-item ${data.selectedLeft === item.id ? 'selected' : ''} ${data.solved.has(item.id) ? 'correct' : ''}" 
+                             onclick="handleMatchingClick('left', '${item.id}')">${item.text}</div>
+                    `).join('')}
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    ${data.rightItems.map(item => `
+                        <div class="matching-item ${data.selectedRight === item.id ? 'selected' : ''} ${data.solved.has(item.id) ? 'correct' : ''}" 
+                             onclick="handleMatchingClick('right', '${item.id}')">${item.text}</div>
+                    `).join('')}
+                </div>
+            </div>
+            <button class="pao-btn" style="margin-top: 2rem;" onclick="startMatchingGame()">Làm mới 🔄</button>
+            <button class="pao-btn" style="margin-top: 2rem;" onclick="updateExcelView('table')">Quay lại</button>
+        </div>
+    `;
+}
+
+window.handleMatchingClick = function(side, id) {
+    const data = excelTableState.matchingData;
+    if (data.solved.has(id)) return;
+    
+    if (side === 'left') data.selectedLeft = id;
+    else data.selectedRight = id;
+    
+    if (data.selectedLeft && data.selectedRight) {
+        if (data.selectedLeft === data.selectedRight) {
+            data.solved.add(id);
+            playSound('correct');
+            data.selectedLeft = null;
+            data.selectedRight = null;
+            
+            if (data.solved.size === data.pairs.length) {
+                setTimeout(() => {
+                    alert('Chúc mừng! Bạn đã hoàn thành tất cả các cặp.');
+                    updateExcelView('table');
+                }, 500);
+            }
+        } else {
+            playSound('wrong');
+            const items = document.querySelectorAll('.matching-item.selected');
+            items.forEach(el => el.classList.add('wrong'));
+            setTimeout(() => {
+                data.selectedLeft = null;
+                data.selectedRight = null;
+                renderPAOExcelTable();
+            }, 500);
+            return;
+        }
+    }
+    renderPAOExcelTable();
+};
+
 function getFullPaoCodes() {
     const singleDigitCodes = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     const numericCodes = [];
@@ -2471,6 +2566,10 @@ function renderPAOExcelTable() {
     }
     if (excelTableState.viewMode === 'quiz') {
         renderQuizMode(container);
+        return;
+    }
+    if (excelTableState.viewMode === 'matching') {
+        renderMatchingMode(container);
         return;
     }
     let allCodes = [];
@@ -2541,7 +2640,7 @@ function renderPAOExcelTable() {
                 const hideClass = excelTableState.allValuesHidden ? 'hidden-value' : '';
                 html += `
                     <div class="pao-card">
-                        <div class="pao-card-code" onclick="this.parentElement.querySelectorAll('.pao-card-value').forEach(v => v.classList.toggle('hidden-value'))">${code}</div>
+                        <div class="pao-card-code ${excelTableState.hiddenColumns.has(0) ? 'hide-column' : ''}" onclick="this.parentElement.querySelectorAll('.pao-card-value').forEach(v => v.classList.toggle('hidden-value'))">${code}</div>
                         <div class="pao-card-item ${excelTableState.hiddenColumns.has(1) ? 'hide-column' : ''}">
                             <span class="pao-label">Person:</span>
                             <span class="pao-card-value ${hideClass}" onclick="this.classList.toggle('hidden-value')">${pao.person}</span>
@@ -2589,7 +2688,7 @@ function renderSingleTable(codes, isPaoq) {
         <table class="pao-excel-table">
             <thead>
                 <tr>
-                    <th style="width: 60px">Mã</th>
+                    <th style="width: 60px" class="${excelTableState.hiddenColumns.has(0) ? 'hide-column' : ''}">Mã</th>
                     <th class="${excelTableState.hiddenColumns.has(1) ? 'hide-column' : ''}">Person</th>
                     <th class="${excelTableState.hiddenColumns.has(2) ? 'hide-column' : ''}">Action</th>
                     <th class="${excelTableState.hiddenColumns.has(3) ? 'hide-column' : ''}">Object</th>
@@ -2605,7 +2704,7 @@ function renderSingleTable(codes, isPaoq) {
             const hideClass = excelTableState.allValuesHidden ? 'hidden-value' : '';
             tableHtml += `
                 <tr>
-                    <td class="code-cell" onclick="this.parentElement.querySelectorAll('td').forEach(c => c.classList.toggle('hidden-value'))">${code}</td>
+                    <td class="code-cell ${excelTableState.hiddenColumns.has(0) ? 'hide-column' : ''}" onclick="this.parentElement.querySelectorAll('td').forEach(c => c.classList.toggle('hidden-value'))">${code}</td>
                     <td class="${hideClass} ${excelTableState.hiddenColumns.has(1) ? 'hide-column' : ''}" onclick="this.classList.toggle('hidden-value')">${pao.person}</td>
                     <td class="${hideClass} ${excelTableState.hiddenColumns.has(2) ? 'hide-column' : ''}" onclick="this.classList.toggle('hidden-value')">${pao.action}</td>
                     <td class="${hideClass} ${excelTableState.hiddenColumns.has(3) ? 'hide-column' : ''}" onclick="this.classList.toggle('hidden-value')">${pao.object}</td>

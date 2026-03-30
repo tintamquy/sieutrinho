@@ -1,14 +1,14 @@
 Mã,P (Person),A (Action),O (Object),Q (Quote/Sound)
-0,Shaggy,Vuốt Ve,Con Chó,"""Scooby-Doo!"" (tiếng gâu gâu)"
-1,Lão Tử,Cưỡi phi nước đại,Con Trâu,"""Biết đủ là đủ, biết đủ không nhục"" (tiếng bò rống ngộ nghĩnh)"
-2,Sonic,Nhổ Lông,Con Nhím,"""Gotta go fast!"" (âm thanh thu thập vòng vàng)"
-3,Jack Sparrow,Nướng,Con Mực,"""Savvy?"" (tiếng Kraken gầm)"
-4,Voldemort,Thôi Miên,Con Rắn,"""Avada Kedavra"" (tiếng rắn rít Xà Ngữ)"
-5,The Rock,Vật Ngã,Cá Sấu,"""If you smell what The Rock is cooking!"" (tiếng nện xuống thảm rầm rầm)"
-6,Thor,Đập,Cái Búa,"""Bring me Thanos!"" (sấm sét ầm ầm)"
-7,Albert Einstein,Viết,Cục Phấn,"""E=mc2"" (tiếng lạch cạch viết bảng)"
-8,Trư Bát Giới,Mổ bụng,Con Heo,"""Đại sư huynh!"" (tiếng ủn ỉn)"
-9,Wall-E,Dẫm lên,Con Gián,"""Waaall-E"" (âm thanh máy móc)"
+00,Shaggy,Vuốt Ve,Con Chó,"""Scooby-Doo!"" (tiếng gâu gâu)"
+01,Lão Tử,Cưỡi phi nước đại,Con Trâu,"""Biết đủ là đủ, biết đủ không nhục"" (tiếng bò rống ngộ nghĩnh)"
+02,Sonic,Nhổ Lông,Con Nhím,"""Gotta go fast!"" (âm thanh thu thập vòng vàng)"
+03,Jack Sparrow,Nướng,Con Mực,"""Savvy?"" (tiếng Kraken gầm)"
+04,Voldemort,Thôi Miên,Con Rắn,"""Avada Kedavra"" (tiếng rắn rít Xà Ngữ)"
+05,The Rock,Vật Ngã,Cá Sấu,"""If you smell what The Rock is cooking!"" (tiếng nện xuống thảm rầm rầm)"
+06,Thor,Đập,Cái Búa,"""Bring me Thanos!"" (sấm sét ầm ầm)"
+07,Albert Einstein,Viết,Cục Phấn,"""E=mc2"" (tiếng lạch cạch viết bảng)"
+08,Trư Bát Giới,Mổ bụng,Con Heo,"""Đại sư huynh!"" (tiếng ủn ỉn)"
+09,Wall-E,Dẫm lên,Con Gián,"""Waaall-E"" (âm thanh máy móc)"
 10,Angry Birds (Red),Ấp,Tổ Chim,"""Hee-yah!"" (tiếng ná cao su ném)"
 11,Caesar (Planet of the Apes),Gãi,Tinh Tinh," ""Ape not kill ape.""  -Giọng nói trầm đục (Guttural Voice): ""Ape... not... kill... ape."" "
 12,Freddy Krueger,Đè xuống,Tấm Nệm,"""One, two, Freddy's coming for you"" (tiếng móng sắt cào rách vải) "
@@ -116,7 +116,7 @@ kb,Cooper (Matthew McConaughey) – Phim Interstellar,Dò bằng máy dò,Kho B�
 2,Raiden (Mortal),Đội chụp xuống,Nón lá việt,"""Thunder take you!"" (tiếng sấm chớp đùng đoàng) "
 3,Naruto,Gắp đũa húp xì xụp,mỳ tôm,Dattebayo! (tiếng húp mỳ sột soạt)
 4,Rambo,Liếc mài dao dạo rực,dao,Mission accomplished (tiếng mài xẹt xẹt)
-5,Nàng tiên cá Ariel,Cạy nắp vỏ trai,sò huyết,"I want to be where the people are.-  Tiếng bật mở (Popping): ""Cạch... phụp!"""
+5,Đông Tà Hoàng Dược Sư,Thổi sáo,Sáo trúc,"Nhân tại giang hồ, thân bất do kỷ. (tiếng sáo despacito)"
 6,The Collector,ghim cắm,bướm,"If he catches you, he's gonna make you wish you were dead. Tiếng kim đâm (Piercing): ""Phập... sột..."" "
 7,Vịt Donald,kẹp nách,Phao,Quack quack! (tiếng lạch bạch xì xộp)
 8,Võ Tòng,chém đao,Hổ,"""Rượu ngon!"" (tiếng gầm rú tuyệt vọng gào gào) "

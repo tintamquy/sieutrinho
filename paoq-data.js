@@ -827,10 +827,10 @@ const PAOQ_DATA = {
         },
         {
                 "code": "5",
-                "person": "Nàng tiên cá Ariel",
-                "action": "Cạy nắp vỏ trai",
-                "object": "sò huyết",
-                "quote": "I want to be where the people are.-  Tiếng bật mở (Popping): \"Cạch... phụp!\""
+                "person": "Đông Tà Hoàng Dược Sư",
+                "action": "Thổi sáo",
+                "object": "Sáo trúc",
+                "quote": "Nhân tại giang hồ, thân bất do kỷ. (tiếng sáo despacito)"
         },
         {
                 "code": "6",
