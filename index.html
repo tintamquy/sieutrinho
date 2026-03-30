@@ -387,8 +387,8 @@
                     .pao-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
                     .pao-btn.active { background: var(--pao-primary); border-color: var(--pao-primary); color: #fff; }
 
-                    .col-toggle { border: 1px solid #334155; }
-                    .col-toggle.active { background: #10b981; border-color: #10b981; }
+                    .col-toggle { border: 1px solid #334155; opacity: 0.6; }
+                    .col-toggle.active { background: #10b981; border-color: #10b981; opacity: 1; color: #fff; box-shadow: 0 0 10px rgba(16, 185, 129, 0.3); }
 
                     /* Table Styles */
                     .table-responsive { overflow-x: auto; margin-bottom: 1rem; }
@@ -557,6 +557,7 @@
                                        style="width: 60px; background: transparent; border: none; color: #fbbf24; font-weight: 800; outline: none; font-size: 1rem;">
                             </div>
                             <button class="pao-btn" onclick="startRandomPractice()" style="background: #4f46e5; border-color: #4f46e5; flex: none;">Bắt đầu Kiểm tra</button>
+                            <button class="pao-btn" onclick="startSequenceChallenge()" style="background: #fbbf24; border-color: #fbbf24; color: #000; flex: none;">🔢 Thử thách Dãy số</button>
                             <button class="pao-btn" onclick="toggleAllExcelValues()" style="flex: none;">👁️ Ẩn/Hiện Giá Trị</button>
                             <button class="pao-btn" onclick="resetExcelState()" style="flex: none;">🔄 Toàn bộ danh sách</button>
                         </div>

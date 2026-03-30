@@ -2095,7 +2095,8 @@ let excelTableState = {
     practiceCodes: [],
     // New game state
     flashcardIndex: 0,
-    quizData: null
+    quizData: null,
+    sequenceData: null // { codes: [], currentStep: 'memo'|'recall', userAnswers: [] }
 };
 
 // Global functions for UI calls
@@ -2110,11 +2111,17 @@ window.sortExcel = function(order) {
     renderPAOExcelTable();
 };
 
-window.toggleExcelColumn = function(colIndex, isVisible) {
-    if (isVisible) excelTableState.hiddenColumns.delete(colIndex);
-    else excelTableState.hiddenColumns.add(colIndex);
+window.toggleExcelColumn = function(colIndex) {
+    if (excelTableState.hiddenColumns.has(colIndex)) {
+        excelTableState.hiddenColumns.delete(colIndex);
+    } else {
+        excelTableState.hiddenColumns.add(colIndex);
+    }
     
-    // Always re-render to ensure everything is in sync
+    // Update button active state
+    const btn = document.querySelector(`.col-toggle[data-col="${colIndex}"]`);
+    if (btn) btn.classList.toggle('active', !excelTableState.hiddenColumns.has(colIndex));
+    
     renderPAOExcelTable();
 };
 
@@ -2329,6 +2336,117 @@ window.checkQuizAnswer = function(idx) {
     }
 };
 
+// --- SEQUENCE CHALLENGE MODE ---
+window.startSequenceChallenge = function() {
+    const input = document.getElementById('practice-count-input');
+    const count = parseInt(input ? input.value : 5) || 5;
+    
+    const all = getFullPaoCodes();
+    const codes = [];
+    for (let i = 0; i < count; i++) {
+        codes.push(all[Math.floor(Math.random() * all.length)]);
+    }
+    
+    excelTableState.viewMode = 'sequence';
+    excelTableState.sequenceData = {
+        codes: codes,
+        currentStep: 'memo'
+    };
+    
+    // Update view buttons active state
+    document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+    
+    renderPAOExcelTable();
+};
+
+function renderSequenceMode(container) {
+    const data = excelTableState.sequenceData;
+    if (!data) {
+        container.innerHTML = '<div class="pao-subtitle">Nhấn "Thử thách Dãy số" để bắt đầu.</div>';
+        return;
+    }
+    
+    if (data.currentStep === 'memo') {
+        container.innerHTML = `
+            <div class="pao-game-card">
+                <div style="color: #fbbf24; font-weight: 800; margin-bottom: 1rem;">GHI NHỚ DÃY SỐ</div>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
+                    ${data.codes.map(c => `<div class="pao-game-code" style="font-size: 3rem; margin: 0.5rem;">${c}</div>`).join('')}
+                </div>
+                <div style="margin-top: 2rem;">
+                    <button class="pao-game-reveal-btn" onclick="startSequenceRecall()">Tôi đã nhớ xong! ✅</button>
+                    <button class="pao-btn" onclick="updateExcelView('table')">Hủy bỏ</button>
+                </div>
+            </div>
+        `;
+    } else {
+        // Recall step
+        container.innerHTML = `
+            <div class="pao-game-card">
+                <div style="color: #6366f1; font-weight: 800; margin-bottom: 1rem;">NHẬP LẠI DÃY SỐ</div>
+                <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem;">
+                    ${data.codes.map((_, i) => `
+                        <div style="width: 45px; height: 45px; border: 2px solid #334155; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #fbbf24;">
+                            ${data.userAnswers && data.userAnswers[i] !== undefined ? data.userAnswers[i] : '?'}
+                        </div>
+                    `).join('')}
+                </div>
+                <div style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 10px;">Chọn số tiếp theo:</div>
+                <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; max-height: 200px; overflow-y: auto; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+                    ${getFullPaoCodes().map(c => `
+                        <div class="quiz-option" style="padding: 5px; font-size: 0.9rem;" onclick="addSequenceAnswer('${c}')">${c}</div>
+                    `).join('')}
+                </div>
+                <button class="pao-btn" style="margin-top: 1rem;" onclick="startSequenceChallenge()">Chơi lại 🔄</button>
+            </div>
+        `;
+    }
+}
+
+window.startSequenceRecall = function() {
+    excelTableState.sequenceData.currentStep = 'recall';
+    excelTableState.sequenceData.userAnswers = [];
+    renderPAOExcelTable();
+};
+
+window.addSequenceAnswer = function(code) {
+    const data = excelTableState.sequenceData;
+    data.userAnswers.push(code);
+    
+    if (data.userAnswers.length === data.codes.length) {
+        // Finished
+        checkSequenceResult();
+    } else {
+        renderPAOExcelTable();
+    }
+};
+
+function checkSequenceResult() {
+    const data = excelTableState.sequenceData;
+    let correctCount = 0;
+    data.codes.forEach((c, i) => {
+        if (c === data.userAnswers[i]) correctCount++;
+    });
+    
+    const container = document.getElementById('pao-excel-container');
+    container.innerHTML = `
+        <div class="pao-game-card">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">${correctCount === data.codes.length ? '🏆 Perfect!' : '🎯 Kết quả'}</div>
+            <div style="font-size: 1.5rem; color: #fff; margin-bottom: 2rem;">Bạn đúng ${correctCount} / ${data.codes.length}</div>
+            
+            <div style="text-align: left; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 10px; margin-bottom: 2rem;">
+                <div style="color: #94a3b8; margin-bottom: 5px;">Đáp án đúng: ${data.codes.join(' - ')}</div>
+                <div style="color: #fbbf24;">Của bạn: ${data.userAnswers.join(' - ')}</div>
+            </div>
+            
+            <button class="pao-game-reveal-btn" onclick="startSequenceChallenge()">Thử lại 🔄</button>
+            <button class="pao-btn" style="margin-top: 1rem;" onclick="updateExcelView('table')">Quay lại bảng</button>
+        </div>
+    `;
+    if (correctCount === data.codes.length) playSound('levelup');
+    else playSound('wrong');
+}
+
 function getFullPaoCodes() {
     const singleDigitCodes = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     const numericCodes = [];
@@ -2343,6 +2461,10 @@ function renderPAOExcelTable() {
     if (!container) return;
     
     // Clear and handle different view modes
+    if (excelTableState.viewMode === 'sequence') {
+        renderSequenceMode(container);
+        return;
+    }
     if (excelTableState.viewMode === 'card') {
         renderFlashcardMode(container);
         return;
