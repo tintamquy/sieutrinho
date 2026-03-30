@@ -2097,13 +2097,11 @@ let excelTableState = {
 window.filterExcel = function(type) {
     excelTableState.filter = type;
     renderPAOExcelTable();
-    updateControlUI('filter', type);
 };
 
 window.sortExcel = function(order) {
     excelTableState.sort = order;
     renderPAOExcelTable();
-    updateControlUI('sort', order);
 };
 
 window.toggleExcelColumn = function(colIndex, isVisible) {
@@ -2265,9 +2263,9 @@ function renderPAOExcelTable() {
     // --- APPLY SEARCH ---
     if (excelTableState.search) {
         allCodes = allCodes.filter(code => {
-            const pao = getPAO(code);
+            const pao = getPAO(code.length === 1 ? '0' + code : code);
             if (!pao) return false;
-            const s = excelTableState.search;
+            const s = excelTableState.search.toLowerCase();
             return code.toLowerCase().includes(s) ||
                    pao.person.toLowerCase().includes(s) ||
                    pao.action.toLowerCase().includes(s) ||
@@ -2322,7 +2320,7 @@ function renderPAOExcelTable() {
             `;
             
             chunk.forEach(code => {
-                const pao = getPAO(code);
+                const pao = getPAO(code.length === 1 ? '0' + code : code);
                 if (pao) {
                     const isLearned = learnedItems[code];
                     const hideClass = excelTableState.allValuesHidden ? 'hidden-value' : '';
@@ -2348,7 +2346,7 @@ function renderPAOExcelTable() {
         html += '<div class="pao-excel-grid">';
         
         allCodes.forEach(code => {
-            const pao = getPAO(code);
+            const pao = getPAO(code.length === 1 ? '0' + code : code);
             if (pao) {
                 const isLearned = learnedItems[code];
                 const hideClass = excelTableState.allValuesHidden ? 'hidden-value' : '';
@@ -2409,7 +2407,7 @@ function renderPAOExcelTable() {
         `;
 
         allCodes.forEach(code => {
-            const pao = getPAO(code);
+            const pao = getPAO(code.length === 1 ? '0' + code : code);
             if (pao) {
                 const isLearned = learnedItems[code];
                 const hideClass = excelTableState.allValuesHidden ? 'hidden-value' : '';
