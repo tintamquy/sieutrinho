@@ -2209,9 +2209,9 @@ window.toggleLearned = function(code) {
 
 // Render PAO Excel table
 function renderPAOExcelTable() {
-    const table = document.getElementById('pao-excel-table');
-    if (!table) return;
-
+    const container = document.getElementById('pao-excel-container');
+    if (!container) return;
+    
     // Get all PAO codes - Including 0-9 as requested
     const singleDigitCodes = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
     const numericCodes = [];
