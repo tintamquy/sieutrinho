@@ -2108,9 +2108,9 @@ window.toggleExcelColumn = function(colIndex, isVisible) {
     if (isVisible) excelTableState.hiddenColumns.delete(colIndex);
     else excelTableState.hiddenColumns.add(colIndex);
     
-    // Apply immediately to existing table to avoid full re-render if possible
-    const table = document.getElementById('pao-excel-table');
-    if (table) {
+    // Apply immediately to ALL current tables
+    const tables = document.querySelectorAll('.pao-excel-table');
+    tables.forEach(table => {
         const rows = table.querySelectorAll('tr');
         rows.forEach(row => {
             const cells = row.querySelectorAll('th, td');
@@ -2119,6 +2119,11 @@ window.toggleExcelColumn = function(colIndex, isVisible) {
                 else cells[colIndex].classList.add('hide-column');
             }
         });
+    });
+    
+    // Also update grid view if active
+    if (excelTableState.viewMode === 'grid') {
+        renderPAOExcelTable();
     }
 };
 
