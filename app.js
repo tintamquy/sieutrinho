@@ -2393,16 +2393,18 @@ function renderSequenceMode(container) {
                     ${renderSequenceAnswersRow(data)}
                 </div>
 
-                <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 8px; text-transform: uppercase;">Chọn số cho ô #${activeIdx + 1}:</div>
+                <div id="sequence-active-prompt" style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 8px; text-transform: uppercase;">Chọn số cho ô #${activeIdx + 1}:</div>
                 <div id="sequence-selection-grid" style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; max-height: 200px; overflow-y: auto; padding: 8px; background: rgba(0,0,0,0.3); border-radius: 10px; border: 1px solid #334155; width: 100%;">
                     ${getFullPaoCodes().map(c => `
                         <div class="quiz-option" style="padding: 4px 2px; font-size: 0.8rem; height: 32px; display: flex; align-items: center; justify-content: center;" onclick="addSequenceAnswer('${c}')">${c}</div>
                     `).join('')}
                 </div>
                 
-                <div style="margin-top: 1.5rem; display: flex; gap: 10px; justify-content: center;">
+                <div id="sequence-actions" style="margin-top: 1.5rem; display: flex; gap: 10px; justify-content: center;">
                     <button class="pao-btn" style="font-size: 0.75rem;" onclick="startSequenceChallenge()">Chơi lại 🔄</button>
-                    ${data.userAnswers.length === data.codes.length ? `<button class="pao-game-reveal-btn" style="padding: 0.5rem 1.2rem; font-size: 0.9rem;" onclick="checkSequenceResult()">Xác nhận kết quả ✅</button>` : ''}
+                    <div id="sequence-confirm-btn-container">
+                        ${data.userAnswers.length === data.codes.length ? `<button class="pao-game-reveal-btn" style="padding: 0.5rem 1.2rem; font-size: 0.9rem;" onclick="checkSequenceResult()">Xác nhận kết quả ✅</button>` : ''}
+                    </div>
                 </div>
             </div>
         `;
@@ -2424,7 +2426,7 @@ function renderSequenceAnswersRow(data) {
 
 window.setSequenceActiveIndex = function(index) {
     excelTableState.sequenceData.activeIndex = index;
-    renderPAOExcelTable();
+    updateSequenceRecallUI();
 };
 
 window.startSequenceRecall = function() {
@@ -2447,8 +2449,28 @@ window.addSequenceAnswer = function(code) {
         delete data.activeIndex; // Reset to default (end)
     }
     
-    renderPAOExcelTable();
+    updateSequenceRecallUI();
 };
+
+function updateSequenceRecallUI() {
+    const data = excelTableState.sequenceData;
+    const row = document.getElementById('sequence-answers-row');
+    const prompt = document.getElementById('sequence-active-prompt');
+    const btnContainer = document.getElementById('sequence-confirm-btn-container');
+    
+    if (row) row.innerHTML = renderSequenceAnswersRow(data);
+    
+    if (prompt) {
+        const activeIdx = data.activeIndex !== undefined ? data.activeIndex : data.userAnswers.length;
+        prompt.textContent = `Chọn số cho ô #${activeIdx + 1}:`;
+    }
+    
+    if (btnContainer) {
+        if (data.userAnswers.length === data.codes.length && !btnContainer.innerHTML.trim()) {
+            btnContainer.innerHTML = `<button class="pao-game-reveal-btn" style="padding: 0.5rem 1.2rem; font-size: 0.9rem;" onclick="checkSequenceResult()">Xác nhận kết quả ✅</button>`;
+        }
+    }
+}
 
 function checkSequenceResult() {
     const data = excelTableState.sequenceData;
@@ -2908,7 +2930,7 @@ setTimeout(initMemoryTicker, 500);
 
 // --- AI CLAUDE INTEGRATION MODULE ---
 const AI_CONFIG = {
-    apiKey: 'sk-7569039d66fb07fe174619a4a82bdf3f2d1c27d1e9dcaf71a7d5c95565cdacb1',
+    apiKey: 'sk-5d6a1c0a342d8b26827136f6875fd54d8d81e417a0faefa6344c6eabe00cc181',
     endpoint: 'https://chiasegpu.vn/api/v1/llm/chat/completions',
     model: 'claude-haiku-4.5' // Use provided model
 };
@@ -2922,7 +2944,7 @@ async function callClaudeAI(prompt) {
                 'Authorization': `Bearer ${AI_CONFIG.apiKey}`
             },
             body: JSON.stringify({
-                model: 'claude-3-5-haiku-20241022', // Try standard model name
+                model: AI_CONFIG.model,
                 messages: [
                     { role: 'system', content: 'Bạn là chuyên gia về siêu trí nhớ và phương pháp PAO (Person-Action-Object). Bạn giúp người dùng tạo ra những câu chuyện hình ảnh sống động, điên rồ và cực kỳ dễ nhớ từ những con số họ cung cấp. Trả lời bằng tiếng Việt, ngắn gọn súc tích.' },
                     { role: 'user', content: prompt }
