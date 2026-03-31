@@ -84,17 +84,16 @@
 <body>
     <div id="background-3d"></div>
 
-    <div class="pao-quotes-ticker">
-        <div class="ticker-label">📢 Tin học tập</div>
-        <div class="ticker-wrapper">
-            <div class="ticker-content" id="memory-ticker">
-                <!-- Populated by JS -->
-            </div>
-        </div>
-    </div>
-
     <!-- Homepage -->
     <div id="homepage" class="screen active">
+        <div class="pao-quotes-ticker">
+            <div class="ticker-label">📢 Tin học tập</div>
+            <div class="ticker-wrapper">
+                <div class="ticker-content" id="memory-ticker">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
         <div class="container">
             <h1 class="title-3d">🧠 SIÊU TRÍ NHỚ</h1>
             <p class="subtitle">Rèn luyện trí nhớ với bộ mã hóa 00-99</p>
@@ -329,25 +328,21 @@
 
                     /* Memory Quotes Ticker */
                     .pao-quotes-ticker {
-                        position: fixed;
-                        top: 0;
-                        left: 0;
+                        position: relative;
                         width: 100%;
                         background: linear-gradient(90deg, #1e1b4b, #0f172a);
-                        padding: 10px 0;
+                        padding: 12px 0;
                         overflow: hidden;
                         border-bottom: 2px solid #4f46e5;
-                        z-index: 5000;
                         display: flex;
                         align-items: center;
-                        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+                        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+                        border-radius: 12px 12px 0 0;
+                        margin-bottom: 20px;
                     }
-
-                    body { padding-top: 45px; } /* Offset for ticker */
                     
                     @media (max-width: 768px) {
-                        body { padding-top: 42px; }
-                        .pao-quotes-ticker { padding: 6px 0; }
+                        .pao-quotes-ticker { padding: 8px 0; margin-bottom: 15px; }
                     }
 
                     .ticker-label {

@@ -2343,7 +2343,46 @@ window.startSequenceChallenge = function() {
     const input = document.getElementById('practice-count-input');
     const count = parseInt(input ? input.value : 5) || 5;
     
-    const all = getFullPaoC    } else {
+    const all = getFullPaoCodes();
+    const codes = [];
+    for (let i = 0; i < count; i++) {
+        codes.push(all[Math.floor(Math.random() * all.length)]);
+    }
+    
+    excelTableState.viewMode = 'sequence';
+    excelTableState.sequenceData = {
+        codes: codes,
+        currentStep: 'memo',
+        userAnswers: []
+    };
+    
+    // Update view buttons active state
+    document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+    
+    renderPAOExcelTable();
+};
+
+function renderSequenceMode(container) {
+    const data = excelTableState.sequenceData;
+    if (!data) {
+        container.innerHTML = '<div class="pao-subtitle">Nhấn "Thử thách Dãy số" để bắt đầu.</div>';
+        return;
+    }
+    
+    if (data.currentStep === 'memo') {
+        container.innerHTML = `
+            <div class="pao-game-card">
+                <div style="color: #fbbf24; font-weight: 800; margin-bottom: 1rem;">GHI NHỚ DÃY SỐ</div>
+                <div style="display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; margin-top: 0.5rem; background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 12px;">
+                    ${data.codes.map(c => `<div class="pao-game-code" style="font-size: 2.2rem; margin: 0.2rem; min-width: 60px;">${c}</div>`).join('')}
+                </div>
+                <div style="margin-top: 2rem; display: flex; gap: 10px; justify-content: center;">
+                    <button class="pao-game-reveal-btn" onclick="startSequenceRecall()">Tôi đã nhớ xong! ✅</button>
+                    <button class="pao-btn" onclick="updateExcelView('table')">Hủy bỏ</button>
+                </div>
+            </div>
+        `;
+    } else {
         // Recall step
         const activeIdx = data.activeIndex !== undefined ? data.activeIndex : data.userAnswers.length;
         container.innerHTML = `
@@ -2387,32 +2426,6 @@ window.setSequenceActiveIndex = function(index) {
     excelTableState.sequenceData.activeIndex = index;
     renderPAOExcelTable();
 };
-display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; max-height: 180px; overflow-y: auto; padding: 8px; background: rgba(0,0,0,0.3); border-radius: 10px; border: 1px solid #334155;">
-                    ${getFullPaoCodes().map(c => `
-                        <div class="quiz-option" style="padding: 4px 2px; font-size: 0.8rem; height: 32px; display: flex; align-items: center; justify-content: center;" onclick="addSequenceAnswer('${c}')">${c}</div>
-                    `).join('')}
-                </div>
-                
-                <div style="margin-top: 1.5rem; border-top: 1px solid #334155; padding-top: 1rem;">
-                    <button class="pao-btn" style="font-size: 0.75rem; padding: 0.4rem 1rem;" onclick="startSequenceChallenge()">Chơi lại 🔄</button>
-                    <button class="pao-btn" style="font-size: 0.75rem; padding: 0.4rem 1rem; margin-left: 10px;" onclick="updateExcelView('table')">Thoát</button>
-                </div>
-            </div>
-        `;
-    }
-}
-
-function renderSequenceAnswersRow(data) {
-    return data.codes.map((_, i) => {
-        const val = data.userAnswers && data.userAnswers[i] !== undefined ? data.userAnswers[i] : '?';
-        const isCurrent = data.userAnswers.length === i;
-        return `
-            <div style="width: 38px; height: 38px; border: 2px solid ${isCurrent ? '#4f46e5' : '#334155'}; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: ${val === '?' ? '#475569' : '#fbbf24'}; background: ${isCurrent ? 'rgba(79, 70, 229, 0.2)' : 'transparent'}; transition: 0.2s;">
-                ${val}
-            </div>
-        `;
-    }).join('');
-}
 
 window.startSequenceRecall = function() {
     excelTableState.sequenceData.currentStep = 'recall';
