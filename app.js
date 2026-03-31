@@ -2097,7 +2097,9 @@ let excelTableState = {
     // New game state
     flashcardIndex: 0,
     quizData: null,
-    sequenceData: null // { codes: [], currentStep: 'memo'|'recall', userAnswers: [] }
+    reverseQuizData: null,
+    sequenceData: null, // { codes: [], currentStep: 'memo'|'recall', userAnswers: [] }
+    matchingData: null
 };
 
 // Global functions for UI calls
@@ -2508,13 +2510,14 @@ window.startMatchingGame = function() {
     const shuffled = [...all].sort(() => Math.random() - 0.5);
     const selectedCodes = shuffled.slice(0, count);
     
-    // Choose 1 type (Person/Action/Object) for naming
-    const types = ['person', 'action', 'object'];
+    // Choose 1 type (Person/Action/Object/Quote) for naming
+    const isPaoq = excelTableState.system === 'paoq';
+    const types = isPaoq ? ['person', 'action', 'object', 'quote'] : ['person', 'action', 'object'];
     const type = types[Math.floor(Math.random() * types.length)];
-    const typeLabel = type === 'person' ? 'Person' : (type === 'action' ? 'Action' : 'Object');
+    const typeLabel = type.charAt(0).toUpperCase() + type.slice(1);
     
     const leftItems = selectedCodes.map(c => ({ id: c, text: c, type: 'code' })).sort(() => Math.random() - 0.5);
-    const rightItems = selectedCodes.map(c => ({ id: c, text: getPAO(c)[type], type: 'name' })).sort(() => Math.random() - 0.5);
+    const rightItems = selectedCodes.map(c => ({ id: c, text: getPAO(c)[type] || 'N/A', type: 'name' })).sort(() => Math.random() - 0.5);
     
     excelTableState.viewMode = 'matching';
     excelTableState.matchingData = {
@@ -2536,33 +2539,63 @@ function renderMatchingMode(container) {
     
     container.innerHTML = `
         <div class="pao-game-card" style="max-width: 800px;">
-            <div style="color: #4f46e5; font-weight: 800; margin-bottom: 2rem;">GHÉP ĐÔI: MÃ - ${data.typeLabel.toUpperCase()}</div>
+            <div style="color: #4f46e5; font-weight: 800; margin-bottom: 0.5rem; text-transform: uppercase;">Ghép Đôi: Mã ↔ ${data.typeLabel}</div>
+            <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 2rem;">Chọn một mã bên trái và giá trị tương ứng bên phải</div>
             <div class="matching-container">
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    ${data.leftItems.map(item => `
-                        <div class="matching-item ${data.selectedLeft === item.id ? 'selected' : ''} ${data.solved.has(item.id) ? 'correct' : ''}" 
+                <div style="display: flex; flex-direction: column; gap: 10px;" id="matching-left-col">
+                    ${data.leftItems.map((item, i) => `
+                        <div id="matching-left-${item.id}" class="matching-item ${data.selectedLeft === item.id ? 'selected' : ''} ${data.solved.has(item.id) ? 'correct' : ''}" 
                              onclick="handleMatchingClick('left', '${item.id}')">${item.text}</div>
                     `).join('')}
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    ${data.rightItems.map(item => `
-                        <div class="matching-item ${data.selectedRight === item.id ? 'selected' : ''} ${data.solved.has(item.id) ? 'correct' : ''}" 
+                <div style="display: flex; flex-direction: column; gap: 10px;" id="matching-right-col">
+                    ${data.rightItems.map((item, i) => `
+                        <div id="matching-right-${item.id}" class="matching-item ${data.selectedRight === item.id ? 'selected' : ''} ${data.solved.has(item.id) ? 'correct' : ''}" 
                              onclick="handleMatchingClick('right', '${item.id}')">${item.text}</div>
                     `).join('')}
                 </div>
             </div>
-            <button class="pao-btn" style="margin-top: 2rem;" onclick="startMatchingGame()">Làm mới 🔄</button>
-            <button class="pao-btn" style="margin-top: 2rem;" onclick="updateExcelView('table')">Quay lại</button>
+            <div style="margin-top: 2rem; display: flex; gap: 10px; justify-content: center;">
+                <button class="pao-btn" style="font-size: 0.8rem;" onclick="startMatchingGame()">Làm mới 🔄</button>
+                <button class="pao-btn" style="font-size: 0.8rem;" onclick="updateExcelView('table')">Quay lại</button>
+            </div>
         </div>
     `;
+}
+
+function updateMatchingUI() {
+    const data = excelTableState.matchingData;
+    if (!data) return;
+    
+    // Update classes for all items
+    data.leftItems.forEach(item => {
+        const el = document.getElementById(`matching-left-${item.id}`);
+        if (el) {
+            el.className = `matching-item ${data.selectedLeft === item.id ? 'selected' : ''} ${data.solved.has(item.id) ? 'correct' : ''}`;
+        }
+    });
+    
+    data.rightItems.forEach(item => {
+        const el = document.getElementById(`matching-right-${item.id}`);
+        if (el) {
+            el.className = `matching-item ${data.selectedRight === item.id ? 'selected' : ''} ${data.solved.has(item.id) ? 'correct' : ''}`;
+        }
+    });
 }
 
 window.handleMatchingClick = function(side, id) {
     const data = excelTableState.matchingData;
     if (data.solved.has(id)) return;
     
-    if (side === 'left') data.selectedLeft = id;
-    else data.selectedRight = id;
+    if (side === 'left') {
+        if (data.selectedLeft === id) data.selectedLeft = null;
+        else data.selectedLeft = id;
+    } else {
+        if (data.selectedRight === id) data.selectedRight = null;
+        else data.selectedRight = id;
+    }
+    
+    updateMatchingUI();
     
     if (data.selectedLeft && data.selectedRight) {
         if (data.selectedLeft === data.selectedRight) {
@@ -2571,25 +2604,103 @@ window.handleMatchingClick = function(side, id) {
             data.selectedLeft = null;
             data.selectedRight = null;
             
-            if (data.solved.size === data.pairs.length) {
-                setTimeout(() => {
+            // Short delay to show the "correct" color before potentially finishing
+            setTimeout(() => {
+                updateMatchingUI();
+                if (data.solved.size === data.pairs.length) {
                     alert('Chúc mừng! Bạn đã hoàn thành tất cả các cặp.');
                     updateExcelView('table');
-                }, 500);
-            }
+                }
+            }, 300);
         } else {
             playSound('wrong');
-            const items = document.querySelectorAll('.matching-item.selected');
-            items.forEach(el => el.classList.add('wrong'));
+            // Show wrong effect
+            const leftEl = document.getElementById(`matching-left-${data.selectedLeft}`);
+            const rightEl = document.getElementById(`matching-right-${data.selectedRight}`);
+            if (leftEl) leftEl.classList.add('wrong');
+            if (rightEl) rightEl.classList.add('wrong');
+            
             setTimeout(() => {
                 data.selectedLeft = null;
                 data.selectedRight = null;
-                renderPAOExcelTable();
-            }, 500);
-            return;
+                updateMatchingUI();
+            }, 600);
         }
     }
+};
+
+// --- REVERSE QUIZ MODE (NEW GAME) ---
+window.startReverseQuiz = function() {
+    const isPaoq = excelTableState.system === 'paoq';
+    const all = getFullPaoCodes();
+    const questionCode = all[Math.floor(Math.random() * all.length)];
+    const types = isPaoq ? ['person', 'action', 'object', 'quote'] : ['person', 'action', 'object'];
+    const type = types[Math.floor(Math.random() * types.length)];
+    const typeLabel = type.charAt(0).toUpperCase() + type.slice(1);
+    
+    const pao = getPAO(questionCode);
+    const questionValue = pao[type] || 'N/A';
+    
+    // Get 3 wrong codes
+    const wrongCodes = [];
+    while (wrongCodes.length < 3) {
+        const c = all[Math.floor(Math.random() * all.length)];
+        if (c !== questionCode && !wrongCodes.includes(c)) wrongCodes.push(c);
+    }
+    
+    const options = [questionCode, ...wrongCodes].sort(() => Math.random() - 0.5);
+    
+    excelTableState.viewMode = 'reverse-quiz';
+    excelTableState.reverseQuizData = {
+        questionCode,
+        questionValue,
+        typeLabel,
+        options
+    };
+    
     renderPAOExcelTable();
+};
+
+function renderReverseQuizMode(container) {
+    const quiz = excelTableState.reverseQuizData;
+    if (!quiz) return;
+    
+    container.innerHTML = `
+        <div class="pao-game-card">
+            <div style="color: #6366f1; font-weight: 800; margin-bottom: 0.5rem; text-transform: uppercase;">Đoán Mã PAO (Phản xạ ngược)</div>
+            <div style="font-size: 1.5rem; color: #fbbf24; font-weight: 900; margin: 1.5rem 0;">"${quiz.questionValue}"</div>
+            <div style="color: #94a3b8; margin-bottom: 2rem;">Giá trị [${quiz.typeLabel}] này thuộc về mã số nào?</div>
+            
+            <div class="quiz-options">
+                ${quiz.options.map((opt, i) => `
+                    <div class="quiz-option" onclick="checkReverseQuizAnswer(${i})" style="font-size: 1.5rem; font-weight: 900; min-width: 100px;">${opt}</div>
+                `).join('')}
+            </div>
+            
+            <div style="margin-top: 2.5rem; display: flex; gap: 10px; justify-content: center;">
+                <button class="pao-btn" style="font-size: 0.8rem;" onclick="startReverseQuiz()">Đổi câu hỏi 🔄</button>
+                <button class="pao-btn" style="font-size: 0.8rem;" onclick="updateExcelView('table')">Quay lại</button>
+            </div>
+        </div>
+    `;
+}
+
+window.checkReverseQuizAnswer = function(idx) {
+    const quiz = excelTableState.reverseQuizData;
+    const options = document.querySelectorAll('.quiz-option');
+    if (quiz.options[idx] === quiz.questionCode) {
+        options[idx].classList.add('correct');
+        playSound('correct');
+        setTimeout(startReverseQuiz, 1000);
+    } else {
+        options[idx].classList.add('wrong');
+        playSound('wrong');
+        // Reveal correct answer after a short delay
+        quiz.options.forEach((opt, i) => {
+            if (opt === quiz.questionCode) options[i].classList.add('correct');
+        });
+        setTimeout(startReverseQuiz, 2000);
+    }
 };
 
 function getFullPaoCodes() {
@@ -2616,6 +2727,10 @@ function renderPAOExcelTable() {
     }
     if (excelTableState.viewMode === 'quiz') {
         renderQuizMode(container);
+        return;
+    }
+    if (excelTableState.viewMode === 'reverse-quiz') {
+        renderReverseQuizMode(container);
         return;
     }
     if (excelTableState.viewMode === 'matching') {
