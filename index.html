@@ -84,6 +84,15 @@
 <body>
     <div id="background-3d"></div>
 
+    <div class="pao-quotes-ticker">
+        <div class="ticker-label">📢 Tin học tập</div>
+        <div class="ticker-wrapper">
+            <div class="ticker-content" id="memory-ticker">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
     <!-- Homepage -->
     <div id="homepage" class="screen active">
         <div class="container">
@@ -320,14 +329,25 @@
 
                     /* Memory Quotes Ticker */
                     .pao-quotes-ticker {
-                        background: linear-gradient(90deg, #1e293b, #0f172a);
-                        padding: 8px 0;
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        background: linear-gradient(90deg, #1e1b4b, #0f172a);
+                        padding: 10px 0;
                         overflow: hidden;
                         border-bottom: 2px solid #4f46e5;
-                        margin: -1rem -1rem 1.5rem -1rem;
-                        position: relative;
+                        z-index: 5000;
                         display: flex;
                         align-items: center;
+                        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+                    }
+
+                    body { padding-top: 45px; } /* Offset for ticker */
+                    
+                    @media (max-width: 768px) {
+                        body { padding-top: 42px; }
+                        .pao-quotes-ticker { padding: 6px 0; }
                     }
 
                     .ticker-label {
@@ -347,15 +367,15 @@
                     .ticker-content {
                         display: flex;
                         white-space: nowrap;
-                        animation: tickerSwipe 40s linear infinite;
+                        animation: tickerSwipe 50s linear infinite;
                         padding-left: 100%;
                     }
 
                     .ticker-item {
-                        color: #94a3b8;
+                        color: #e2e8f0;
                         font-size: 0.85rem;
                         font-weight: 600;
-                        margin-right: 5rem;
+                        margin-right: 6rem;
                         display: flex;
                         align-items: center;
                         gap: 10px;
@@ -366,7 +386,7 @@
 
                     @keyframes tickerSwipe {
                         0% { transform: translateX(0); }
-                        100% { transform: translateX(-4000px); }
+                        100% { transform: translateX(-5000px); }
                     }
 
                     .pao-excel-section h2 {
@@ -623,6 +643,15 @@
                         
                         .pao-game-code { font-size: 3.5rem; }
                         .quiz-options { grid-template-columns: 1fr; }
+                        
+                        /* Ensure full width for selection grid */
+                        #sequence-selection-grid { 
+                            grid-template-columns: repeat(5, 1fr) !important; 
+                            width: 100% !important; 
+                            background: rgba(0,0,0,0.5) !important;
+                        }
+                        
+                        .pao-game-card { width: 98% !important; padding: 1rem 0.5rem !important; }
                     }
 
                     /* Matching Game styles */
@@ -687,15 +716,6 @@
 
                     @keyframes spin { to { transform: rotate(360deg); } }
                 </style>
-
-                <div class="pao-quotes-ticker">
-                    <div class="ticker-label">💡 Tin trí nhớ</div>
-                    <div class="ticker-wrapper">
-                        <div class="ticker-content" id="memory-ticker">
-                            <!-- Populated by JS for better management -->
-                        </div>
-                    </div>
-                </div>
 
                 <h2>PAO EXCEL PRO</h2>
                 <p class="pao-subtitle">Bảng mã hóa dữ liệu trí nhớ - Giao diện Classic tối ưu</p>

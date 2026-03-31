@@ -2343,56 +2343,51 @@ window.startSequenceChallenge = function() {
     const input = document.getElementById('practice-count-input');
     const count = parseInt(input ? input.value : 5) || 5;
     
-    const all = getFullPaoCodes();
-    const codes = [];
-    for (let i = 0; i < count; i++) {
-        codes.push(all[Math.floor(Math.random() * all.length)]);
-    }
-    
-    excelTableState.viewMode = 'sequence';
-    excelTableState.sequenceData = {
-        codes: codes,
-        currentStep: 'memo'
-    };
-    
-    // Update view buttons active state
-    document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
-    
-    renderPAOExcelTable();
-};
-
-function renderSequenceMode(container) {
-    const data = excelTableState.sequenceData;
-    if (!data) {
-        container.innerHTML = '<div class="pao-subtitle">Nhấn "Thử thách Dãy số" để bắt đầu.</div>';
-        return;
-    }
-    
-    if (data.currentStep === 'memo') {
+    const all = getFullPaoC    } else {
+        // Recall step
+        const activeIdx = data.activeIndex !== undefined ? data.activeIndex : data.userAnswers.length;
         container.innerHTML = `
             <div class="pao-game-card">
-                <div style="color: #fbbf24; font-weight: 800; margin-bottom: 1rem;">GHI NHỚ DÃY SỐ</div>
-                <div style="display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; margin-top: 0.5rem; background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 12px;">
-                    ${data.codes.map(c => `<div class="pao-game-code" style="font-size: 2.2rem; margin: 0.2rem; min-width: 60px;">${c}</div>`).join('')}
-                </div>
-                <div style="margin-top: 2rem; display: flex; gap: 10px; justify-content: center;">
-                    <button class="pao-game-reveal-btn" onclick="startSequenceRecall()">Tôi đã nhớ xong! ✅</button>
-                    <button class="pao-btn" onclick="updateExcelView('table')">Hủy bỏ</button>
-                </div>
-            </div>
-        `;
-    } else {
-        // Recall step
-        container.innerHTML = `
-            <div class="pao-game-card" style="padding: 1.5rem;">
-                <div style="color: #6366f1; font-weight: 800; margin-bottom: 1rem; font-size: 0.9rem;">NHẬP LẠI DÃY SỐ</div>
+                <div style="color: #6366f1; font-weight: 800; margin-bottom: 1rem; font-size: 0.9rem;">NHẬP LẠI DÃY SỐ (Nhấn vào ô để sửa)</div>
                 
                 <div id="sequence-answers-row" style="display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 1.5rem; flex-wrap: wrap;">
                     ${renderSequenceAnswersRow(data)}
                 </div>
 
-                <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 8px; text-transform: uppercase; font-weight: 700;">Chọn số tiếp theo:</div>
-                <div style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; max-height: 180px; overflow-y: auto; padding: 8px; background: rgba(0,0,0,0.3); border-radius: 10px; border: 1px solid #334155;">
+                <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 8px; text-transform: uppercase;">Chọn số cho ô #${activeIdx + 1}:</div>
+                <div id="sequence-selection-grid" style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; max-height: 200px; overflow-y: auto; padding: 8px; background: rgba(0,0,0,0.3); border-radius: 10px; border: 1px solid #334155; width: 100%;">
+                    ${getFullPaoCodes().map(c => `
+                        <div class="quiz-option" style="padding: 4px 2px; font-size: 0.8rem; height: 32px; display: flex; align-items: center; justify-content: center;" onclick="addSequenceAnswer('${c}')">${c}</div>
+                    `).join('')}
+                </div>
+                
+                <div style="margin-top: 1.5rem; display: flex; gap: 10px; justify-content: center;">
+                    <button class="pao-btn" style="font-size: 0.75rem;" onclick="startSequenceChallenge()">Chơi lại 🔄</button>
+                    ${data.userAnswers.length === data.codes.length ? `<button class="pao-game-reveal-btn" style="padding: 0.5rem 1.2rem; font-size: 0.9rem;" onclick="checkSequenceResult()">Xác nhận kết quả ✅</button>` : ''}
+                </div>
+            </div>
+        `;
+    }
+}
+
+function renderSequenceAnswersRow(data) {
+    const activeIdx = data.activeIndex !== undefined ? data.activeIndex : data.userAnswers.length;
+    return data.codes.map((_, i) => {
+        const val = data.userAnswers && data.userAnswers[i] !== undefined ? data.userAnswers[i] : '?';
+        const isSelected = activeIdx === i;
+        return `
+            <div onclick="setSequenceActiveIndex(${i})" style="width: 40px; height: 40px; border: 2px solid ${isSelected ? '#4f46e5' : '#334155'}; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: ${val === '?' ? '#475569' : '#fbbf24'}; background: ${isSelected ? 'rgba(79, 70, 229, 0.3)' : 'transparent'}; cursor: pointer; transition: 0.2s; transform: ${isSelected ? 'scale(1.1)' : 'scale(1)'}">
+                ${val}
+            </div>
+        `;
+    }).join('');
+}
+
+window.setSequenceActiveIndex = function(index) {
+    excelTableState.sequenceData.activeIndex = index;
+    renderPAOExcelTable();
+};
+display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; max-height: 180px; overflow-y: auto; padding: 8px; background: rgba(0,0,0,0.3); border-radius: 10px; border: 1px solid #334155;">
                     ${getFullPaoCodes().map(c => `
                         <div class="quiz-option" style="padding: 4px 2px; font-size: 0.8rem; height: 32px; display: flex; align-items: center; justify-content: center;" onclick="addSequenceAnswer('${c}')">${c}</div>
                     `).join('')}
@@ -2427,20 +2422,19 @@ window.startSequenceRecall = function() {
 
 window.addSequenceAnswer = function(code) {
     const data = excelTableState.sequenceData;
-    data.userAnswers.push(code);
+    let activeIdx = data.activeIndex !== undefined ? data.activeIndex : data.userAnswers.length;
     
-    if (data.userAnswers.length === data.codes.length) {
-        // Finished
-        checkSequenceResult();
+    // Update or push
+    data.userAnswers[activeIdx] = code;
+    
+    // Find next empty spot or move to next
+    if (activeIdx < data.codes.length - 1) {
+        data.activeIndex = activeIdx + 1;
     } else {
-        // Optimized update: only refresh the answer row to avoid flicker
-        const row = document.getElementById('sequence-answers-row');
-        if (row) {
-            row.innerHTML = renderSequenceAnswersRow(data);
-        } else {
-            renderPAOExcelTable();
-        }
+        delete data.activeIndex; // Reset to default (end)
     }
+    
+    renderPAOExcelTable();
 };
 
 function checkSequenceResult() {
@@ -2859,14 +2853,27 @@ function hexToRgb(hex) {
 
 // --- MEMORY QUOTES TICKER MODULE ---
 const MEMORY_QUOTES = [
-    { text: "Memory is the treasury and guardian of all things.", author: "Cicero" },
-    { text: "Memory is the scribe of the soul.", author: "Aristotle" },
-    { text: "Lợi ích của trí nhớ tốt không chỉ là lưu giữ quá khứ, mà còn là xây dựng tương lai.", author: "Khuyết danh" },
-    { text: "Càng rèn luyện, trí nhớ càng sắc bén. Đừng để bộ não 'nghỉ hưu' quá sớm.", author: "Siêu Trí Nhớ" },
-    { text: "Phương pháp PAO giúp chuyển hóa con số khô khan thành hình ảnh sống động.", author: "Mnemonic Master" },
-    { text: "Mỗi con số là một câu chuyện. Mỗi câu chuyện là một hành trình trí tuệ.", author: "Tony Buzan" },
-    { text: "Trí nhớ tốt là nền tảng của mọi sự học tập và sáng tạo.", author: "Albert Einstein" },
-    { text: "Ghi nhớ không phải là học thuộc lòng, mà là thấu hiểu và liên kết.", author: "Jim Kwik" }
+    { text: "Học, học nữa, học mãi.", author: "V.I. Lênin" },
+    { text: "Học để làm việc, làm người, làm cán bộ.", author: "Hồ Chí Minh" },
+    { text: "Giáo dục là vũ khí mạnh nhất để thay đổi thế giới.", author: "Nelson Mandela" },
+    { text: "Đừng bao giờ coi học tập là nghĩa vụ, mà là cơ hội để tìm hiểu sự đẹp đẽ.", author: "Albert Einstein" },
+    { text: "Đầu tư vào kiến thức luôn mang lại lãi suất cao nhất.", author: "Benjamin Franklin" },
+    { text: "Học không biết chán, dạy không biết mỏi.", author: "Khổng Tử" },
+    { text: "Trí tuệ không phải là một chiếc bình cần chứa đầy, mà là một ngọn lửa cần được thắp sáng.", author: "Plutarch" },
+    { text: "Trong cách học, phải lấy tự học làm cốt.", author: "Hồ Chí Minh" },
+    { text: "Kiến thức là sức mạnh.", author: "Francis Bacon" },
+    { text: "Học mà không hành thì vô ích. Hành mà không học thì nguy hiểm.", author: "Khổng Tử" },
+    { text: "Tương lai thuộc về những người tin vào vẻ đẹp của ước mơ.", author: "Eleanor Roosevelt" },
+    { text: "Người không học giống như viên ngọc không được mài giũa.", author: "Ngạn ngữ" },
+    { text: "Thiên tài là một phần trăm cảm hứng và chín mươi chín phần trăm đổ mồ hôi.", author: "Thomas Edison" },
+    { text: "Học tập là một kho báu đi theo chủ nhân của nó khắp mọi nơi.", author: "Ngạn ngữ Trung Hoa" },
+    { text: "Bạn sẽ không bao giờ hiểu được tất cả nếu chỉ học một mình.", author: "Jim Kwik" },
+    { text: "Trí nhớ là kho báu lớn nhất của con người.", author: "Aristotle" },
+    { text: "Ghi nhớ là cội nguồn của trí tuệ.", author: "Aristotle" },
+    { text: "Học tập là hạt giống của kiến thức.", author: "Ngạn ngữ" },
+    { text: "Nghệ thuật của trí nhớ là nghệ thuật của sự chú ý.", author: "Samuel Johnson" },
+    { text: "Sự ghi nhớ là thư ký của tâm hồn.", author: "Aristotle" },
+    { text: "Cuộc đời là một chuyến hành trình học tập không kết thúc.", author: "Khuyết danh" }
 ];
 
 function initMemoryTicker() {
@@ -2902,21 +2909,27 @@ async function callClaudeAI(prompt) {
                 'Authorization': `Bearer ${AI_CONFIG.apiKey}`
             },
             body: JSON.stringify({
-                model: AI_CONFIG.model,
+                model: 'claude-3-5-haiku-20241022', // Try standard model name
                 messages: [
-                    { role: 'system', content: 'Bạn là chuyên gia về siêu trí nhớ và phương pháp PAO (Person-Action-Object). Bạn giúp người dùng tạo ra những câu chuyện hình ảnh sống động, điên rồ và cực kỳ dễ nhớ từ những con số họ cung cấp.' },
+                    { role: 'system', content: 'Bạn là chuyên gia về siêu trí nhớ và phương pháp PAO (Person-Action-Object). Bạn giúp người dùng tạo ra những câu chuyện hình ảnh sống động, điên rồ và cực kỳ dễ nhớ từ những con số họ cung cấp. Trả lời bằng tiếng Việt, ngắn gọn súc tích.' },
                     { role: 'user', content: prompt }
                 ],
                 temperature: 0.8
             })
         });
 
-        if (!response.ok) throw new Error('API request failed');
+        if (!response.ok) {
+            const errBody = await response.text();
+            console.error('Claude API Failure Status:', response.status);
+            console.error('Claude API Failure Body:', errBody);
+            throw new Error(`API failed with status ${response.status}: ${errBody}`);
+        }
+        
         const data = await response.json();
         return data.choices[0].message.content;
     } catch (error) {
-        console.error('Claude AI Error:', error);
-        return 'Xin lỗi, tôi gặp chút sự cố khi kết nối với bộ não AI. Vui lòng thử lại sau!';
+        console.error('AI Detail Error:', error);
+        return 'LỖI AI: Hiện tại tôi không thể kết nối tới server Claude. Lỗi chi tiết đã được in ra Console.';
     }
 }
 
