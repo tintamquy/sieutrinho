@@ -2081,6 +2081,7 @@ function getRandomOptions(correctNum, count = 4) {
 
 // ===== PAO Excel Table Logic & Controls (New) =====
 let excelTableState = {
+    system: typeof window.getCurrentPaoSystem === 'function' ? window.getCurrentPaoSystem() : 'paoq',
     filter: 'all', // all, even, odd, random
     sort: 'asc', // asc, desc
     limit: 0, // 0 means all
@@ -2768,6 +2769,9 @@ function renderSingleTable(codes, isPaoq) {
 }
 
 window.onPaoSystemChanged = function (sys) {
+    // Update state
+    excelTableState.system = sys;
+    
     // Update toggle buttons UI - Only toggle active class, let premium CSS handle styling
     const btns = document.querySelectorAll('.pao-toggle-btn');
     btns.forEach(btn => {
@@ -2779,6 +2783,8 @@ window.onPaoSystemChanged = function (sys) {
     const qToggleContainer = document.getElementById('q-toggle-container');
     if (sys === 'paoq') {
         if (qToggleContainer) qToggleContainer.classList.remove('hide-column');
+        // Ensure quote column is not hidden when switching to PAOQ
+        excelTableState.hiddenColumns.delete(4);
     } else {
         if (qToggleContainer) qToggleContainer.classList.add('hide-column');
         excelTableState.hiddenColumns.add(4); // Force hide quote column in PAO system
@@ -2949,6 +2955,7 @@ async function callClaudeAI(prompt) {
                     { role: 'system', content: 'Bạn là chuyên gia về siêu trí nhớ và phương pháp PAO (Person-Action-Object). Bạn giúp người dùng tạo ra những câu chuyện hình ảnh sống động, điên rồ và cực kỳ dễ nhớ từ những con số họ cung cấp. Trả lời bằng tiếng Việt, ngắn gọn súc tích.' },
                     { role: 'user', content: prompt }
                 ],
+                max_tokens: 1024,
                 temperature: 0.8
             })
         });
