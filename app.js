@@ -2372,10 +2372,10 @@ function renderSequenceMode(container) {
         container.innerHTML = `
             <div class="pao-game-card">
                 <div style="color: #fbbf24; font-weight: 800; margin-bottom: 1rem;">GHI NHỚ DÃY SỐ</div>
-                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;">
-                    ${data.codes.map(c => `<div class="pao-game-code" style="font-size: 3rem; margin: 0.5rem;">${c}</div>`).join('')}
+                <div style="display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; margin-top: 0.5rem; background: rgba(255,255,255,0.03); padding: 1.5rem; border-radius: 12px;">
+                    ${data.codes.map(c => `<div class="pao-game-code" style="font-size: 2.2rem; margin: 0.2rem; min-width: 60px;">${c}</div>`).join('')}
                 </div>
-                <div style="margin-top: 2rem;">
+                <div style="margin-top: 2rem; display: flex; gap: 10px; justify-content: center;">
                     <button class="pao-game-reveal-btn" onclick="startSequenceRecall()">Tôi đã nhớ xong! ✅</button>
                     <button class="pao-btn" onclick="updateExcelView('table')">Hủy bỏ</button>
                 </div>
@@ -2384,25 +2384,39 @@ function renderSequenceMode(container) {
     } else {
         // Recall step
         container.innerHTML = `
-            <div class="pao-game-card">
-                <div style="color: #6366f1; font-weight: 800; margin-bottom: 1rem;">NHẬP LẠI DÃY SỐ</div>
-                <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem;">
-                    ${data.codes.map((_, i) => `
-                        <div style="width: 45px; height: 45px; border: 2px solid #334155; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #fbbf24;">
-                            ${data.userAnswers && data.userAnswers[i] !== undefined ? data.userAnswers[i] : '?'}
-                        </div>
-                    `).join('')}
+            <div class="pao-game-card" style="padding: 1.5rem;">
+                <div style="color: #6366f1; font-weight: 800; margin-bottom: 1rem; font-size: 0.9rem;">NHẬP LẠI DÃY SỐ</div>
+                
+                <div id="sequence-answers-row" style="display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                    ${renderSequenceAnswersRow(data)}
                 </div>
-                <div style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 10px;">Chọn số tiếp theo:</div>
-                <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; max-height: 200px; overflow-y: auto; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+
+                <div style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 8px; text-transform: uppercase; font-weight: 700;">Chọn số tiếp theo:</div>
+                <div style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; max-height: 180px; overflow-y: auto; padding: 8px; background: rgba(0,0,0,0.3); border-radius: 10px; border: 1px solid #334155;">
                     ${getFullPaoCodes().map(c => `
-                        <div class="quiz-option" style="padding: 5px; font-size: 0.9rem;" onclick="addSequenceAnswer('${c}')">${c}</div>
+                        <div class="quiz-option" style="padding: 4px 2px; font-size: 0.8rem; height: 32px; display: flex; align-items: center; justify-content: center;" onclick="addSequenceAnswer('${c}')">${c}</div>
                     `).join('')}
                 </div>
-                <button class="pao-btn" style="margin-top: 1rem;" onclick="startSequenceChallenge()">Chơi lại 🔄</button>
+                
+                <div style="margin-top: 1.5rem; border-top: 1px solid #334155; padding-top: 1rem;">
+                    <button class="pao-btn" style="font-size: 0.75rem; padding: 0.4rem 1rem;" onclick="startSequenceChallenge()">Chơi lại 🔄</button>
+                    <button class="pao-btn" style="font-size: 0.75rem; padding: 0.4rem 1rem; margin-left: 10px;" onclick="updateExcelView('table')">Thoát</button>
+                </div>
             </div>
         `;
     }
+}
+
+function renderSequenceAnswersRow(data) {
+    return data.codes.map((_, i) => {
+        const val = data.userAnswers && data.userAnswers[i] !== undefined ? data.userAnswers[i] : '?';
+        const isCurrent = data.userAnswers.length === i;
+        return `
+            <div style="width: 38px; height: 38px; border: 2px solid ${isCurrent ? '#4f46e5' : '#334155'}; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: ${val === '?' ? '#475569' : '#fbbf24'}; background: ${isCurrent ? 'rgba(79, 70, 229, 0.2)' : 'transparent'}; transition: 0.2s;">
+                ${val}
+            </div>
+        `;
+    }).join('');
 }
 
 window.startSequenceRecall = function() {
@@ -2419,7 +2433,13 @@ window.addSequenceAnswer = function(code) {
         // Finished
         checkSequenceResult();
     } else {
-        renderPAOExcelTable();
+        // Optimized update: only refresh the answer row to avoid flicker
+        const row = document.getElementById('sequence-answers-row');
+        if (row) {
+            row.innerHTML = renderSequenceAnswersRow(data);
+        } else {
+            renderPAOExcelTable();
+        }
     }
 };
 
@@ -2836,3 +2856,105 @@ function hexToRgb(hex) {
     if (!result) return '99,102,241';
     return `${parseInt(result[1], 16)},${parseInt(result[2], 16)},${parseInt(result[3], 16)}`;
 }
+
+// --- MEMORY QUOTES TICKER MODULE ---
+const MEMORY_QUOTES = [
+    { text: "Memory is the treasury and guardian of all things.", author: "Cicero" },
+    { text: "Memory is the scribe of the soul.", author: "Aristotle" },
+    { text: "Lợi ích của trí nhớ tốt không chỉ là lưu giữ quá khứ, mà còn là xây dựng tương lai.", author: "Khuyết danh" },
+    { text: "Càng rèn luyện, trí nhớ càng sắc bén. Đừng để bộ não 'nghỉ hưu' quá sớm.", author: "Siêu Trí Nhớ" },
+    { text: "Phương pháp PAO giúp chuyển hóa con số khô khan thành hình ảnh sống động.", author: "Mnemonic Master" },
+    { text: "Mỗi con số là một câu chuyện. Mỗi câu chuyện là một hành trình trí tuệ.", author: "Tony Buzan" },
+    { text: "Trí nhớ tốt là nền tảng của mọi sự học tập và sáng tạo.", author: "Albert Einstein" },
+    { text: "Ghi nhớ không phải là học thuộc lòng, mà là thấu hiểu và liên kết.", author: "Jim Kwik" }
+];
+
+function initMemoryTicker() {
+    const ticker = document.getElementById('memory-ticker');
+    if (!ticker) return;
+    
+    // Duplicate quotes to ensure seamless looping
+    const allQuotes = [...MEMORY_QUOTES, ...MEMORY_QUOTES, ...MEMORY_QUOTES];
+    ticker.innerHTML = allQuotes.map(q => `
+        <div class="ticker-item">
+            <strong>“</strong> ${q.text} <strong>”</strong>
+            <span class="author">— ${q.author}</span>
+        </div>
+    `).join('');
+}
+
+// Initial call
+setTimeout(initMemoryTicker, 500);
+
+// --- AI CLAUDE INTEGRATION MODULE ---
+const AI_CONFIG = {
+    apiKey: 'sk-7569039d66fb07fe174619a4a82bdf3f2d1c27d1e9dcaf71a7d5c95565cdacb1',
+    endpoint: 'https://chiasegpu.vn/api/v1/llm/chat/completions',
+    model: 'claude-haiku-4.5' // Use provided model
+};
+
+async function callClaudeAI(prompt) {
+    try {
+        const response = await fetch(AI_CONFIG.endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${AI_CONFIG.apiKey}`
+            },
+            body: JSON.stringify({
+                model: AI_CONFIG.model,
+                messages: [
+                    { role: 'system', content: 'Bạn là chuyên gia về siêu trí nhớ và phương pháp PAO (Person-Action-Object). Bạn giúp người dùng tạo ra những câu chuyện hình ảnh sống động, điên rồ và cực kỳ dễ nhớ từ những con số họ cung cấp.' },
+                    { role: 'user', content: prompt }
+                ],
+                temperature: 0.8
+            })
+        });
+
+        if (!response.ok) throw new Error('API request failed');
+        const data = await response.json();
+        return data.choices[0].message.content;
+    } catch (error) {
+        console.error('Claude AI Error:', error);
+        return 'Xin lỗi, tôi gặp chút sự cố khi kết nối với bộ não AI. Vui lòng thử lại sau!';
+    }
+}
+
+window.generateAIStory = async function() {
+    const container = document.getElementById('ai-story-container');
+    if (!container) return;
+
+    // Get selected codes or pick 3 random from current view
+    const allCodes = getFullPaoCodes();
+    const shuffled = [...allCodes].sort(() => Math.random() - 0.5);
+    const selectedCodes = shuffled.slice(0, 3);
+
+    const paoList = selectedCodes.map(code => {
+        const p = getPAO(code);
+        return p ? `Mã ${code}: [${p.person} - ${p.action} - ${p.object}]` : '';
+    }).join('\\n');
+
+    const prompt = `Hãy sáng tác một câu chuyện cực kỳ ngắn gọn (tối đa 3 câu), sống động và hài hước để ghi nhớ dãy số sau theo phương pháp PAO:\\n${paoList}\\nLưu ý: Viết bằng tiếng Việt, tập trung vào hình ảnh mạnh để dễ khắc sâu vào trí nhớ.`;
+
+    // Show loading UI
+    container.style.display = 'block';
+    container.classList.add('active');
+    container.innerHTML = `
+        <div class="ai-story-loading">
+            <div class="ai-loader"></div>
+            <div style="color: #94a3b8; font-style: italic;">Claude AI đang hữu hình hóa câu chuyện...</div>
+        </div>
+    `;
+
+    const story = await callClaudeAI(prompt);
+
+    // Show result UI
+    container.innerHTML = `
+        <div class="ai-story-title">🤖 Câu chuyện Ghi nhớ AI</div>
+        <div class="ai-story-body">${story}</div>
+        <button class="pao-btn" style="margin-top: 1rem; font-size: 0.75rem; background: #334155;" onclick="this.parentElement.parentElement.classList.remove('active')">Đóng</button>
+    `;
+    
+    // Scroll to view
+    container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+};
