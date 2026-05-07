@@ -56,27 +56,28 @@ function clearKeyboardShortcuts() {
 
 // PAO Game 1: Flash Card
 function startPAOFlashCard() {
-    // Always get fresh paoData at game start
     const allCodes = Object.keys(paoData).filter(k => paoData[k] && paoData[k].person);
     let currentIndex = 0;
     let autoPlayInterval = null;
     let autoPlaySpeed = 3000;
     let isAutoPlaying = false;
-    let autoFlip = true; // Option: lật thẻ trước khi chuyển
+    let autoFlip   = true;   // lật thẻ trước khi chuyển
+    let randomMode = false;  // chuyển ngẫu nhiên
     let touchStartX = 0, touchStartY = 0;
 
     function renderCardHTML(index) {
         const code = allCodes[index];
-        const pao = getPAO(code);
-        if (!pao) return '<div style="color:red;padding:2rem;">Không tìm thấy dữ liệu cho mã: ' + code + '</div>';
+        const pao  = getPAO(code);
+        if (!pao) return '<div style="color:red;padding:2rem;">Không tìm thấy: ' + code + '</div>';
 
         const speedBtns = [1, 2, 3].map(s =>
-            '<button class="pao-speed-btn' + (autoPlaySpeed === s * 1000 ? ' active' : '') + '" ' +
-            'onclick="PAOGames.flashCard.setSpeed(' + s + ')">' + s + 's</button>'
+            '<button class="pao-speed-btn' + (autoPlaySpeed === s * 1000 ? ' active' : '') + '"' +
+            ' onclick="PAOGames.flashCard.setSpeed(' + s + ')">' + s + 's</button>'
         ).join('');
 
-        return `
-<div class="pao-fc-wrapper">
+        return `<div class="pao-fc-wrapper">
+
+  <!-- PROGRESS -->
   <div class="pao-fc-topbar">
     <div class="pao-fc-progress-text">Thẻ <strong>${index + 1}</strong> / ${allCodes.length}</div>
     <div class="pao-fc-progress-bar-wrap">
@@ -84,6 +85,7 @@ function startPAOFlashCard() {
     </div>
   </div>
 
+  <!-- CARD -->
   <div class="pao-fc-card-area">
     <div class="pao-flashcard" id="pao-card">
       <div class="pao-card-front">
@@ -93,25 +95,28 @@ function startPAOFlashCard() {
       <div class="pao-card-back">
         <div class="pao-info-box">
           <div class="pao-item"><span class="pao-item-label">👤 Person</span><span class="pao-item-val">${pao.person || '—'}</span></div>
-          <div class="pao-item"><span class="pao-item-label">⚡ Action</span><span class="pao-item-val">${pao.action || '—'}</span></div>
-          <div class="pao-item"><span class="pao-item-label">🎁 Object</span><span class="pao-item-val">${pao.object || '—'}</span></div>
+          <div class="pao-item"><span class="pao-item-label">⚡ Action</span><span class="pao-item-val">${pao.action  || '—'}</span></div>
+          <div class="pao-item"><span class="pao-item-label">🎁 Object</span><span class="pao-item-val">${pao.object  || '—'}</span></div>
           ${pao.quote ? '<div class="pao-item pao-item-quote"><span class="pao-item-label">💬 Quote</span><span class="pao-item-val pao-quote-text">' + pao.quote + '</span></div>' : ''}
         </div>
       </div>
     </div>
-    <div class="pao-fc-swipe-hint">← Vuốt để chuyển thẻ →</div>
+    <div class="pao-fc-swipe-hint">← Vuốt trái / phải để chuyển thẻ →</div>
   </div>
 
+  <!-- NAV BUTTONS -->
   <div class="pao-fc-controls">
-    <button class="btn-game btn-game-nav" onclick="PAOGames.flashCard.prev()">◀ Trước</button>
-    <button class="btn-game btn-game-flip" onclick="PAOGames.flashCard.flip()">🔄 Lật Thẻ</button>
-    <button class="btn-game btn-game-nav" onclick="PAOGames.flashCard.next()">Sau ▶</button>
-    <button class="btn-game btn-game-random" onclick="PAOGames.flashCard.random()">🎲</button>
+    <button class="pao-ctrl-btn pao-ctrl-prev" onclick="PAOGames.flashCard.prev()">◀ Trước</button>
+    <button class="pao-ctrl-btn pao-ctrl-flip" onclick="PAOGames.flashCard.flip()">🔄 Lật Thẻ</button>
+    <button class="pao-ctrl-btn pao-ctrl-next" onclick="PAOGames.flashCard.next()">Sau ▶</button>
+    <button class="pao-ctrl-btn pao-ctrl-rand" onclick="PAOGames.flashCard.random()" title="Ngẫu nhiên (R)">🎲</button>
   </div>
 
+  <!-- AUTO-PLAY PANEL -->
   <div class="pao-fc-autoplay-panel">
+    <!-- Row 1: speed + play btn -->
     <div class="pao-fc-autoplay-row">
-      <div class="pao-fc-autoplay-label">⏱ Tự động:</div>
+      <span class="pao-fc-autoplay-label">⏱ Tự động:</span>
       <div class="pao-fc-speed-group">
         ${speedBtns}
         <div class="pao-fc-custom-wrap">
@@ -121,19 +126,25 @@ function startPAOFlashCard() {
           <span class="pao-fc-custom-unit">s</span>
         </div>
       </div>
-      <button id="pao-fc-autoplay-btn" class="btn-game btn-game-autoplay${isAutoPlaying ? ' active' : ''}"
+      <button id="pao-fc-autoplay-btn" class="pao-ctrl-btn pao-ctrl-autoplay${isAutoPlaying ? ' active' : ''}"
               onclick="PAOGames.flashCard.toggleAutoPlay()">
         ${isAutoPlaying ? '⏸ Dừng' : '▶ Tự Động'}
       </button>
     </div>
-    <div class="pao-fc-autoflip-row">
-      <label class="pao-fc-toggle-label">
+    <!-- Row 2: toggles -->
+    <div class="pao-fc-toggles-row">
+      <label class="pao-fc-toggle-label" title="Lật thẻ trước khi chuyển">
         <input type="checkbox" id="pao-fc-autoflip" ${autoFlip ? 'checked' : ''}
                onchange="PAOGames.flashCard.setAutoFlip(this.checked)">
         <span class="pao-fc-toggle-track"><span class="pao-fc-toggle-thumb"></span></span>
-        <span>Lật thẻ trước khi chuyển</span>
+        <span>Lật thẻ trước</span>
       </label>
-      <span class="pao-fc-autoflip-hint">${autoFlip ? '(Hiện mặt trước → lật → chuyển)' : '(Chỉ hiện mặt trước rồi chuyển)'}</span>
+      <label class="pao-fc-toggle-label" title="Chuyển thẻ ngẫu nhiên thay vì theo thứ tự">
+        <input type="checkbox" id="pao-fc-random" ${randomMode ? 'checked' : ''}
+               onchange="PAOGames.flashCard.setRandomMode(this.checked)">
+        <span class="pao-fc-toggle-track"><span class="pao-fc-toggle-thumb"></span></span>
+        <span>Thứ tự ngẫu nhiên</span>
+      </label>
     </div>
   </div>
 </div>`;
@@ -170,29 +181,31 @@ function startPAOFlashCard() {
         }
     }
 
+    function getNextIndex() {
+        if (randomMode) {
+            let next;
+            do { next = Math.floor(Math.random() * allCodes.length); } while (next === currentIndex && allCodes.length > 1);
+            return next;
+        }
+        return (currentIndex + 1) % allCodes.length;
+    }
+
     function resetAutoPlay() {
         if (autoPlayInterval) clearInterval(autoPlayInterval);
         if (!isAutoPlaying) return;
         if (autoFlip) {
-            // Phase 1: wait then flip, Phase 2: wait then next
             let phase = 'front';
             autoPlayInterval = setInterval(() => {
                 const card = document.getElementById('pao-card');
                 if (!card) { stopAutoPlay(); return; }
-                if (phase === 'front') {
-                    card.classList.add('flipped');
-                    phase = 'back';
-                } else {
-                    phase = 'front';
-                    publicAPI.next();
-                }
+                if (phase === 'front') { card.classList.add('flipped'); phase = 'back'; }
+                else { phase = 'front'; loadCard(getNextIndex()); if (isAutoPlaying) resetAutoPlay(); }
             }, autoPlaySpeed);
         } else {
-            // No flip: just advance
             autoPlayInterval = setInterval(() => {
-                const card = document.getElementById('pao-card');
-                if (!card) { stopAutoPlay(); return; }
-                publicAPI.next();
+                if (!document.getElementById('pao-card')) { stopAutoPlay(); return; }
+                loadCard(getNextIndex());
+                if (isAutoPlaying) resetAutoPlay();
             }, autoPlaySpeed);
         }
     }
@@ -209,9 +222,9 @@ function startPAOFlashCard() {
             if (card) card.classList.toggle('flipped');
             if (isAutoPlaying) resetAutoPlay();
         },
-        next: () => { currentIndex = (currentIndex+1) % allCodes.length; loadCard(currentIndex); if (isAutoPlaying) resetAutoPlay(); },
-        prev: () => { currentIndex = (currentIndex-1+allCodes.length) % allCodes.length; loadCard(currentIndex); if (isAutoPlaying) resetAutoPlay(); },
-        random: () => { currentIndex = Math.floor(Math.random()*allCodes.length); loadCard(currentIndex); if (isAutoPlaying) resetAutoPlay(); },
+        next:   () => { loadCard((currentIndex+1) % allCodes.length); if (isAutoPlaying) resetAutoPlay(); },
+        prev:   () => { loadCard((currentIndex-1+allCodes.length) % allCodes.length); if (isAutoPlaying) resetAutoPlay(); },
+        random: () => { loadCard(Math.floor(Math.random()*allCodes.length)); if (isAutoPlaying) resetAutoPlay(); },
         setSpeed: (s) => {
             autoPlaySpeed = s * 1000;
             document.querySelectorAll('.pao-speed-btn').forEach(b => b.classList.toggle('active', parseFloat(b.textContent) === s));
@@ -220,16 +233,12 @@ function startPAOFlashCard() {
             if (isAutoPlaying) resetAutoPlay();
         },
         setSpeedCustom: (val) => {
-            autoPlaySpeed = Math.max(500, Math.min(30000, Math.round(parseFloat(val)*1000) || 3000));
+            autoPlaySpeed = Math.max(500, Math.min(30000, Math.round(parseFloat(val)*1000)||3000));
             document.querySelectorAll('.pao-speed-btn').forEach(b => b.classList.remove('active'));
             if (isAutoPlaying) resetAutoPlay();
         },
-        setAutoFlip: (val) => {
-            autoFlip = !!val;
-            const hint = document.querySelector('.pao-fc-autoflip-hint');
-            if (hint) hint.textContent = autoFlip ? '(Hiện mặt trước → lật → chuyển)' : '(Chỉ hiện mặt trước rồi chuyển)';
-            if (isAutoPlaying) resetAutoPlay();
-        },
+        setAutoFlip: (val)   => { autoFlip = !!val;   if (isAutoPlaying) resetAutoPlay(); },
+        setRandomMode: (val) => { randomMode = !!val; },
         toggleAutoPlay: () => {
             isAutoPlaying = !isAutoPlaying;
             if (isAutoPlaying) resetAutoPlay(); else stopAutoPlay();
@@ -245,14 +254,14 @@ function startPAOFlashCard() {
         keyboardHandler: null
     };
 
-    publicAPI.keyboardHandler = function(event) {
-        if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') return;
-        switch(event.key) {
-            case ' ': case 'Enter': event.preventDefault(); publicAPI.flip(); break;
-            case 'ArrowLeft': event.preventDefault(); publicAPI.prev(); break;
-            case 'ArrowRight': event.preventDefault(); publicAPI.next(); break;
-            case 'r': case 'R': event.preventDefault(); publicAPI.random(); break;
-            case 'p': case 'P': event.preventDefault(); publicAPI.toggleAutoPlay(); break;
+    publicAPI.keyboardHandler = e => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        switch(e.key) {
+            case ' ': case 'Enter': e.preventDefault(); publicAPI.flip(); break;
+            case 'ArrowLeft':  e.preventDefault(); publicAPI.prev(); break;
+            case 'ArrowRight': e.preventDefault(); publicAPI.next(); break;
+            case 'r': case 'R': e.preventDefault(); publicAPI.random(); break;
+            case 'p': case 'P': e.preventDefault(); publicAPI.toggleAutoPlay(); break;
         }
     };
 
@@ -1105,16 +1114,14 @@ function startPAOComboStreak() {
 }
 
 
-// PAO Game 1b: Memory Review - Flash Card với Nhớ/Chưa Nhớ + Thống kê
+// PAO Game 1b: Memory Review - Flash Card Nhớ / Chưa Nhớ
 function startPAOMemoryReview() {
     const allCodes = Object.keys(paoData).filter(k => paoData[k] && paoData[k].person);
-    let queue = [...allCodes];
+    let queue      = [...allCodes];
     let remembered = [];
-    let notYet = [];
-    let score = 0;
+    let notYet     = [];
+    let score      = 0;
     let currentIndex = 0;
-    let isFlipped = false;
-    let sessionHistory = []; // {code, result, time}
 
     function getCurrentCode() { return queue[currentIndex]; }
 
@@ -1123,97 +1130,96 @@ function startPAOMemoryReview() {
         if (!code) { showSummary(); return; }
         const pao = getPAO(code);
         if (!pao) { currentIndex++; renderCard(); return; }
-        isFlipped = false;
 
         const total = allCodes.length;
-        const done = remembered.length + notYet.length;
-        const pct = total > 0 ? Math.round(done / total * 100) : 0;
+        const done  = remembered.length + notYet.length;
+        const pct   = total > 0 ? Math.round(done / total * 100) : 0;
+        const remaining = queue.length - currentIndex;
 
-        document.getElementById('game-container').innerHTML = `
-<div class="pao-mr-wrapper">
+        document.getElementById('game-container').innerHTML = `<div class="pao-mr-wrapper">
+
+  <!-- STATS BAR -->
   <div class="pao-mr-stats">
     <span class="pao-mr-stat pao-mr-remembered">✅ ${remembered.length} nhớ</span>
-    <span class="pao-mr-stat pao-mr-score">⭐ ${score} điểm</span>
+    <span class="pao-mr-stat pao-mr-score">⭐ ${score} đ</span>
     <span class="pao-mr-stat pao-mr-notyet">❌ ${notYet.length} chưa</span>
   </div>
   <div class="pao-mr-progress-wrap">
     <div class="pao-mr-progress-fill" style="width:${pct}%"></div>
   </div>
-  <div class="pao-mr-progress-text">${done}/${total} đã xem — Còn ${queue.length - currentIndex} thẻ</div>
+  <div class="pao-mr-progress-text">${done}/${total} đã xem — còn ${remaining} thẻ</div>
 
-  <div class="pao-flashcard pao-mr-card" id="pao-mr-card">
-    <div class="pao-card-front">
-      <div class="pao-card-hint">👆 Nhấn thẻ để lật xem đáp án</div>
-      <div class="pao-card-number">${code}</div>
+  <!-- CARD (always shows both sides stacked, no 3D flip needed) -->
+  <div class="pao-mr-card-block">
+    <!-- Front: always visible -->
+    <div class="pao-mr-front">
+      <div class="pao-mr-code">${code}</div>
     </div>
-    <div class="pao-card-back">
+    <!-- Back: revealed on flip, hidden initially -->
+    <div class="pao-mr-back" id="pao-mr-back" style="display:none;">
       <div class="pao-info-box">
-        <div class="pao-item"><span class="pao-item-label">👤 Person</span><span class="pao-item-val">${pao.person||'—'}</span></div>
-        <div class="pao-item"><span class="pao-item-label">⚡ Action</span><span class="pao-item-val">${pao.action||'—'}</span></div>
-        <div class="pao-item"><span class="pao-item-label">🎁 Object</span><span class="pao-item-val">${pao.object||'—'}</span></div>
-        ${pao.quote ? '<div class="pao-item pao-item-quote"><span class="pao-item-label">💬 Quote</span><span class="pao-item-val pao-quote-text">'+pao.quote+'</span></div>' : ''}
+        <div class="pao-item"><span class="pao-item-label">👤 Person</span><span class="pao-item-val">${pao.person || '—'}</span></div>
+        <div class="pao-item"><span class="pao-item-label">⚡ Action</span><span class="pao-item-val">${pao.action  || '—'}</span></div>
+        <div class="pao-item"><span class="pao-item-label">🎁 Object</span><span class="pao-item-val">${pao.object  || '—'}</span></div>
+        ${pao.quote ? '<div class="pao-item pao-item-quote"><span class="pao-item-label">💬 Quote</span><span class="pao-item-val pao-quote-text">' + pao.quote + '</span></div>' : ''}
       </div>
     </div>
   </div>
 
+  <!-- ACTION BUTTONS - ALWAYS VISIBLE -->
   <div class="pao-mr-action-btns">
-    <button class="btn-game pao-mr-btn-notyet" onclick="PAOGames.memoryReview.markNotYet()">❌ Chưa Nhớ</button>
-    <button class="btn-game pao-mr-btn-flip" onclick="PAOGames.memoryReview.flip()">🔄 Lật</button>
-    <button class="btn-game pao-mr-btn-remember" onclick="PAOGames.memoryReview.markRemembered()">✅ Nhớ Rồi! +10</button>
+    <button class="pao-mr-btn pao-mr-btn-notyet" onclick="PAOGames.memoryReview.markNotYet()">
+      ❌<span>Chưa Nhớ</span>
+    </button>
+    <button class="pao-mr-btn pao-mr-btn-flip" onclick="PAOGames.memoryReview.flip()" id="pao-mr-flip-btn">
+      🔄<span>Lật Xem</span>
+    </button>
+    <button class="pao-mr-btn pao-mr-btn-remember" onclick="PAOGames.memoryReview.markRemembered()">
+      ✅<span>Nhớ Rồi!</span>
+    </button>
   </div>
-  <div class="pao-mr-keyboard-hint">← Chưa nhớ &nbsp;|&nbsp; Space: Lật &nbsp;|&nbsp; → Nhớ rồi</div>
-</div>`;
+  <div class="pao-mr-keyboard-hint">← Chưa nhớ &nbsp;·&nbsp; Space: Lật &nbsp;·&nbsp; → Nhớ rồi</div>
 
-        document.getElementById('pao-mr-card').addEventListener('click', () => PAOGames.memoryReview.flip());
+</div>`;
     }
 
     function showSummary() {
-        const total = allCodes.length;
+        const total  = allCodes.length;
         const remPct = total > 0 ? Math.round(remembered.length / total * 100) : 0;
 
-        // Build not-yet list
         const notYetHTML = notYet.map(code => {
             const p = getPAO(code);
             return '<div class="pao-mr-summary-item"><strong>' + code + '</strong>: '
                 + (p ? (p.person||'') + ' · ' + (p.action||'') + ' · ' + (p.object||'') : '—') + '</div>';
         }).join('');
 
-        document.getElementById('game-container').innerHTML = `
-<div class="pao-mr-summary">
+        document.getElementById('game-container').innerHTML = `<div class="pao-mr-summary">
   <div class="pao-mr-summary-title">🎉 Kết Quả!</div>
-
   <div class="pao-mr-summary-grid">
     <div class="pao-mr-summary-card pao-mr-summary-green">
-      <div class="pao-mr-summary-num">${remembered.length}</div>
-      <div>✅ Đã nhớ</div>
+      <div class="pao-mr-summary-num">${remembered.length}</div><div>✅ Đã nhớ</div>
     </div>
     <div class="pao-mr-summary-card pao-mr-summary-yellow">
-      <div class="pao-mr-summary-num">${remPct}%</div>
-      <div>📊 Tỉ lệ</div>
+      <div class="pao-mr-summary-num">${remPct}%</div><div>📊 Tỉ lệ</div>
     </div>
     <div class="pao-mr-summary-card pao-mr-summary-purple">
-      <div class="pao-mr-summary-num">${score}</div>
-      <div>⭐ Điểm</div>
+      <div class="pao-mr-summary-num">${score}</div><div>⭐ Điểm</div>
     </div>
     <div class="pao-mr-summary-card pao-mr-summary-red">
-      <div class="pao-mr-summary-num">${notYet.length}</div>
-      <div>❌ Cần ôn</div>
+      <div class="pao-mr-summary-num">${notYet.length}</div><div>❌ Cần ôn</div>
     </div>
   </div>
-
   ${remPct === 100 ? '<div class="pao-mr-perfect">🏆 Hoàn hảo! Bạn nhớ tất cả!</div>' : ''}
-
   ${notYet.length > 0 ? `
-  <div class="pao-mr-notyet-list">
-    <div class="pao-mr-notyet-title">📋 Danh sách chưa nhớ (${notYet.length} thẻ):</div>
-    ${notYetHTML}
-  </div>
-  <button class="btn-game pao-mr-btn-retry" onclick="PAOGames.memoryReview.retryNotYet()">
-    🔄 Ôn Lại ${notYet.length} Thẻ Chưa Nhớ
-  </button>
+    <div class="pao-mr-notyet-list">
+      <div class="pao-mr-notyet-title">📋 Danh sách chưa nhớ (${notYet.length} thẻ):</div>
+      ${notYetHTML}
+    </div>
+    <button class="pao-mr-btn pao-mr-btn-retry" onclick="PAOGames.memoryReview.retryNotYet()">
+      🔄 Ôn lại ${notYet.length} thẻ chưa nhớ
+    </button>
   ` : ''}
-
-  <button class="btn-game pao-mr-btn-restart" onclick="PAOGames.memoryReview.restart()">↺ Bắt đầu lại toàn bộ</button>
+  <button class="pao-mr-btn pao-mr-btn-restart" onclick="PAOGames.memoryReview.restart()">↺ Bắt đầu lại</button>
 </div>`;
 
         gameScore = (gameScore || 0) + score;
@@ -1222,8 +1228,13 @@ function startPAOMemoryReview() {
 
     const publicAPI = {
         flip: () => {
-            const card = document.getElementById('pao-mr-card');
-            if (card) { card.classList.toggle('flipped'); isFlipped = !isFlipped; }
+            const back = document.getElementById('pao-mr-back');
+            const btn  = document.getElementById('pao-mr-flip-btn');
+            if (!back) return;
+            const isHidden = back.style.display === 'none';
+            back.style.display = isHidden ? 'block' : 'none';
+            back.style.animation = isHidden ? 'slideDown 0.25s ease' : '';
+            if (btn) btn.querySelector('span').textContent = isHidden ? 'Ẩn' : 'Lật Xem';
         },
         markRemembered: () => {
             const code = getCurrentCode();
@@ -1233,14 +1244,14 @@ function startPAOMemoryReview() {
             gameScore = score;
             updateGameStats();
             currentIndex++;
-            setTimeout(() => { if (currentIndex >= queue.length) showSummary(); else renderCard(); }, 150);
+            if (currentIndex >= queue.length) showSummary(); else renderCard();
         },
         markNotYet: () => {
             const code = getCurrentCode();
             if (!code) return;
             notYet.push(code);
             currentIndex++;
-            setTimeout(() => { if (currentIndex >= queue.length) showSummary(); else renderCard(); }, 150);
+            if (currentIndex >= queue.length) showSummary(); else renderCard();
         },
         retryNotYet: () => {
             queue = [...notYet];
@@ -1258,17 +1269,13 @@ function startPAOMemoryReview() {
         }
     };
 
-    // Keyboard shortcuts
-    const kbHandler = (e) => {
+    const kbHandler = e => {
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
         if (e.key === 'ArrowRight') { e.preventDefault(); publicAPI.markRemembered(); }
         else if (e.key === 'ArrowLeft') { e.preventDefault(); publicAPI.markNotYet(); }
         else if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); publicAPI.flip(); }
     };
     document.addEventListener('keydown', kbHandler);
-
-    // Cleanup on game exit
-    const origCleanup = window.PAOGames && window.PAOGames.memoryReview && window.PAOGames.memoryReview.cleanup;
     publicAPI.cleanup = () => document.removeEventListener('keydown', kbHandler);
 
     window.PAOGames = window.PAOGames || {};
@@ -1276,154 +1283,3 @@ function startPAOMemoryReview() {
     renderCard();
     document.getElementById('timer').parentElement.style.display = 'none';
 }
-
-function startPAOMemoryReview() {
-    const allCodes = Object.keys(paoData);
-    let queue = [...allCodes]; // thẻ cần ôn
-    let remembered = [];      // đã nhớ
-    let notYet = [];          // chưa nhớ
-    let score = 0;
-    let currentIndex = 0;
-    let isFlipped = false;
-
-    function getCurrentCard() { return queue[currentIndex]; }
-
-    function renderCard() {
-        const remaining = queue.length - currentIndex;
-        const code = getCurrentCard();
-        if (!code) { showSummary(); return; }
-        const pao = getPAO(code);
-        isFlipped = false;
-
-        document.getElementById('game-container').innerHTML = `
-            <div class="pao-mr-wrapper">
-                <div class="pao-mr-stats">
-                    <span class="pao-mr-stat pao-mr-remembered">✅ Nhớ: ${remembered.length}</span>
-                    <span class="pao-mr-stat pao-mr-score">⭐ ${score} điểm</span>
-                    <span class="pao-mr-stat pao-mr-notyet">❌ Chưa: ${notYet.length}</span>
-                </div>
-                <div class="pao-mr-progress-wrap">
-                    <div class="pao-mr-progress-fill" style="width:${Math.round(((remembered.length + notYet.length) / allCodes.length) * 100)}%"></div>
-                </div>
-                <div class="pao-mr-progress-text">${remembered.length + notYet.length} / ${allCodes.length} đã xem — Còn lại trong vòng: ${remaining}</div>
-
-                <div class="pao-flashcard pao-mr-card" id="pao-mr-card">
-                    <div class="pao-card-front">
-                        <div class="pao-card-hint">Nhấn thẻ để xem đáp án</div>
-                        <div class="pao-card-number">${code}</div>
-                    </div>
-                    <div class="pao-card-back">
-                        <div class="pao-info-box">
-                            <div class="pao-item"><span class="pao-item-label">👤 Person</span><span class="pao-item-val">${pao.person || '—'}</span></div>
-                            <div class="pao-item"><span class="pao-item-label">⚡ Action</span><span class="pao-item-val">${pao.action || '—'}</span></div>
-                            <div class="pao-item"><span class="pao-item-label">🎁 Object</span><span class="pao-item-val">${pao.object || '—'}</span></div>
-                            ${pao.quote ? '<div class="pao-item pao-item-quote"><span class="pao-item-label">💬 Quote</span><span class="pao-item-val pao-quote-text">' + pao.quote + '</span></div>' : ''}
-                        </div>
-                    </div>
-                </div>
-
-                <div class="pao-mr-flip-hint" id="pao-mr-flip-hint">👆 Nhấn thẻ để lật và đánh giá</div>
-
-                <div class="pao-mr-action-btns" id="pao-mr-action-btns" style="display:none;">
-                    <button class="btn-game pao-mr-btn-notyet" onclick="PAOGames.memoryReview.markNotYet()">❌ Chưa Nhớ</button>
-                    <button class="btn-game pao-mr-btn-remember" onclick="PAOGames.memoryReview.markRemembered()">✅ Nhớ Rồi! +10</button>
-                </div>
-            </div>
-        `;
-
-        document.getElementById('pao-mr-card').addEventListener('click', () => {
-            if (!isFlipped) {
-                isFlipped = true;
-                document.getElementById('pao-mr-card').classList.add('flipped');
-                document.getElementById('pao-mr-flip-hint').style.display = 'none';
-                document.getElementById('pao-mr-action-btns').style.display = 'flex';
-            }
-        });
-    }
-
-    function showSummary() {
-        const pct = Math.round((remembered.length / allCodes.length) * 100);
-        const notYetList = notYet.map(code => {
-            const p = getPAO(code);
-            return `<div class="pao-mr-summary-item">
-                <strong>${code}</strong>: ${p.person || ''} · ${p.action || ''} · ${p.object || ''}
-            </div>`;
-        }).join('');
-
-        document.getElementById('game-container').innerHTML = `
-            <div class="pao-mr-summary">
-                <div class="pao-mr-summary-title">🎉 Hoàn Thành!</div>
-                <div class="pao-mr-summary-grid">
-                    <div class="pao-mr-summary-card pao-mr-summary-green">
-                        <div class="pao-mr-summary-num">${remembered.length}</div>
-                        <div>✅ Đã Nhớ</div>
-                    </div>
-                    <div class="pao-mr-summary-card pao-mr-summary-yellow">
-                        <div class="pao-mr-summary-num">${pct}%</div>
-                        <div>📊 Tỉ lệ nhớ</div>
-                    </div>
-                    <div class="pao-mr-summary-card pao-mr-summary-purple">
-                        <div class="pao-mr-summary-num">${score}</div>
-                        <div>⭐ Điểm</div>
-                    </div>
-                    <div class="pao-mr-summary-card pao-mr-summary-red">
-                        <div class="pao-mr-summary-num">${notYet.length}</div>
-                        <div>❌ Cần ôn thêm</div>
-                    </div>
-                </div>
-                ${notYet.length > 0 ? `
-                <div class="pao-mr-notyet-list">
-                    <div class="pao-mr-notyet-title">📋 Danh sách chưa nhớ (cần ôn lại):</div>
-                    ${notYetList}
-                </div>
-                <button class="btn-game pao-mr-btn-retry" onclick="PAOGames.memoryReview.retryNotYet()">🔄 Ôn Lại Chưa Nhớ (${notYet.length} thẻ)</button>
-                ` : '<div class="pao-mr-perfect">🏆 Xuất sắc! Bạn đã nhớ tất cả!</div>'}
-                <button class="btn-game pao-mr-btn-restart" onclick="PAOGames.memoryReview.restart()">↺ Bắt đầu lại</button>
-            </div>
-        `;
-
-        // Update score
-        gameScore += score;
-        updateGameStats();
-    }
-
-    const publicAPI = {
-        markRemembered: () => {
-            const code = getCurrentCard();
-            remembered.push(code);
-            score += 10;
-            gameScore = score;
-            updateGameStats();
-            currentIndex++;
-            if (currentIndex >= queue.length) showSummary();
-            else renderCard();
-        },
-        markNotYet: () => {
-            const code = getCurrentCard();
-            notYet.push(code);
-            currentIndex++;
-            if (currentIndex >= queue.length) showSummary();
-            else renderCard();
-        },
-        retryNotYet: () => {
-            queue = [...notYet];
-            notYet = [];
-            currentIndex = 0;
-            renderCard();
-        },
-        restart: () => {
-            queue = [...allCodes];
-            remembered = [];
-            notYet = [];
-            score = 0;
-            currentIndex = 0;
-            renderCard();
-        }
-    };
-
-    window.PAOGames = window.PAOGames || {};
-    window.PAOGames.memoryReview = publicAPI;
-    renderCard();
-    document.getElementById('timer').parentElement.style.display = 'none';
-}
-
