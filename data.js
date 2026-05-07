@@ -434,7 +434,9 @@ function initPaoSystem() {
 }
 
 // Ensure PAOQ_DATA is loaded (it should be if order in index.html is correct, but just in case)
-setTimeout(initPaoSystem, 100);
+// Call immediately AND after a short delay for safety
+initPaoSystem();
+setTimeout(initPaoSystem, 200);
 
 window.togglePaoSystem = function (sys) {
     currentPaoSystem = sys;

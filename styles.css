@@ -4657,3 +4657,123 @@ body {
     .pao-mr-btn-notyet, .pao-mr-btn-remember { flex: unset; }
     .pao-mr-summary-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+
+/* === Auto-play Panel Row Layout === */
+.pao-fc-autoplay-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+/* === Auto-flip Toggle === */
+.pao-fc-autoflip-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.pao-fc-toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    font-weight: 600;
+    user-select: none;
+}
+
+.pao-fc-toggle-label input[type="checkbox"] {
+    display: none;
+}
+
+.pao-fc-toggle-track {
+    width: 40px;
+    height: 22px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 11px;
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: background 0.25s;
+    flex-shrink: 0;
+}
+
+.pao-fc-toggle-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    background: #94a3b8;
+    border-radius: 50%;
+    transition: left 0.25s, background 0.25s;
+}
+
+.pao-fc-toggle-label input:checked + .pao-fc-toggle-track {
+    background: rgba(99,102,241,0.5);
+    border-color: #6366f1;
+}
+
+.pao-fc-toggle-label input:checked + .pao-fc-toggle-track .pao-fc-toggle-thumb {
+    left: 20px;
+    background: #a5b4fc;
+}
+
+.pao-fc-autoflip-hint {
+    font-size: 0.72rem;
+    color: #64748b;
+    font-style: italic;
+}
+
+/* === Memory Review - Keyboard hint === */
+.pao-mr-keyboard-hint {
+    font-size: 0.72rem;
+    color: #475569;
+    text-align: center;
+    margin-top: -4px;
+}
+
+/* === Memory Review - 3-button layout === */
+.pao-mr-action-btns {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    max-width: 520px;
+    margin: 8px 0 4px;
+}
+
+.pao-mr-btn-flip {
+    background: rgba(99,102,241,0.12);
+    border: 1px solid rgba(99,102,241,0.3);
+    color: #a5b4fc;
+    padding: 12px 10px;
+    font-size: 0.85rem;
+    border-radius: 12px;
+    flex: 0.7;
+    transition: all 0.2s;
+}
+
+.pao-mr-btn-flip:hover {
+    background: rgba(99,102,241,0.25);
+    transform: translateY(-2px);
+}
+
+/* Ensure mr card is always visible (no need to flip to see buttons) */
+.pao-mr-card {
+    width: 100%;
+    min-height: 200px;
+    cursor: pointer;
+}
+
+@media (max-width: 480px) {
+    .pao-fc-autoplay-row { flex-direction: column; align-items: flex-start; }
+    .pao-mr-action-btns { flex-wrap: wrap; }
+    .pao-mr-btn-notyet, .pao-mr-btn-remember { flex: 1; min-width: 130px; }
+    .pao-mr-btn-flip { flex: 0 0 100%; order: -1; }
+}
