@@ -536,6 +536,14 @@ const games = [
         desc: 'Combo càng cao càng nhân điểm!',
         category: 'pao',
         func: typeof startPAOComboStreak !== 'undefined' ? startPAOComboStreak : null
+    },
+    {
+        id: 'pao-memory-review',
+        title: 'PAO Memory Review',
+        icon: '🧪',
+        desc: 'Tự đánh giá: Nhớ Rồi ✅ hoặc Chưa Nhớ ❌ — xem thống kê cuối',
+        category: 'pao',
+        func: typeof startPAOMemoryReview !== 'undefined' ? startPAOMemoryReview : null
     }
 ].filter(game => game.func !== null); // Filter out games with null functions
 
