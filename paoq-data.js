@@ -137,10 +137,10 @@ const PAOQ_DATA = {
         },
         {
                 "code": "19",
-                "person": "Black Panther",
+                "person": "Rhino",
                 "action": "Húc",
                 "object": "Tê Giác",
-                "quote": "\"Wakanda Forever!\" (tiếng gầm rú)"
+                "quote": "\"I am the Rhino!\" (Ta là Tê giác!)"
         },
         {
                 "code": "20",
@@ -848,10 +848,10 @@ const PAOQ_DATA = {
         },
         {
                 "code": "8",
-                "person": "Võ Tòng",
-                "action": "chém đao",
+                "person": "Black Panther",
+                "action": "Cào rách da thịt",
                 "object": "Hổ",
-                "quote": "\"Rượu ngon!\" (tiếng gầm rú tuyệt vọng gào gào)"
+                "quote": "\"Wakanda Forever!\" (tiếng gầm rú)"
         },
         {
                 "code": "9",
