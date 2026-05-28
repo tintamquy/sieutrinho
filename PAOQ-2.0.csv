@@ -1,7 +1,7 @@
 Mã,P (Person),A (Action),O (Object),Q (Quote/Sound)
-00,Shaggy,Vuốt Ve,Con Chó,"""Scooby-Doo!"" (tiếng gâu gâu)"
+00,Shaggy,Vuốt Ve đầu,Con Chó,"""Scooby-Doo!"" (tiếng gâu gâu)"
 01,Lão Tử,Cưỡi phi nước đại,Con Trâu,"""Biết đủ là đủ, biết đủ không nhục"" (tiếng bò rống ngộ nghĩnh)"
-02,Sonic,Nhổ Lông,Con Nhím,"""Gotta go fast!"" (âm thanh thu thập vòng vàng)"
+02,Sonic,Nhổ Lông đuôi,Con Nhím,"""Gotta go fast!"" (âm thanh thu thập vòng vàng)"
 03,Jack Sparrow,Nướng,Con Mực,"""Savvy?"" (tiếng Kraken gầm)"
 04,Voldemort,Thôi Miên,Con Rắn,"""Avada Kedavra"" (tiếng rắn rít Xà Ngữ)"
 05,The Rock,Vật Ngã,Cá Sấu,"""If you smell what The Rock is cooking!"" (tiếng nện xuống thảm rầm rầm)"
@@ -10,7 +10,7 @@ Mã,P (Person),A (Action),O (Object),Q (Quote/Sound)
 08,Trư Bát Giới,Mổ bụng,Con Heo,"""Đại sư huynh!"" (tiếng ủn ỉn)"
 09,Wall-E,Dẫm lên,Con Gián,"""Waaall-E"" (âm thanh máy móc)"
 10,Angry Birds (Red),Ấp,Tổ Chim,"""Hee-yah!"" (tiếng ná cao su ném)"
-11,Caesar (Planet of the Apes),Gãi,Tinh Tinh," ""Ape not kill ape.""  -Giọng nói trầm đục (Guttural Voice): ""Ape... not... kill... ape."" "
+11,Caesar (Planet of the Apes),Gãi lưng,Tinh Tinh," ""Ape not kill ape.""  -Giọng nói trầm đục (Guttural Voice): ""Ape... not... kill... ape."" "
 12,Freddy Krueger,Đè xuống,Tấm Nệm,"""One, two, Freddy's coming for you"" (tiếng móng sắt cào rách vải) "
 13,Captain America,Cạy cửa,Thang Máy,"""Before we get started, does anyone want to get out?"" (tiếng kính vỡ)"
 14,Vulture (Spiderman),Đổ đầy,Túi Rác,"""The world's changing. It's time we change too."" -Tiếng đổ phế liệu (Clattering): ""Rầm... loảng xoảng... keng!"""
@@ -50,7 +50,7 @@ Mã,P (Person),A (Action),O (Object),Q (Quote/Sound)
 48,Popeye,Bóp nát bằng 1 tay,Rau Hẹ,"""I am what I am!"" (tiếng bóp nát hộp rau chân vịt)"
 49,Dominic Toretto,Vặn Ga,Rồ Ga,"""Family"" (tiếng nẹt pô vroom vroom)"
 50,Mr. Bean,Hút,Sữa Chua,"""Teddy!"" (tiếng mút thìa chùn chụt)"
-51,Simba,Quất Roi,Sư Tử,"""Hakuna Matata"" (tiếng gầm Grào)"
+51,Catwoman,Quất Roi,Sư Tử,"I am Catwoman. Hear me roar!"
 52,Hamlet,Hôn má,Sọ Người,"""To be, or not to be"" (tiếng xương kêu răng rắc)"
 53,Frankenstein,Khâu vá,Sứt môi,"""Victor, I forgive you"" (tiếng rên rỉ gầm gừ)"
 54,Minions,Ngửi,Sầu Riêng,"""Banana!"" (tiếng cười he he he)"
@@ -119,5 +119,5 @@ kb,Cooper (Matthew McConaughey) – Phim Interstellar,Dò bằng máy dò,Kho B�
 5,Đông Tà Hoàng Dược Sư,Thổi sáo,Sáo trúc,"Nhân tại giang hồ, thân bất do kỷ. (tiếng sáo despacito)"
 6,The Collector,ghim cắm,bướm,"If he catches you, he's gonna make you wish you were dead. Tiếng kim đâm (Piercing): ""Phập... sột..."" "
 7,Vịt Donald,kẹp nách,Phao,Quack quack! (tiếng lạch bạch xì xộp)
-8,Black Panther,Cào rách da thịt,Hổ,"Wakanda Forever!" (tiếng gầm rú)"
+8,Black Panther,Cào rách da thịt mặt,Hổ,"Wakanda Forever!" (tiếng gầm rú)"
 9,Po (Kung Fu Panda),Lấy bụng mỡ hất văng,gấu,Skadoosh! (tiếng mỡ rung núng nính)

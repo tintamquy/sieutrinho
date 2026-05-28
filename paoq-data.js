@@ -361,10 +361,10 @@ const PAOQ_DATA = {
         },
         {
                 "code": "51",
-                "person": "Simba",
+                "person": "Catwoman",
                 "action": "Quất Roi",
                 "object": "Sư Tử",
-                "quote": "\"Hakuna Matata\" (tiếng gầm Grào)"
+                "quote": "I am Catwoman. Hear me roar!"
         },
         {
                 "code": "52",
