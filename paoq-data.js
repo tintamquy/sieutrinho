@@ -39,10 +39,10 @@ const PAOQ_DATA = {
         },
         {
                 "code": "05",
-                "person": "The Rock",
+                "person": "Chú Crocodile",
                 "action": "Vật Ngã",
                 "object": "Cá Sấu",
-                "quote": "\"If you smell what The Rock is cooking!\" (tiếng nện xuống thảm rầm rầm)"
+                "quote": "\"Shame\" (tiếng nện xuống thảm rầm rầm)"
         },
         {
                 "code": "06",
@@ -424,10 +424,10 @@ const PAOQ_DATA = {
         },
         {
                 "code": "60",
-                "person": "Indiana Jones",
+                "person": "Vua bọ cạp",
                 "action": "Kẹp kìm",
                 "object": "Bọ Cạp",
-                "quote": "\"Càng to càng ít độc, con nhỏ mới đáng sợ\". -Tiếng kìm kẹp (Clamping): \"Cạch... răng rắc!\""
+                "quote": "live free, die well"
         },
         {
                 "code": "61",
