@@ -2,7 +2,7 @@ Mã,P (Person),A (Action),O (Object),Q (Quote/Sound)
 00,Shaggy,Vuốt Ve đầu,Con Chó,"""Scooby-Doo!"" (tiếng gâu gâu)"
 01,Lão Tử,Cưỡi phi nước đại,Con Trâu,"""Biết đủ là đủ, biết đủ không nhục"" (tiếng bò rống ngộ nghĩnh)"
 02,Sonic,Nhổ Lông đuôi,Con Nhím,"""Gotta go fast!"" (âm thanh thu thập vòng vàng)"
-03,Jack Sparrow,Nướng,Con Mực,"""Savvy?"" (tiếng Kraken gầm)"
+03,Thuyền Trưởng Jack Sparrow,Hơ Nướng,Con Mực,"""Savvy?"" (tiếng Kraken gầm)"
 04,Voldemort,Thôi Miên,Con Rắn,"""Avada Kedavra"" (tiếng rắn rít Xà Ngữ)"
 05,Chú Crocodile,Vật Ngã,Cá Sấu,""Shame"" (tiếng nện xuống thảm rầm rầm)"
 06,Thor,Đập,Cái Búa,"""Bring me Thanos!"" (sấm sét ầm ầm)"
@@ -60,12 +60,12 @@ Mã,P (Person),A (Action),O (Object),Q (Quote/Sound)
 58,Bugs Bunny,Nhai,Su Hào,"""What's up, Doc?"" (tiếng nhai củ cải rồm rộp)"
 59,Michael Jackson,moonwalk lau nhà,Sàn Gỗ,"""Hee-hee!"" (tiếng giày trượt moonwalk xoẹt xoẹt)"
 60,Vua bọ cạp,Kẹp kìm,Bọ Cạp,"live free, die well"
-61,Zoro,Xỏ kiếm xuyên qua,Bông Tai,Santoryu! (tiếng kiếm xoẹt)
+61,Zoro hải tặc,Xỏ kiếm xuyên qua,Bông Tai,Santoryu! (tiếng kiếm xoẹt)
 62,Donald Trump,bẻ,Bắp Ngô,"""Make America Great Again"" (tiếng bẻ ngô rắc rắc)"
 63,Casper,Vồ như vồ ếch,Bóng Ma,"""I am friendly ghost"" (tiếng vù vù u ám)"
 64,Michael Jordan,Úp rổ,Bóng Rổ,"""I can accept failure, but I can't accept not trying"" (tiếng tưng bóng pụp pụp)"
 65,Hoa Đà,Bắt mạch,Bác Sĩ,"""Để ta xem mạch tượng"" (tiếng nhịp tim đập thì thịch) "
-66,Pennywise (IT),Bơm phồng,Bóng Bay,"""You'll float too"" (tiếng nổ lốp bốp)"
+66,chú Hề Pennywise (IT),Bơm phồng,Bóng Bay,"""You'll float too"" (tiếng nổ lốp bốp)"
 67,Bill Gates,Gõ 10 ngón,Bàn Phím,"""Phần mềm là ma thuật"" (tiếng lạch cạch gõ phím)"
 68,Nguyễn Ái Quốc,bắt tay ,Tượng Bác Hồ,"""không có gì quý hơn độc lập tự do"" (tiếng nhạc Tiến Quân Ca vang dội)"
 69,Bob Marley,Ôm,Bình Ga,"""Don't worry about a thing"" (tiếng xịt ga xì xì)"
@@ -107,10 +107,10 @@ qc,Hercules,Vác lên vai,Quả Cầu,"""I can go the distance!"" ""Hnnnnnn... G
 qr,Pikotaro (PPAP),cắm bút,Quả rứa,"""PPAP!"" (âm thanh bút đâm phập)"
 qt,Bạch Tuyết,Cắn,Quả Táo,"""Gương kia ngự ở trên tường"" (tiếng cắn táo rộp rộp)"
 qb,Ant-Man,nghiền nát,Quả Bơ,"""It's a taco!""  - tiếng máy xay"
-kc,Bình luận viên Quang Huy,bật nguồn,Đầu TV K+,"""Vàooooooooooo!"" (tiếng bật TV lạch cạch)"
+kc,CR7 Ronaldo,bật nguồn,Đầu TV K+,"""Siuuuuuuuu!"" (tiếng bật TV lạch cạch)"
 kr,Men In Black (Will Smith),Cài,Kính Râm,"""Nhìn vào đây"" (tiếng xịt xóa trí nhớ flash!)"
 kt,Xuka,quấn,Khăn Tắm,"""Á á á! Đồ Nobita biến thái!"" (tiếng tát bốp)"
-kb,Cooper (Matthew McConaughey) – Phim Interstellar,Dò bằng máy dò,Kho Báu,"Mankind was born on Earth. It was never meant to die here." -"Tít... rè... tít!" – Tiếng sóng radio nhiễu loạn
+kb,Phi hành gia Cooper – Phim Interstellar,Dò bằng máy dò,Kho Báu,"Mankind was born on Earth. It was never meant to die here." -"Tít... rè... tít!" – Tiếng sóng radio nhiễu loạn
 0,Maleficent (Angelina Jolie),Rót/Đổ (Pouring),Cốc,"""Well, well... what a glittering assemblage!"" - ""Róc rách... xèo xèo..."" – Tiếng chất lỏng ma thuật chảy vào cốc và tiếng khói bốc lên."
 1,Tào Tháo,bắn ngàn tên vào,thuyền,"""Thà ta phụ thiên hạ chứ không để thiên hạ phụ ta"" (tiếng mũi tên cắm phập phập)"
 2,Raiden (Mortal),Đội chụp xuống,Nón lá việt,"""Thunder take you!"" (tiếng sấm chớp đùng đoàng) "
