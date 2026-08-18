@@ -1,5 +1,6 @@
 // ==========================================
 // THỬ THÁCH HÀNG NGÀY & SUPABASE STREAK
+// DUOLINGO STYLE
 // ==========================================
 
 // 1. Cấu hình Supabase
@@ -29,7 +30,7 @@ async function checkAuthSession() {
     if (data.session) {
         currentSession = data.session;
         document.getElementById('auth-status').innerText = "Đã đăng nhập";
-        document.getElementById('auth-status').style.color = "#10b981";
+        document.getElementById('auth-status').style.color = "#58cc02";
         document.getElementById('auth-forms').style.display = "none";
         document.getElementById('auth-logout-btn').style.display = "inline-block";
         loadStreakData();
@@ -98,7 +99,7 @@ async function loadStreakData() {
         .eq('user_id', currentSession.user.id)
         .single();
         
-    if (error && error.code !== 'PGRST116') { // PGRST116 là lỗi không tìm thấy record (chưa có)
+    if (error && error.code !== 'PGRST116') { // PGRST116 = not found
         console.error("Lỗi tải streak:", error);
         return;
     }
@@ -165,30 +166,36 @@ function updateStreakUI() {
     
     if (!currentStreakData.last_played_date) {
         badge.innerText = "Chưa hoàn thành hôm nay";
-        badge.style.background = "#ef4444";
+        badge.style.background = "#e5e5e5";
+        badge.style.color = "#777";
         return;
     }
     
     const lastPlayed = new Date(currentStreakData.last_played_date);
     const today = new Date();
     if (lastPlayed.toDateString() === today.toDateString()) {
-        badge.innerText = "Đã hoàn thành hôm nay!";
-        badge.style.background = "#10b981";
+        badge.innerText = "Đã hoàn thành hôm nay! 🎉";
+        badge.style.background = "#58cc02";
+        badge.style.color = "white";
         document.getElementById('start-daily-game-btn').disabled = true;
         document.getElementById('start-daily-game-btn').innerText = "Hẹn gặp lại ngày mai!";
+        document.getElementById('start-daily-game-btn').style.background = "#e5e5e5";
+        document.getElementById('start-daily-game-btn').style.borderColor = "#e5e5e5";
+        document.getElementById('start-daily-game-btn').style.color = "#afafaf";
     } else {
         badge.innerText = "Chưa hoàn thành hôm nay";
-        badge.style.background = "#ef4444";
+        badge.style.background = "#e5e5e5";
+        badge.style.color = "#777";
         document.getElementById('start-daily-game-btn').disabled = false;
-        document.getElementById('start-daily-game-btn').innerText = "Chơi Ngay Màn Hôm Nay";
+        document.getElementById('start-daily-game-btn').innerText = "BẮT ĐẦU CHƠI NGAY";
+        document.getElementById('start-daily-game-btn').style.background = "#58cc02";
+        document.getElementById('start-daily-game-btn').style.borderColor = "#58a700";
+        document.getElementById('start-daily-game-btn').style.color = "#fff";
     }
 }
 
 function completeDailyChallenge() {
-    if (!currentSession) {
-        alert("Vui lòng đăng nhập để lưu Streak!");
-        return;
-    }
+    if (!currentSession) return;
     
     const today = new Date();
     currentStreakData.current_streak += 1;
@@ -198,18 +205,27 @@ function completeDailyChallenge() {
     currentStreakData.last_played_date = today.toISOString();
     
     updateStreakDB(currentStreakData.current_streak, currentStreakData.max_streak, currentStreakData.last_played_date);
-    alert("Tuyệt vời! Bạn đã hoàn thành thử thách hôm nay. 🔥 Streak +1");
     
+    // Show success screen
     document.getElementById('daily-game-area').style.display = "none";
+    document.getElementById('daily-result-area').style.display = "block";
+}
+
+function returnToDailyIntro() {
+    document.getElementById('daily-result-area').style.display = "none";
     document.getElementById('daily-game-intro').style.display = "block";
+    updateStreakUI();
 }
 
 // ==========================================
-// GAME SIÊU TRÍ NHỚ (NHỚ SỐ NGẪU NHIÊN)
+// GAME SIÊU TRÍ NHỚ DUOLINGO (3 VÒNG)
 // ==========================================
 
 let dailyTargetNumber = "";
 let dailyTimer = null;
+const TOTAL_ROUNDS = 3;
+let currentRound = 1;
+let currentHearts = 3;
 
 function startDailyMemoryGame() {
     if (!currentSession) {
@@ -217,14 +233,28 @@ function startDailyMemoryGame() {
         return;
     }
     
+    currentRound = 1;
+    currentHearts = 3;
+    updateHeartsDisplay();
+    updateProgressDisplay();
+    
     document.getElementById('daily-game-intro').style.display = "none";
+    document.getElementById('daily-result-area').style.display = "none";
     document.getElementById('daily-game-area').style.display = "block";
+    
+    startRound();
+}
+
+function startRound() {
     document.getElementById('daily-input').value = "";
     document.getElementById('daily-input-area').style.display = "none";
+    document.getElementById('daily-input').style.borderColor = "#e5e5e5";
     
-    // Logic: Số chữ số tăng dần theo streak. Mặc định là 5.
-    let digitsCount = 5 + Math.floor(currentStreakData.current_streak / 3);
-    if (digitsCount > 20) digitsCount = 20; // Max 20 số
+    // Tính độ khó: Phụ thuộc vào streak và vòng hiện tại.
+    // Ví dụ streak=0 -> vòng 1 nhớ 3 số, vòng 2 nhớ 4 số, vòng 3 nhớ 5 số
+    let baseDigits = 3 + Math.floor(currentStreakData.current_streak / 5);
+    let digitsCount = baseDigits + (currentRound - 1);
+    if (digitsCount > 20) digitsCount = 20;
     
     dailyTargetNumber = "";
     for(let i = 0; i < digitsCount; i++){
@@ -234,18 +264,21 @@ function startDailyMemoryGame() {
     const displayElement = document.getElementById('daily-number-display');
     displayElement.innerText = dailyTargetNumber;
     displayElement.style.display = "block";
+    displayElement.style.color = "#1cb0f6"; // Blue
     
-    let timeToRemember = 3 + (digitsCount * 0.5); // Thời gian nhớ
-    const countdownEl = document.getElementById('daily-timer');
-    countdownEl.innerText = `Bạn có ${Math.ceil(timeToRemember)} giây để nhớ!`;
+    let timeToRemember = 3 + (digitsCount * 0.5);
+    const countdownText = document.getElementById('duo-timer-text');
+    countdownText.innerText = Math.ceil(timeToRemember);
+    document.getElementById('daily-timer').style.display = "flex";
     
     dailyTimer = setInterval(() => {
         timeToRemember -= 1;
-        countdownEl.innerText = `Bạn có ${Math.ceil(timeToRemember)} giây để nhớ!`;
+        countdownText.innerText = Math.ceil(timeToRemember);
         if(timeToRemember <= 0) {
             clearInterval(dailyTimer);
             displayElement.style.display = "none";
-            countdownEl.innerText = "Đã hết thời gian! Hãy nhập số bạn nhớ được.";
+            document.getElementById('daily-timer').style.display = "none";
+            
             document.getElementById('daily-input-area').style.display = "block";
             document.getElementById('daily-input').focus();
         }
@@ -255,20 +288,66 @@ function startDailyMemoryGame() {
 function checkDailyAnswer() {
     const userAnswer = document.getElementById('daily-input').value.trim();
     if (userAnswer === dailyTargetNumber) {
-        completeDailyChallenge();
+        // Đúng
+        document.getElementById('daily-input').style.borderColor = "#58cc02";
+        setTimeout(() => {
+            currentRound++;
+            updateProgressDisplay();
+            if (currentRound > TOTAL_ROUNDS) {
+                completeDailyChallenge();
+            } else {
+                startRound();
+            }
+        }, 500); // Đợi nửa giây rồi qua vòng
     } else {
-        alert(`Rất tiếc! Số đúng là: ${dailyTargetNumber}. Hãy thử lại vào ngày mai nhé (hoặc bạn có thể 'ăn gian' thử lại luôn 😉).`);
-        document.getElementById('daily-game-area').style.display = "none";
-        document.getElementById('daily-game-intro').style.display = "block";
+        // Sai
+        document.getElementById('daily-input').style.borderColor = "#ff4b4b";
+        document.getElementById('daily-input').classList.add('shake');
+        
+        // Remove shake class after animation
+        setTimeout(() => {
+            document.getElementById('daily-input').classList.remove('shake');
+        }, 400);
+
+        currentHearts--;
+        updateHeartsDisplay();
+        
+        if (currentHearts <= 0) {
+            setTimeout(() => {
+                alert(`Hết tim rồi! Số đúng là: ${dailyTargetNumber}. Hãy thử lại nhé!`);
+                document.getElementById('daily-game-area').style.display = "none";
+                document.getElementById('daily-game-intro').style.display = "block";
+            }, 500);
+        } else {
+            // Cho thử lại số khác hoặc vòng lại vòng này
+            setTimeout(() => {
+                alert(`Sai rồi! Số đúng là: ${dailyTargetNumber}. Cẩn thận hơn nhé, bạn mất 1 tim!`);
+                startRound();
+            }, 500);
+        }
     }
 }
 
-// UI Functions
-function openStreakModal() {
-    document.getElementById('streak-modal').style.display = 'flex';
-    if(currentSession) updateStreakUI();
+function updateProgressDisplay() {
+    const progress = ((currentRound - 1) / TOTAL_ROUNDS) * 100;
+    document.getElementById('duo-progress').style.width = progress + '%';
 }
 
-function closeStreakModal() {
-    document.getElementById('streak-modal').style.display = 'none';
+function updateHeartsDisplay() {
+    let heartsHtml = "❤️ " + currentHearts;
+    document.getElementById('duo-hearts-display').innerText = heartsHtml;
 }
+
+// Thêm CSS Shake trực tiếp qua JS nếu chưa có
+const style = document.createElement('style');
+style.innerHTML = `
+    .shake {
+        animation: shake 0.4s;
+    }
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-10px); }
+        75% { transform: translateX(10px); }
+    }
+`;
+document.head.appendChild(style);

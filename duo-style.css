@@ -1,0 +1,178 @@
+/* ==========================================
+   DUOLINGO STYLE CSS CHO DAILY STREAK
+========================================== */
+
+.duo-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: #ffffff;
+    border-radius: 20px;
+    border: 2px solid #e5e5e5;
+    box-shadow: 0 8px 0 #e5e5e5;
+    color: #4b4b4b;
+    font-family: 'Inter', sans-serif;
+    text-align: center;
+}
+
+.duo-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #3c3c3c;
+    margin-bottom: 1rem;
+}
+
+.duo-subtitle {
+    font-size: 1.2rem;
+    color: #777;
+    margin-bottom: 2rem;
+}
+
+/* Tiến trình (Progress Bar) */
+.duo-progress-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 2rem;
+}
+
+.duo-progress-bg {
+    flex-grow: 1;
+    height: 18px;
+    background-color: #e5e5e5;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.duo-progress-fill {
+    height: 100%;
+    width: 0%; /* Sẽ update qua JS */
+    background-color: #58cc02;
+    border-radius: 10px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+/* Hiệu ứng bóng sáng trên thanh chạy */
+.duo-progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 10px;
+    right: 10px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+}
+
+.duo-heart {
+    font-size: 1.5rem;
+    color: #ff4b4b;
+}
+
+/* Nút bấm 3D */
+.duo-btn {
+    display: inline-block;
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #ffffff;
+    background-color: #58cc02;
+    border: none;
+    border-bottom: 5px solid #58a700;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.1s;
+    text-align: center;
+    text-decoration: none;
+}
+
+.duo-btn:hover {
+    filter: brightness(1.1);
+}
+
+.duo-btn:active {
+    transform: translateY(4px);
+    border-bottom-width: 1px;
+    margin-bottom: 4px;
+}
+
+.duo-btn-blue {
+    background-color: #1cb0f6;
+    border-bottom-color: #1899d6;
+}
+
+.duo-btn-outline {
+    background-color: #ffffff;
+    color: #1cb0f6;
+    border: 2px solid #e5e5e5;
+    border-bottom: 5px solid #e5e5e5;
+}
+
+/* Game Area */
+.duo-game-box {
+    padding: 2rem;
+    background: #f7f7f7;
+    border-radius: 15px;
+    border: 2px solid #e5e5e5;
+    margin-bottom: 2rem;
+}
+
+.duo-big-number {
+    font-size: 4rem;
+    font-weight: 900;
+    color: #1cb0f6;
+    letter-spacing: 5px;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+    margin: 1rem 0;
+}
+
+.duo-timer {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ff4b4b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.duo-input {
+    width: 100%;
+    padding: 15px;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    border: 2px solid #e5e5e5;
+    border-radius: 15px;
+    background: #fff;
+    color: #4b4b4b;
+    outline: none;
+    transition: 0.2s;
+    letter-spacing: 3px;
+}
+
+.duo-input:focus {
+    border-color: #1cb0f6;
+}
+
+/* Hoạt ảnh chúc mừng */
+.duo-success-icon {
+    font-size: 5rem;
+    margin-bottom: 1rem;
+    animation: duoBounce 1s infinite;
+}
+
+@keyframes duoBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+/* Flexbox cho nút Màn hình kết quả */
+.duo-actions {
+    display: flex;
+    gap: 15px;
+}
