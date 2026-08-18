@@ -47,9 +47,9 @@ async function checkAuthSession() {
 }
 
 function onUserLoggedIn() {
-    setElement('auth-status', 'Đã đăng nhập ✓', '#58cc02');
     setDisplay('auth-forms', 'none');
-    setDisplay('auth-logout-btn', 'inline-block');
+    setDisplay('auth-logged-bar', 'flex');
+    setDisplay('daily-game-intro', 'block');
     loadStreakData();
 }
 
@@ -77,9 +77,10 @@ async function signInUser() {
 async function signOutUser() {
     await supabaseClient.auth.signOut();
     currentSession = null;
-    setElement('auth-status', 'Chưa đăng nhập', '#ef4444');
     setDisplay('auth-forms', 'block');
-    setDisplay('auth-logout-btn', 'none');
+    setDisplay('auth-logged-bar', 'none');
+    setDisplay('daily-game-intro', 'none');
+    showScreen('intro');
     currentStreakData = { current_streak: 0, max_streak: 0, best_level: 0, last_played_date: null };
     updateDashboardUI();
 }
@@ -132,7 +133,7 @@ async function saveStreakData() {
 }
 
 function updateDashboardUI() {
-    // Cập nhật cả 2 nơi hiển thị streak (badge nhỏ + trang chính)
+    // Cập nhật cả 2 nơi hiển thị streak
     const streakVal = currentStreakData.current_streak;
     setText('streak-count', streakVal);
     setText('streak-count-big', streakVal);
@@ -145,18 +146,16 @@ function updateDashboardUI() {
 
     const completedToday = isTodayCompleted();
     if (completedToday) {
-        badge.textContent = "🔥 Đã hoàn thành hôm nay! Streak: " + streakVal;
-        badge.style.background = "#58cc02";
-        badge.style.color = "white";
-        btn.textContent = "CHƠI THÊM ĐỂ PHÁ KỶ LỤC";
-        btn.style.cssText = "background: #1cb0f6; border-bottom-color: #1899d6; color: white;";
-        btn.disabled = false; // Vẫn cho chơi thêm để cải thiện level!
+        badge.textContent = '🔥 Streak hôm nay đã tính! ' + streakVal + ' ngày';
+        badge.className = 'duo-badge duo-badge-done';
+        btn.textContent = 'CHƠI THÊM ĐỂ PHÁ KỶ LỤC';
+        btn.className = 'duo-btn duo-btn-blue';
+        btn.disabled = false;
     } else {
-        badge.textContent = "Chưa hoàn thành hôm nay (đạt Level " + STREAK_THRESHOLD_LEVEL + " để tính streak)";
-        badge.style.background = "#e5e5e5";
-        badge.style.color = "#777";
-        btn.textContent = "BẮT ĐẦU CHƠI";
-        btn.style.cssText = "background: #58cc02; border-bottom-color: #58a700; color: white;";
+        badge.textContent = '⏰ Chưa hoàn thành hôm nay';
+        badge.className = 'duo-badge duo-badge-undone';
+        btn.textContent = 'BẮT ĐẦU CHƠI';
+        btn.className = 'duo-btn';
         btn.disabled = false;
     }
 }
@@ -212,12 +211,13 @@ function startLevel() {
     dailyTimer = setInterval(() => {
         timeLeft -= 0.1;
         const pct = Math.max(0, (timeLeft / Math.max(3, digitsCount * 1.5)) * 100);
-        updateProgressBar(pct);
+        // Cập nhật timer bar mới
+        const timerFill = document.getElementById('duo-timer-fill');
+        if (timerFill) timerFill.style.width = pct + '%';
         setText('duo-timer-text', Math.ceil(Math.max(0, timeLeft)));
 
         if (timeLeft <= 0) {
             clearInterval(dailyTimer);
-            // Ẩn số, hiện ô nhập
             showPhase('answer');
             const input = document.getElementById('daily-input');
             if (input) { input.value = ''; input.focus(); }
@@ -310,6 +310,12 @@ function endGame() {
 // ==========================================
 // UI HELPERS
 // ==========================================
+
+function onUserLoggedIn() {
+    setDisplay('auth-logged-bar', 'block');
+    setDisplay('auth-forms', 'none');
+    showScreen('intro');
+}
 
 function showScreen(screen) {
     setDisplay('daily-game-intro', screen === 'intro' ? 'block' : 'none');

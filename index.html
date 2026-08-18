@@ -50,6 +50,7 @@
     <meta name="theme-color" content="#6366f1">
 
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="duo-style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
@@ -134,25 +135,27 @@
             <!-- Tab Contents -->
             <div id="tab-daily" class="tab-content active">
                 <div class="duo-container">
-                    <h2 class="duo-title">🔥 Thử Thách Hằng Ngày</h2>
-                    <p class="duo-subtitle">Giữ vững chuỗi ngày học tập của bạn!</p>
-                    
-                    <div id="auth-status" style="margin-bottom: 1rem; color: #ef4444; font-weight: bold;">Chưa đăng nhập</div>
-                    
-                    <!-- Auth Forms -->
-                    <div id="auth-forms" style="margin-bottom: 2rem; max-width: 300px; margin-left: auto; margin-right: auto;">
-                        <input type="email" id="streak-email" placeholder="Email của bạn" class="duo-input" style="font-size:1rem; padding:10px; margin-bottom:10px;">
-                        <input type="password" id="streak-password" placeholder="Mật khẩu" class="duo-input" style="font-size:1rem; padding:10px; margin-bottom:15px;">
-                        <button onclick="signInUser()" class="duo-btn duo-btn-blue" style="margin-bottom: 10px;">Đăng Nhập</button>
-                        <button onclick="signUpUser()" class="duo-btn duo-btn-outline">Đăng Ký Mới</button>
+
+                    <!-- === AUTH SECTION === -->
+                    <div class="duo-auth-box" id="auth-forms">
+                        <div class="duo-auth-title">🧠 Đăng nhập để lưu tiến độ</div>
+                        <input type="email" id="streak-email" class="duo-text-input" placeholder="Email">
+                        <input type="password" id="streak-password" class="duo-text-input" placeholder="Mật khẩu">
+                        <button onclick="signInUser()" class="duo-btn duo-btn-blue">ĐĂNG NHẬP</button>
+                        <button onclick="signUpUser()" class="duo-btn duo-btn-ghost">TẠO TÀI KHOẢN MỚI</button>
                     </div>
 
-                    <button id="auth-logout-btn" onclick="signOutUser()" class="duo-btn duo-btn-outline" style="display:none; color: #ef4444; border-color: #ef4444; margin-bottom: 2rem;">Đăng Xuất</button>
+                    <!-- Auth top bar (when logged in) -->
+                    <div id="auth-logged-bar" style="display:none; display:none; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                        <span id="auth-status" class="duo-auth-status" style="background:#d7ffb8; color:#46a302;">Đã đăng nhập ✓</span>
+                        <button id="auth-logout-btn" onclick="signOutUser()" class="duo-btn-ghost duo-btn" style="width:auto; padding:8px 16px; font-size:0.8rem; margin:0;">Đăng xuất</button>
+                    </div>
 
-                    <!-- Intro / Dashboard Screen -->
-                    <div id="daily-game-intro">
-                        <!-- Streak & Stats row -->
-                        <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap;">
+                    <!-- === DASHBOARD (Intro) === -->
+                    <div id="daily-game-intro" style="display:none;">
+
+                        <!-- Stat cards -->
+                        <div class="duo-stats-row">
                             <div class="duo-stat-card">
                                 <div class="duo-stat-icon">🔥</div>
                                 <div class="duo-stat-value" id="streak-count-big">0</div>
@@ -170,91 +173,109 @@
                             </div>
                         </div>
 
-                        <!-- Daily completion badge -->
-                        <div id="daily-status-badge" style="background: #e5e5e5; color: #777; padding: 10px 20px; border-radius: 15px; display: inline-block; font-weight: bold; font-size: 1rem; margin-bottom: 20px;">Chưa hoàn thành hôm nay</div>
-                        <br>
+                        <!-- Completion status -->
+                        <div id="daily-status-badge" class="duo-badge duo-badge-undone">
+                            ⏰ Chưa hoàn thành hôm nay
+                        </div>
 
-                        <!-- Today's challenge description -->
-                        <div style="background: #f7f7f7; padding: 1.5rem; border-radius: 16px; border: 2px solid #e5e5e5; margin-bottom: 20px; text-align: left;">
-                            <h3 style="color: #4b4b4b; margin-bottom: 10px; text-align:center;">📋 Luật chơi</h3>
-                            <ul style="color: #555; line-height: 2; padding-left: 20px; font-size: 0.95rem;">
-                                <li>Mỗi <b>Level</b> bạn phải ghi nhớ một chuỗi số ngẫu nhiên.</li>
-                                <li>Level càng cao, chuỗi số càng <b>dài và khó hơn</b>.</li>
-                                <li>Sai thì <b>mất 1 tim</b>, hết tim thì Game Over tại Level đó.</li>
-                                <li>Chơi <b>vô hạn</b> để chinh phục Level cao nhất!</li>
-                                <li>Hoàn thành <b>Level 3 mỗi ngày</b> là Streak tăng +1 🔥</li>
+                        <!-- Rules -->
+                        <div class="duo-rule-box">
+                            <h3>📋 Cách chơi</h3>
+                            <ul class="duo-rule-list">
+                                <li><span class="rule-icon">🔢</span> Mỗi Level, bạn ghi nhớ 1 chuỗi số ngẫu nhiên.</li>
+                                <li><span class="rule-icon">📈</span> Mỗi Level khó hơn – số chữ số tăng dần.</li>
+                                <li><span class="rule-icon">❤️</span> Bạn có 3 tim. Sai mất 1 tim, hết tim → Game Over.</li>
+                                <li><span class="rule-icon">♾️</span> Chơi vô hạn, phá kỷ lục mỗi ngày!</li>
+                                <li><span class="rule-icon">🔥</span> Vượt Level 3 mỗi ngày → Streak +1.</li>
                             </ul>
                         </div>
-                        
+
                         <button id="start-daily-game-btn" onclick="startDailyMemoryGame()" class="duo-btn">BẮT ĐẦU CHƠI</button>
                     </div>
 
-                    <!-- Game Area (Vô hạn màn) -->
-                    <div id="daily-game-area" style="display: none;">
-                        <!-- Header: Level + Hearts + Progress -->
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
-                            <div class="duo-level-badge">LEVEL <span id="current-level-display">1</span></div>
-                            <div class="duo-heart" id="duo-hearts-display">❤️ 3</div>
-                        </div>
+                    <!-- === GAME SCREEN === -->
+                    <div id="daily-game-area" style="display:none;">
 
-                        <!-- Progress bar (tiến độ trong màn/level hiện tại: nhớ → nhập) -->
-                        <div class="duo-progress-wrapper" style="margin-bottom: 20px;">
-                            <div class="duo-progress-bg">
-                                <div class="duo-progress-fill" id="duo-progress"></div>
+                        <!-- Header -->
+                        <div class="duo-game-header">
+                            <div class="duo-level-pill">LV <span id="current-level-display">1</span></div>
+                            <div class="duo-progress-bar">
+                                <div class="duo-progress-fill" id="duo-progress" style="width:100%;"></div>
                             </div>
+                            <div class="duo-hearts-display" id="duo-hearts-display">❤️❤️❤️</div>
                         </div>
 
-                        <!-- Game box -->
-                        <div class="duo-game-box">
+                        <!-- Main game card -->
+                        <div class="duo-game-card">
+
+                            <!-- Phase 1: Memorize -->
                             <div id="game-phase-memorize">
-                                <p style="color: #777; font-size: 0.95rem; margin-bottom: 8px;">Ghi nhớ chuỗi số sau:</p>
+                                <div class="duo-game-instruction">Hãy ghi nhớ chuỗi số này!</div>
                                 <div id="daily-number-display" class="duo-big-number"></div>
-                                <div id="daily-timer" class="duo-timer">⏱️ <span id="duo-timer-text">5</span> giây</div>
+                                <div class="duo-timer-bar">
+                                    <div class="duo-timer-fill" id="duo-timer-fill" style="width:100%;"></div>
+                                </div>
+                                <p style="font-size:0.8rem; color:var(--duo-text-light); margin-top:6px;"><span id="duo-timer-text">5</span> giây còn lại</p>
                             </div>
 
+                            <!-- Phase 2: Answer -->
                             <div id="game-phase-answer" style="display:none;">
-                                <p style="color: #777; font-size: 0.95rem; margin-bottom: 12px;">Nhập chuỗi số bạn vừa nhớ:</p>
-                                <input type="text" inputmode="numeric" id="daily-input" class="duo-input" placeholder="Nhập số..." autocomplete="off">
-                                <button onclick="checkDailyAnswer()" class="duo-btn" style="margin-top: 15px;">KIỂM TRA</button>
+                                <div class="duo-game-instruction">Nhập lại chuỗi số bạn vừa nhớ</div>
+                                <input type="text" inputmode="numeric" id="daily-input" class="duo-answer-input" placeholder="_ _ _ _ _" autocomplete="off">
+                                <button onclick="checkDailyAnswer()" class="duo-btn">KIỂM TRA</button>
                             </div>
 
-                            <div id="game-phase-correct" style="display:none; padding: 1rem 0;">
-                                <div style="font-size: 3rem;">✅</div>
-                                <p style="font-size: 1.3rem; font-weight: bold; color: #58cc02; margin: 10px 0;">Chính xác!</p>
-                                <button onclick="goNextLevel()" class="duo-btn" style="margin-top: 10px;">TIẾP TỤC →</button>
-                            </div>
-
-                            <div id="game-phase-wrong" style="display:none; padding: 1rem 0;">
-                                <div style="font-size: 3rem;">❌</div>
-                                <p style="font-size: 1.1rem; font-weight: bold; color: #ff4b4b; margin: 10px 0;">Sai rồi!</p>
-                                <p style="color: #777; font-size: 0.9rem;">Đáp án đúng: <strong id="correct-answer-display" style="color: #1cb0f6; font-size: 1.1rem;"></strong></p>
-                                <div style="display:flex; gap:10px; margin-top:15px;">
-                                    <button onclick="retryLevel()" class="duo-btn duo-btn-blue">THỬ LẠI</button>
-                                    <button onclick="endGame()" class="duo-btn duo-btn-outline">VỀ TRANG CHỦ</button>
+                            <!-- Phase 3: Correct -->
+                            <div id="game-phase-correct" style="display:none;">
+                                <div class="duo-feedback duo-feedback-correct duo-pop">
+                                    <div class="duo-feedback-icon">✅</div>
+                                    <div>
+                                        <div class="duo-feedback-title">Chính xác!</div>
+                                        <div class="duo-feedback-sub">Tuyệt vời, bạn nhớ đúng rồi!</div>
+                                    </div>
                                 </div>
+                                <button onclick="goNextLevel()" class="duo-btn">TIẾP TỤC →</button>
                             </div>
 
-                            <div id="game-phase-gameover" style="display:none; padding: 1rem 0;">
-                                <div style="font-size: 3rem;">💔</div>
-                                <p style="font-size: 1.3rem; font-weight: bold; color: #ff4b4b; margin: 10px 0;">Hết tim!</p>
-                                <p style="color: #777;">Bạn đã đạt đến <strong>Level <span id="gameover-level-display">0</span></strong>.</p>
-                                <p style="color: #777; font-size: 0.9rem; margin-top: 5px;">Đáp án đúng: <strong id="gameover-answer-display" style="color: #1cb0f6;"></strong></p>
-                                <div style="display:flex; gap:10px; margin-top:15px;">
-                                    <button onclick="restartGame()" class="duo-btn">CHƠI LẠI TỪ ĐẦU</button>
-                                    <button onclick="endGame()" class="duo-btn duo-btn-outline">VỀ TRANG CHỦ</button>
+                            <!-- Phase 4: Wrong (còn tim) -->
+                            <div id="game-phase-wrong" style="display:none;">
+                                <div class="duo-feedback duo-feedback-wrong duo-pop">
+                                    <div class="duo-feedback-icon">❌</div>
+                                    <div>
+                                        <div class="duo-feedback-title">Sai rồi!</div>
+                                        <div class="duo-feedback-sub">Đáp án: <strong id="correct-answer-display"></strong></div>
+                                    </div>
                                 </div>
+                                <button onclick="retryLevel()" class="duo-btn duo-btn-blue">THỬ LẠI</button>
+                                <button onclick="endGame()" class="duo-btn duo-btn-ghost">VỀ TRANG CHỦ</button>
                             </div>
+
+                            <!-- Phase 5: Game Over (hết tim) -->
+                            <div id="game-phase-gameover" style="display:none;">
+                                <div class="duo-feedback duo-feedback-wrong duo-pop">
+                                    <div class="duo-feedback-icon">💔</div>
+                                    <div>
+                                        <div class="duo-feedback-title">Hết tim! Level <span id="gameover-level-display">0</span></div>
+                                        <div class="duo-feedback-sub">Đáp án: <strong id="gameover-answer-display"></strong></div>
+                                    </div>
+                                </div>
+                                <button onclick="restartGame()" class="duo-btn">CHƠI LẠI</button>
+                                <button onclick="endGame()" class="duo-btn duo-btn-ghost">VỀ TRANG CHỦ</button>
+                            </div>
+
                         </div>
                     </div>
 
-                    <!-- Level Up Screen -->
-                    <div id="daily-levelup-area" style="display:none; text-align:center; padding: 2rem 0;">
-                        <div class="duo-success-icon">🎊</div>
-                        <h2 style="color: #ff9f43; font-size: 2rem; margin-bottom: 8px;">LEVEL UP!</h2>
-                        <p style="font-size: 1.5rem; font-weight: bold; color: #4b4b4b;">Bạn vừa lên Level <span id="levelup-new-level">2</span>!</p>
-                        <p id="streak-earned-msg" style="color: #58cc02; font-weight: bold; font-size: 1rem; margin: 10px 0;"></p>
-                        <button onclick="continueNextLevel()" class="duo-btn" style="margin-top: 15px;">CHƠI TIẾP ▶</button>
-                        <button onclick="endGame()" class="duo-btn duo-btn-outline" style="margin-top: 10px;">DỪNG LẠI</button>
+                    <!-- === LEVEL UP SCREEN === -->
+                    <div id="daily-levelup-area" style="display:none;">
+                        <div class="duo-result-screen">
+                            <div class="duo-result-emoji duo-pop">🎊</div>
+                            <div class="duo-result-title" style="color:var(--duo-orange);">LEVEL UP!</div>
+                            <div class="duo-result-sub">Bạn vừa vượt qua Level <strong><span id="levelup-new-level">2</span></strong>!</div>
+                            <p id="streak-earned-msg" style="font-size:1rem; font-weight:700; color:var(--duo-green); margin-bottom:1.5rem;"></p>
+                            <button onclick="continueNextLevel()" class="duo-btn">CHƠI TIẾP ▶</button>
+                            <button onclick="endGame()" class="duo-btn duo-btn-ghost">DỪNG LẠI</button>
+                        </div>
                     </div>
 
                 </div>

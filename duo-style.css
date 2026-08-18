@@ -1,178 +1,386 @@
-/* ==========================================
-   DUOLINGO STYLE CSS CHO DAILY STREAK
-========================================== */
+/* ============================================
+   DUO-STYLE.CSS - DUOLINGO STYLE REDESIGN
+   Màu sắc & Typography đúng chuẩn Duolingo
+   ============================================ */
+
+/* Import font */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
+/* ---- Root Variables ---- */
+:root {
+    --duo-green:       #58cc02;
+    --duo-green-dark:  #46a302;
+    --duo-blue:        #1cb0f6;
+    --duo-blue-dark:   #0094d8;
+    --duo-red:         #ff4b4b;
+    --duo-orange:      #ff9600;
+    --duo-yellow:      #ffc800;
+    --duo-purple:      #ce82ff;
+    --duo-bg:          #f7f7f7;
+    --duo-white:       #ffffff;
+    --duo-border:      #e5e5e5;
+    --duo-text-dark:   #3c3c3c;
+    --duo-text-mid:    #6b6b6b;
+    --duo-text-light:  #afafaf;
+    --duo-shadow:      rgba(0,0,0,0.08);
+    --duo-radius:      16px;
+    --duo-radius-lg:   24px;
+    --duo-radius-pill: 100px;
+    --duo-font:        'Nunito', 'Inter', sans-serif;
+}
+
+/* ---- Wrapper ---- */
+.duo-wrapper {
+    font-family: var(--duo-font);
+    background: var(--duo-bg);
+    min-height: 100vh;
+    padding: 0;
+    color: var(--duo-text-dark);
+}
 
 .duo-container {
-    max-width: 600px;
-    margin: 2rem auto;
-    padding: 1.5rem;
-    background: #ffffff;
-    border-radius: 20px;
-    border: 2px solid #e5e5e5;
-    box-shadow: 0 8px 0 #e5e5e5;
-    color: #4b4b4b;
-    font-family: 'Inter', sans-serif;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 3rem;
+    background: var(--duo-bg);
+    color: var(--duo-text-dark);
+    font-family: var(--duo-font);
+}
+
+/* ---- Auth Box ---- */
+.duo-auth-box {
+    background: var(--duo-white);
+    border-radius: var(--duo-radius-lg);
+    box-shadow: 0 4px 0 var(--duo-border);
+    padding: 2rem 1.5rem;
+    margin-bottom: 1.5rem;
     text-align: center;
 }
 
-.duo-title {
-    font-size: 2rem;
+.duo-auth-title {
+    font-size: 1.4rem;
     font-weight: 800;
-    color: #3c3c3c;
+    margin-bottom: 1.2rem;
+    color: var(--duo-text-dark);
+}
+
+.duo-text-input {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 1rem;
+    font-family: var(--duo-font);
+    font-weight: 600;
+    border: 2px solid var(--duo-border);
+    border-radius: var(--duo-radius);
+    background: var(--duo-white);
+    color: var(--duo-text-dark);
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.duo-text-input:focus {
+    border-color: var(--duo-blue);
+}
+
+.duo-auth-status {
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: var(--duo-radius-pill);
+    display: inline-block;
     margin-bottom: 1rem;
 }
 
-.duo-subtitle {
-    font-size: 1.2rem;
-    color: #777;
-    margin-bottom: 2rem;
+/* ---- STAT CARDS (Dashboard) ---- */
+.duo-stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 1.2rem;
 }
 
-/* Tiến trình (Progress Bar) */
-.duo-progress-wrapper {
+.duo-stat-card {
+    background: var(--duo-white);
+    border-radius: var(--duo-radius);
+    box-shadow: 0 3px 0 var(--duo-border);
+    padding: 1rem 0.5rem;
+    text-align: center;
+}
+
+.duo-stat-icon { font-size: 1.6rem; line-height: 1; margin-bottom: 4px; }
+.duo-stat-value { font-size: 1.7rem; font-weight: 900; color: var(--duo-text-dark); line-height: 1.1; }
+.duo-stat-label { font-size: 0.65rem; text-transform: uppercase; font-weight: 700; color: var(--duo-text-light); margin-top: 3px; letter-spacing: 0.5px; }
+
+/* ---- Status badge ---- */
+.duo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: var(--duo-radius-pill);
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+}
+
+.duo-badge-done   { background: #d7ffb8; color: var(--duo-green-dark); }
+.duo-badge-undone { background: #fff3cd; color: #b07800; }
+
+/* ---- Rule Box ---- */
+.duo-rule-box {
+    background: var(--duo-white);
+    border-radius: var(--duo-radius);
+    box-shadow: 0 3px 0 var(--duo-border);
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.duo-rule-box h3 {
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--duo-text-light);
+    margin-bottom: 0.8rem;
+}
+
+.duo-rule-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.duo-rule-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--duo-text-mid);
+    padding: 5px 0;
+    border-bottom: 1px solid var(--duo-border);
+}
+
+.duo-rule-list li:last-child { border-bottom: none; }
+.duo-rule-list li .rule-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+
+/* ---- BUTTONS ---- */
+.duo-btn {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    font-size: 1rem;
+    font-family: var(--duo-font);
+    font-weight: 800;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: white;
+    background: var(--duo-green);
+    border: none;
+    border-bottom: 4px solid var(--duo-green-dark);
+    border-radius: var(--duo-radius-pill);
+    cursor: pointer;
+    transition: transform 0.1s, filter 0.1s;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.duo-btn:active { transform: translateY(3px); border-bottom-width: 1px; }
+.duo-btn:hover:not(:disabled) { filter: brightness(1.07); }
+.duo-btn:disabled { background: #e5e5e5; border-bottom-color: #d0d0d0; color: #afafaf; cursor: default; }
+
+.duo-btn-blue   { background: var(--duo-blue);   border-bottom-color: var(--duo-blue-dark); }
+.duo-btn-red    { background: var(--duo-red);    border-bottom-color: #cc0000; }
+.duo-btn-orange { background: var(--duo-orange); border-bottom-color: #d07a00; }
+
+.duo-btn-ghost {
+    background: var(--duo-white);
+    color: var(--duo-blue);
+    border: 2px solid var(--duo-border);
+    border-bottom: 4px solid var(--duo-border);
+}
+.duo-btn-ghost:hover:not(:disabled) { background: #f0f9ff; border-color: var(--duo-blue); color: var(--duo-blue-dark); filter: none; }
+
+/* ---- GAME SCREEN ---- */
+
+/* Header bar (level + hearts) */
+.duo-game-header {
     display: flex;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 2rem;
+    gap: 12px;
+    margin-bottom: 1.2rem;
 }
 
-.duo-progress-bg {
-    flex-grow: 1;
-    height: 18px;
-    background-color: #e5e5e5;
-    border-radius: 10px;
+.duo-level-pill {
+    background: var(--duo-blue);
+    color: white;
+    font-weight: 900;
+    font-size: 0.85rem;
+    padding: 6px 16px;
+    border-radius: var(--duo-radius-pill);
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+/* Progress bar */
+.duo-progress-bar {
+    flex: 1;
+    height: 16px;
+    background: var(--duo-border);
+    border-radius: var(--duo-radius-pill);
     overflow: hidden;
-    position: relative;
 }
 
 .duo-progress-fill {
     height: 100%;
-    width: 0%; /* Sẽ update qua JS */
-    background-color: #58cc02;
-    border-radius: 10px;
-    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-}
-/* Hiệu ứng bóng sáng trên thanh chạy */
-.duo-progress-fill::after {
-    content: '';
-    position: absolute;
-    top: 3px;
-    left: 10px;
-    right: 10px;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 5px;
+    background: var(--duo-green);
+    border-radius: var(--duo-radius-pill);
+    transition: width 0.3s ease;
 }
 
-.duo-heart {
-    font-size: 1.5rem;
-    color: #ff4b4b;
+.duo-hearts-display {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    letter-spacing: 2px;
 }
 
-/* Nút bấm 3D */
-.duo-btn {
-    display: inline-block;
-    width: 100%;
-    padding: 15px 20px;
-    font-size: 1.2rem;
+/* Game Card */
+.duo-game-card {
+    background: var(--duo-white);
+    border-radius: var(--duo-radius-lg);
+    box-shadow: 0 4px 0 var(--duo-border);
+    padding: 1.5rem;
+    margin-bottom: 1.2rem;
+    text-align: center;
+}
+
+.duo-game-instruction {
+    font-size: 0.85rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #ffffff;
-    background-color: #58cc02;
-    border: none;
-    border-bottom: 5px solid #58a700;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: all 0.1s;
-    text-align: center;
-    text-decoration: none;
+    letter-spacing: 0.5px;
+    color: var(--duo-text-light);
+    margin-bottom: 1rem;
 }
 
-.duo-btn:hover {
-    filter: brightness(1.1);
-}
-
-.duo-btn:active {
-    transform: translateY(4px);
-    border-bottom-width: 1px;
-    margin-bottom: 4px;
-}
-
-.duo-btn-blue {
-    background-color: #1cb0f6;
-    border-bottom-color: #1899d6;
-}
-
-.duo-btn-outline {
-    background-color: #ffffff;
-    color: #1cb0f6;
-    border: 2px solid #e5e5e5;
-    border-bottom: 5px solid #e5e5e5;
-}
-
-/* Game Area */
-.duo-game-box {
-    padding: 2rem;
-    background: #f7f7f7;
-    border-radius: 15px;
-    border: 2px solid #e5e5e5;
-    margin-bottom: 2rem;
-}
-
+/* The big number */
 .duo-big-number {
-    font-size: 4rem;
+    font-family: var(--duo-font);
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
     font-weight: 900;
-    color: #1cb0f6;
-    letter-spacing: 5px;
-    text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
-    margin: 1rem 0;
-}
-
-.duo-timer {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #ff4b4b;
+    color: var(--duo-text-dark);
+    letter-spacing: 8px;
+    line-height: 1.1;
+    word-break: break-all;
+    margin-bottom: 1rem;
+    min-height: 70px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
 }
 
-.duo-input {
+/* Countdown ring / timer */
+.duo-timer-bar {
     width: 100%;
-    padding: 15px;
-    font-size: 2rem;
-    font-weight: bold;
+    height: 8px;
+    background: var(--duo-border);
+    border-radius: var(--duo-radius-pill);
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+.duo-timer-fill {
+    height: 100%;
+    background: var(--duo-orange);
+    border-radius: var(--duo-radius-pill);
+    transition: width 0.1s linear;
+}
+
+/* Answer input */
+.duo-answer-input {
+    width: 100%;
+    padding: 16px;
+    font-size: 1.8rem;
+    font-family: var(--duo-font);
+    font-weight: 900;
     text-align: center;
-    border: 2px solid #e5e5e5;
-    border-radius: 15px;
-    background: #fff;
-    color: #4b4b4b;
+    letter-spacing: 6px;
+    border: 3px solid var(--duo-border);
+    border-radius: var(--duo-radius);
+    background: var(--duo-white);
+    color: var(--duo-text-dark);
     outline: none;
-    transition: 0.2s;
-    letter-spacing: 3px;
-}
-
-.duo-input:focus {
-    border-color: #1cb0f6;
-}
-
-/* Hoạt ảnh chúc mừng */
-.duo-success-icon {
-    font-size: 5rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
     margin-bottom: 1rem;
-    animation: duoBounce 1s infinite;
 }
+.duo-answer-input:focus { border-color: var(--duo-blue); }
+.duo-answer-input.correct { border-color: var(--duo-green); background: #f0fff0; }
+.duo-answer-input.wrong   { border-color: var(--duo-red);  background: #fff0f0; animation: duo-shake 0.4s; }
 
-@keyframes duoBounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
-}
-
-/* Flexbox cho nút Màn hình kết quả */
-.duo-actions {
+/* Result feedback panels */
+.duo-feedback {
+    border-radius: var(--duo-radius);
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1rem;
     display: flex;
-    gap: 15px;
+    align-items: flex-start;
+    gap: 12px;
+    text-align: left;
+}
+.duo-feedback-correct { background: #d7ffb8; }
+.duo-feedback-wrong   { background: #ffdfe0; }
+
+.duo-feedback-icon { font-size: 1.6rem; flex-shrink: 0; }
+
+.duo-feedback-title {
+    font-weight: 900;
+    font-size: 1rem;
+    margin-bottom: 3px;
+}
+.duo-feedback-correct .duo-feedback-title { color: var(--duo-green-dark); }
+.duo-feedback-wrong   .duo-feedback-title { color: var(--duo-red); }
+
+.duo-feedback-sub { font-size: 0.85rem; font-weight: 600; color: var(--duo-text-mid); }
+
+/* Level Up / Gameover screens */
+.duo-result-screen {
+    text-align: center;
+    padding: 2rem 1rem;
+}
+.duo-result-emoji { font-size: 4rem; margin-bottom: 0.8rem; line-height: 1; }
+.duo-result-title { font-size: 1.8rem; font-weight: 900; margin-bottom: 0.5rem; }
+.duo-result-sub   { font-size: 0.95rem; font-weight: 600; color: var(--duo-text-mid); margin-bottom: 1.5rem; }
+
+/* Separator */
+.duo-divider { height: 1px; background: var(--duo-border); margin: 1rem 0; }
+
+/* ---- Animations ---- */
+@keyframes duo-shake {
+    0%, 100% { transform: translateX(0); }
+    20%       { transform: translateX(-8px); }
+    60%       { transform: translateX(8px); }
+}
+
+@keyframes duo-pop {
+    0%   { transform: scale(0.8); opacity: 0; }
+    70%  { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.duo-pop { animation: duo-pop 0.35s ease; }
+
+/* ---- Responsive ---- */
+@media (max-width: 520px) {
+    .duo-container { padding: 1rem 0.8rem 2rem; }
+    .duo-game-card  { padding: 1rem; }
+    .duo-stats-row  { gap: 8px; }
+    .duo-stat-value { font-size: 1.4rem; }
+    .duo-big-number { font-size: 2.2rem; letter-spacing: 5px; }
+    .duo-answer-input { font-size: 1.4rem; letter-spacing: 4px; }
 }
