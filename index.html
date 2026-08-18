@@ -151,46 +151,20 @@
                         <button id="auth-logout-btn" onclick="signOutUser()" class="duo-btn-ghost duo-btn" style="width:auto; padding:8px 16px; font-size:0.8rem; margin:0;">Đăng xuất</button>
                     </div>
 
-                    <!-- === DASHBOARD (Intro) === -->
+                    <!-- === PATH (HÀNH TRÌNH) === -->
                     <div id="daily-game-intro" style="display:none;">
-
-                        <!-- Stat cards -->
-                        <div class="duo-stats-row">
-                            <div class="duo-stat-card">
-                                <div class="duo-stat-icon">🔥</div>
-                                <div class="duo-stat-value" id="streak-count-big">0</div>
-                                <div class="duo-stat-label">Chuỗi ngày</div>
-                            </div>
-                            <div class="duo-stat-card">
-                                <div class="duo-stat-icon">⭐</div>
-                                <div class="duo-stat-value" id="best-level-display">0</div>
-                                <div class="duo-stat-label">Level cao nhất</div>
-                            </div>
-                            <div class="duo-stat-card">
-                                <div class="duo-stat-icon">🏆</div>
-                                <div class="duo-stat-value" id="max-streak-display">0</div>
-                                <div class="duo-stat-label">Streak kỷ lục</div>
+                        <!-- Vẫn giữ nguyên ID daily-game-intro để tương thích JS cũ -->
+                        
+                        <!-- Daily completion badge (moved to top of path) -->
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <div id="daily-status-badge" class="duo-badge duo-badge-undone" style="display:inline-block; margin:0 auto;">
+                                ⏰ Chưa hoàn thành hôm nay
                             </div>
                         </div>
 
-                        <!-- Completion status -->
-                        <div id="daily-status-badge" class="duo-badge duo-badge-undone">
-                            ⏰ Chưa hoàn thành hôm nay
+                        <div class="duo-path-container" id="path-container">
+                            <!-- Các nút level sẽ được sinh ra ở đây qua JS -->
                         </div>
-
-                        <!-- Rules -->
-                        <div class="duo-rule-box">
-                            <h3>📋 Cách chơi</h3>
-                            <ul class="duo-rule-list">
-                                <li><span class="rule-icon">🔢</span> Mỗi Level, bạn ghi nhớ 1 chuỗi số ngẫu nhiên.</li>
-                                <li><span class="rule-icon">📈</span> Mỗi Level khó hơn – số chữ số tăng dần.</li>
-                                <li><span class="rule-icon">❤️</span> Bạn có 3 tim. Sai mất 1 tim, hết tim → Game Over.</li>
-                                <li><span class="rule-icon">♾️</span> Chơi vô hạn, phá kỷ lục mỗi ngày!</li>
-                                <li><span class="rule-icon">🔥</span> Vượt Level 3 mỗi ngày → Streak +1.</li>
-                            </ul>
-                        </div>
-
-                        <button id="start-daily-game-btn" onclick="startDailyMemoryGame()" class="duo-btn">BẮT ĐẦU CHƠI</button>
                     </div>
 
                     <!-- === GAME SCREEN === -->

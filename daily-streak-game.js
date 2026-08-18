@@ -142,21 +142,79 @@ function updateDashboardUI() {
 
     const badge = document.getElementById('daily-status-badge');
     const btn = document.getElementById('start-daily-game-btn');
-    if (!badge || !btn) return;
+    if (badge && btn) {
+        const completedToday = isTodayCompleted();
+        if (completedToday) {
+            badge.textContent = '🔥 Streak hôm nay đã tính! ' + streakVal + ' ngày';
+            badge.className = 'duo-badge duo-badge-done';
+            btn.textContent = 'CHƠI THÊM ĐỂ PHÁ KỶ LỤC';
+            btn.className = 'duo-btn duo-btn-blue';
+            btn.disabled = false;
+        } else {
+            badge.textContent = '⏰ Chưa hoàn thành hôm nay';
+            badge.className = 'duo-badge duo-badge-undone';
+            btn.textContent = 'BẮT ĐẦU CHƠI';
+            btn.className = 'duo-btn';
+            btn.disabled = false;
+        }
+    }
+    
+    renderPath(); // Generate the Duolingo Path!
+}
 
-    const completedToday = isTodayCompleted();
-    if (completedToday) {
-        badge.textContent = '🔥 Streak hôm nay đã tính! ' + streakVal + ' ngày';
-        badge.className = 'duo-badge duo-badge-done';
-        btn.textContent = 'CHƠI THÊM ĐỂ PHÁ KỶ LỤC';
-        btn.className = 'duo-btn duo-btn-blue';
-        btn.disabled = false;
-    } else {
-        badge.textContent = '⏰ Chưa hoàn thành hôm nay';
-        badge.className = 'duo-badge duo-badge-undone';
-        btn.textContent = 'BẮT ĐẦU CHƠI';
-        btn.className = 'duo-btn';
-        btn.disabled = false;
+// ==========================================
+// DUOLINGO PATH RENDERING
+// ==========================================
+function renderPath() {
+    const container = document.getElementById('path-container');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    const maxLevelReached = currentStreakData.best_level || 0;
+    
+    // Render 10 levels ahead of current best level, minimum 15 levels total
+    const totalNodesToRender = Math.max(15, maxLevelReached + 10);
+    
+    for (let i = 1; i <= totalNodesToRender; i++) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'duo-path-node-wrapper';
+        
+        const node = document.createElement('div');
+        node.className = 'duo-path-node';
+        
+        if (i < maxLevelReached + 1) {
+            // Đã vượt qua
+            node.classList.add('completed');
+            node.innerHTML = '⭐'; 
+        } else if (i === maxLevelReached + 1) {
+            // Level tiếp theo cần chơi
+            node.classList.add('current');
+            node.innerHTML = '👑';
+            
+            // Add tooltip "START"
+            const tooltip = document.createElement('div');
+            tooltip.className = 'duo-start-tooltip';
+            tooltip.textContent = 'BẮT ĐẦU';
+            node.appendChild(tooltip);
+            
+            node.onclick = () => {
+                startDailyMemoryGame();
+            };
+            
+            // Scroll to current node on load
+            setTimeout(() => {
+                node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 500);
+            
+        } else {
+            // Chưa mở khóa
+            node.classList.add('locked');
+            node.innerHTML = '🔒';
+        }
+        
+        wrapper.appendChild(node);
+        // Prepend to display bottom-to-top due to flex-direction: column-reverse
+        container.appendChild(wrapper);
     }
 }
 
