@@ -133,6 +133,8 @@ async function saveStreakData() {
 }
 
 function updateDashboardUI() {
+    showScreen('intro'); // Luôn hiển thị màn hình chính của Hành Trình
+    
     // Cập nhật cả 2 nơi hiển thị streak
     const streakVal = currentStreakData.current_streak;
     setText('streak-count', streakVal);
@@ -368,12 +370,6 @@ function endGame() {
 // ==========================================
 // UI HELPERS
 // ==========================================
-
-function onUserLoggedIn() {
-    setDisplay('auth-logged-bar', 'block');
-    setDisplay('auth-forms', 'none');
-    showScreen('intro');
-}
 
 function showScreen(screen) {
     setDisplay('daily-game-intro', screen === 'intro' ? 'block' : 'none');
